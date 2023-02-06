@@ -1,0 +1,38 @@
+<!--
+ * @Author: heng 1298350966@qq.com
+ * @Date: 2022-07-04 10:04:36
+ * @LastEditors: heng 1298350966@qq.com
+ * @LastEditTime: 2022-07-04 19:34:37
+ * @FilePath: \vue-basic-dev-platform\public\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="stylesheet" href="/loading/index.css" />
+    <script src="/static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/ace/mode-json.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/ace/worker-json.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/TMap/tianditu.js" defer></script>
+    <script src="/static/TMap/d3.js" charset="utf-8" defer></script>
+    <script src="/static/TMap/D3SvgOverlay.min.js" charset="utf-8" defer></script>
+</head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app">
+      <div class="first-loading-wrp">
+        <div class="loading-wrp">
+          <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+        </div>
+      </div>
+    </div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

@@ -1,0 +1,6 @@
+:root {
+    --DialogBg:#ffffff; //弹窗背景色
+    --DialogHeaderBg:linear-gradient(45deg,#0076F6, #409eff, #0076F6); //弹窗头部背景色
+}
+@import "./TopNav/TopNav.scss";
+@import "./NavGroup/NavGroup.scss";

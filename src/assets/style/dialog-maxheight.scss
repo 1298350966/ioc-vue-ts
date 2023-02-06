@@ -1,0 +1,51 @@
+// 对话框设置最大高度
+::v-deep .dialog-maxheight{
+  .el-dialog__header{
+    padding: 10px 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    position: relative;
+  }
+  .el-dialog__body{
+    max-height: 80vh;
+    overflow: auto;
+  }
+   .el-dialog__footer {
+    text-align: right;
+  }
+}
+
+::v-deep .edit-form-dialog{ 
+  .el-dialog__header{
+    padding: 5px 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    position: relative;  
+  }
+  .el-dialog__body{
+    max-height: 50vh;
+    overflow: auto;
+  }
+  .el-dialog__footer {
+    text-align: right;
+  }
+}
+
+::v-deep .el-dialog{
+  max-height: 80vh;
+  height: 80vh;
+  display: flex;
+  flex-flow: column;
+  margin-top: 10vh !important;
+  .el-dialog__body{
+    flex: 1;
+    // max-height: 75vh;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+}
+::v-deep .el-dialog.is-fullscreen{
+  margin-top: 0 !important;
+  height: 100%;
+  max-height: 100%;
+}

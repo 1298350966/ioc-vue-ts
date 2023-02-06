@@ -1,0 +1,43 @@
+@import "@/assets/style/dialog-maxheight.scss";
+::v-deep .el-dialog {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  .el-dialog__header {
+    background:linear-gradient(45deg,#0076F6, #409eff, #0076F6);
+    padding: 10px 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+    .el-dialog__title {
+      color:#DFEBFE;
+      font-size: 15px;
+      font-weight: bolder;
+    }
+    .el-dialog__headerbtn {
+      top: 13px;
+    }
+    .el-dialog__close{
+      color:#DFEBFE;
+      transition:all 1s ease-in-out;
+      &:hover{
+        transform: rotate(360deg);
+        background: #dfebfe75;
+        border-radius: 50%;
+        backdrop-filter: blur(5px);
+        box-shadow: 0px 0px 5px #02304363;
+        color: aqua;
+      }
+      &:active{
+        box-shadow:none
+      }
+    }
+  }
+  .el-dialog__body {
+    padding: 20px;
+  }
+  .el-dialog__footer {
+    text-align: center;
+  }
+}

@@ -1,0 +1,79 @@
+@import "./setting.scss";
+.FormTheme{
+    --mainColor:#303133;
+    --headerBg:#103171;
+    --borderColor:#424b6147;
+    --InputBg:transparent;
+    --InputColor:var(--mainColor);
+    --InputBorder:1px solid #424b61;
+    --itemBg:#ffffff;
+
+    @import '../control/FormQueryWidget.scss';
+    @import '../control/FormTableWidget.scss';
+    @import '../control/TextWidget.scss';
+    @import '../element/index.scss';
+    @import './scrollbar.scss';
+    @import "../mixin/index.scss";
+    @import "@/assets/ThemeExtend/index.scss";
+    #FormPage{
+        background: #ffffff;
+        padding:10px;
+        display: none;
+        position: relative;
+        .QRCode{
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+    }
+
+    .dragHandle{
+    //   background:transparent ;
+    //   @include line4(#03A9F3,#03a7f386);
+    }
+    .dragAndResize{
+        height: 100%;
+        position: relative;
+        background: transparent ;
+        .tool-title{
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            font-weight: bold;
+            .caption {
+                margin-right: 4px;
+                font-size: 14px;
+                font-weight: bold;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                color:var(--mainColor) ;
+            }
+        }
+        .tool {
+            position: absolute;
+            right: 0.5rem;
+            top: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .chart {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: default;
+        }
+    }   
+}
+.FormDialog{
+    .QRCode{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 50px;
+        top: 9px;
+    }
+}

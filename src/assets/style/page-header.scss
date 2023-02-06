@@ -1,0 +1,20 @@
+.header-row{
+    display:flex;
+    margin-left:10px;
+    .header-title {
+        font-weight: bolder;
+        color: #3a3b3f;
+        position: relative;
+        margin-right: auto;
+        margin-top: 5px;
+
+        &::before {
+            content: "";
+            display: block;
+            height: 17px;
+            border-right: 3px solid #3581fb;
+            position: absolute;
+            left: -10px;
+        }
+    }
+}

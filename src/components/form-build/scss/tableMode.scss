@@ -1,0 +1,122 @@
+::v-deep .formBox{
+    border-width:var(--border-width);
+    border-style: var(--border-style);
+    border-color: var(--border-color);
+    [class*=div-] {
+        float: none !important;
+    }
+    .el-form-item {
+        display: flex;
+        margin-bottom: 0;
+        width: 100%;
+        // height: 100%;
+      
+        .el-form-item__label {
+          border-right: var(--border-width) var(--border-style) var(--border-color);
+          padding: 5px 10px;
+          float: none !important;
+        }
+      
+        .el-form-item__content {
+          flex: 1;
+          text-align: left;
+          padding: 5px 10px;
+          margin-left: 0 !important;
+        }
+        .el-form-item__error{
+            position: initial;
+        }
+    }
+  
+    .tableBox{
+        .table-header{
+           font-size: 14px;
+           padding: 12px 10px;
+           border-bottom: var(--border-width) var(--border-style) var(--border-color);     
+        }
+        .el-row {
+            position: inherit;
+            .buttonBox {
+                position: absolute;
+                right: 10px;
+                top: 5px;
+            }
+        }
+    }
+    // ::v-deep .formBuildItem{
+    //     margin: 0 !important;
+    //     .el-form-item__label{
+    //         padding: 10px;
+    //         overflow: hidden;
+    //     }
+    //     .el-form-item__content{
+    //         margin: 0;
+    //         padding: 10px;
+    //         min-height: 32px;
+    //         margin: 0 ;
+    //         border-left-color: inherit;
+    //         &::after{
+    //             display:none
+    //         }
+    //     }
+    // }
+    .gridLine{
+        border-bottom:var(--border-width) var(--border-style) var(--border-color);
+        .lineItem{
+            display: flex;
+            flex-flow: column;
+            border-right:var(--border-width) var(--border-style) var(--border-color);
+            &:last-child{
+                border-right:none;
+            }
+            .cellBox{
+                flex:1;
+            }
+        }
+    }
+    // .line{
+    //     // border-bottom:var(--border-width) var(--border-style);
+    //     border-color:inherit;
+    //     &:last-child{
+    //         border-bottom:none;
+    //     }
+    //     .lineItem{
+    //         border-color: inherit;
+    //         &::after {
+    //             content: "";
+    //             position: absolute;
+    //             border-left: 1px var(--border-style);
+    //             border-left-color: inherit;
+    //             top: 0;
+    //             bottom: 0;
+    //         }
+    //         &:first-child::after{
+    //             border-left: none;
+    //         }
+    //     }
+      
+    // }
+    .cellBox{
+        height: 100%;
+        position: relative;
+        border-bottom:var(--border-width) var(--border-style);
+        border-color:var(--border-color);
+    
+        &:last-child{
+            border-bottom:none;
+            .line{
+                border-bottom:none;
+            }
+        }
+        //  .lineCell{
+        //     position: absolute;
+        //     left: 100px;
+        //     border-left:var(--border-width) var(--border-style);
+        //     border-color:inherit;
+        //     top: 0;
+        //     bottom: 0;
+        //     height: 100%;
+        //     transform: translate(-50%,0);
+        // }
+    }
+}

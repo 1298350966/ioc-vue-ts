@@ -1,0 +1,8 @@
+ //滚动条样式
+ *{
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(230, 230, 230, 0.8);
+    border: 3px solid transparent;
+    border-radius: 7px;
+  }
+}

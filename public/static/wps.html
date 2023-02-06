@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WPS</title>
+</head>
+<body onload="getparam();">
+
+</body>
+<script src = "https://qn.cache.wpscdn.cn/js/jquery-1.9.1.min.js"> </script>
+<script src="./jwps.js"> </script>
+<script>
+  function getparam(){
+    var query = location.search.substring(1);
+    console.log(query);
+ /*   var values= query.split("&");
+    for(var i = 0; i < values.length; i++) {
+      var pos = values[i].indexOf('=');
+      if (pos == -1) continue;
+      var paramname = values[i].substring(0,pos);
+      var value = values[i].substring(pos+1);
+      alert(paramname +","+value );
+    }*/
+    openFile(query);
+  }
+
+  function openFile(query)
+  {
+    $.get("/api/file/weboffice/url?"+query , function(result) {
+      console.log(result);
+      wps = WPS.config({wpsUrl: result.wpsUrl});
+      console.log("url"+result.wpsUrl);
+      wps.setToken({token: result.token});
+      console.log("token"+result.token);
+    })
+  }
+</script>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    /* 防止双击缩放 */
+    touch-action: manipulation;
+  }
+
+  iframe {
+    flex: 1;
+  }
+</style>
+</html>

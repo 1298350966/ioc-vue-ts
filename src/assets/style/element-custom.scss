@@ -1,0 +1,260 @@
+// plat-平台内容样式修改
+.custom-dialog {
+  .el-dialog__body {
+    height: calc(100% - 76px);
+  }
+}
+
+.el-dialog__wrapper {
+  .el-dialog {
+     box-shadow: 0 0 30px #00000040;
+     border-radius: 5px;
+     overflow: hidden;
+     padding-bottom:5px;
+    .el-dialog__header {
+      background: linear-gradient(45deg,#0076F6, #409eff, #0076F6);
+      padding: 10px 20px;
+
+      .el-dialog__title {
+        color:#DFEBFE;
+        font-size: 15px;
+        font-weight: bolder;
+      }
+
+      button.el-dialog__headerbtn {
+        top: 13px;
+        i.el-dialog__close {
+          color:#DFEBFE;
+        }
+      }
+
+      .dialog-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+          color: #fff;
+          font-size: 18px;
+        }
+
+        span.close-button {
+          display: block;
+          height: 20px;
+          width: 20px;
+          cursor: pointer;
+          position: relative;
+
+          &:hover {
+            transform: rotate(90deg);
+          }
+
+          @mixin close-line() {
+            content: "";
+            position: absolute;
+            height: 20px;
+            width: 2px;
+            background: #d7ecdd;
+          }
+
+          &::before {
+            @include close-line();
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+          }
+
+          &::after {
+            @include close-line();
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+          }
+        }
+      }
+    }
+  }
+}
+
+.el-message--info .el-message__content {
+  color: #2b2b2b;
+}
+
+//  ioc table 样式
+.ioc-table {
+  background-color: transparent;
+
+  &:before {
+    display: none;
+  }
+
+  .el-table__header {
+    height: 40px;
+    background-color: transparent;
+
+    tr {
+      background-color: transparent;
+
+      th {
+        padding: 0;
+        border: 0;
+        line-height: 40px;
+        font-weight: normal;
+        background-color: rgba(0, 108, 255, 0.502);
+        color: #fff;
+      }
+    }
+  }
+
+  .el-table__body {
+    tr {
+      background-color: transparent;
+
+      td {
+        border: 0;
+        background-color: transparent;
+        //color: #4da3ff;
+      }
+
+      &.el-table__row--striped {
+        td {
+          .el-table__cell{
+            background-color: rgba(3, 67, 158, 0.502);
+          }
+         
+        }
+      }
+
+      &:hover {
+        td .el-table__cell {
+          
+          background-color: rgb(77, 163, 255);
+          color: #fff;
+        }
+      }
+    }
+
+  }
+
+  .el-table__empty-block {
+    background-color: rgba(3, 67, 158, 0.502);
+
+    .el-table__empty-text {
+      color: #fff;
+    }
+  }
+}
+
+/* 定制分页样式 */
+.custom-pagination.el-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: right;
+
+  .el-pager {
+    li {
+      min-width: 29px;
+      height: 29px;
+      margin: 0 6px;
+      padding: 0;
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: normal;
+      background-color: rgba(40, 136, 255, 0.8);
+      color: rgba(255, 255, 255, .6);
+
+      &.active,
+      &:hover {
+        border: 2px solid #fff;
+        background-color: rgba(79, 158, 253, 1);
+      }
+    }
+  }
+
+  .btn-next,
+  .btn-prev {
+    width: 29px;
+    height: 29px;
+    padding: 0;
+    border-radius: 2px;
+    background-color: rgba(40, 136, 255, 0.8);
+    color: rgba(255, 255, 255, .6);
+
+    &:hover {
+      background-color: rgba(79, 158, 253, 1);
+      color: rgba(255, 255, 255, 1);
+    }
+
+    &[disabled=disabled] {
+      opacity: .6;
+    }
+
+    &.btn-prev {
+      margin-right: 6px;
+    }
+
+    &.btn-next {
+      margin-left: 6px;
+    }
+  }
+
+  .el-pagination__total,
+  .el-pagination__jump {
+    margin: 0 0 0 15px;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .el-pagination__jump {
+
+    .el-input {
+      width: 30px;
+
+      .el-input__inner {
+        height: 20px;
+        padding: 0;
+        border: 0;
+        border-radius: 2px;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 20px;
+        background-color: rgba(40, 136, 255, 0.8);
+        color: #fff;
+      }
+    }
+  }
+}
+
+//遮罩
+.v-modal{
+  background: #00000050;
+  filter:blur(5px)
+}
+
+//el-popover组件样式的修改需要使用属性popper-class定义的类名，在非scoped的全局环境下定义，否则不生效
+.popover-tree{
+  max-height: 265px;
+  min-width:200px;
+  overflow: auto;
+
+  /*滚动条里面小方块*/
+  &::-webkit-scrollbar-thumb {
+      background-color: #EBEAEF;
+      border-radius: 10px;
+  }
+  /*滚动条整体样式*/
+  &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+  }
+  /*滚动条里面轨道*/
+  &::-webkit-scrollbar-track {
+      background: #FFFFFF;
+      border-radius: 10px;
+  }
+}
+//预览图片关闭图标
+.el-image-viewer__btn.el-image-viewer__close {
+  color: #f5f5f5;
+}
