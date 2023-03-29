@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": true, // 生成声明文件.d.ts，开启后会自动生成声明文件
+    "declarationDir": "type", // 指定生成声明文件存放目录
+    "lib": ["es6", "ESNext", "dom"],
+    "types": ["vite/client","unplugin-vue-define-options/macros-global"  ],
+    "paths": {
+      "@/*": ["src/*"],
+      "/#/*": ["types/*"]
+    },
+    "noImplicitAny": true, //不允许使用any
+    // "strictNullChecks": true, //不允许使用null
+    "noImplicitThis": true, //不允许往this上面挂属性
+    
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.js"]
+}

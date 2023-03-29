@@ -1,0 +1,1 @@
+export const chart = ()=>import("@/views/chart/index.vue");
