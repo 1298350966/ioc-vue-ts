@@ -13,6 +13,7 @@
     "@types/crypto-js": "^4.1.1",
     "@types/keymaster": "^1.6.30",
     "@types/lodash": "^4.14.191",
+    "@vuemap/vue-amap": "^2.0.5",
     "animate.css": "^4.1.1",
     "color": "^4.2.3",
     "crypto-js": "^4.1.1",
@@ -37,6 +38,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@types/highlight.js": "^10.1.0",
     "@types/node": "^18.11.18",
     "@types/nprogress": "^0.2.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",

@@ -28,8 +28,9 @@ import chartHeader from "./chartHeader/index.vue"
 import headerLeftBtn from "./chartHeader/headerLeftBtn.vue"
 import headerTitle from "./chartHeader/headerTitle.vue"
 import headerRightBtn from "./chartHeader/headerRightBtn.vue"
-import "./style/vars.scss"
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import "./style/vars.scss"
+
 // const chartHeader = loadAsyncComponent(() => import("./chartHeader/index.vue"))
 // const headerLeftBtn = loadAsyncComponent(() => import("./chartHeader/headerLeftBtn.vue"))
 // const headerTitle = loadAsyncComponent(() => import("./chartHeader/headerTitle.vue"))

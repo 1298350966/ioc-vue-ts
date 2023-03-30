@@ -1,3 +1,3 @@
 import { MapBaseConfig } from './MapBase/index'
-
-export default [ MapBaseConfig ]
+import { MapAmapConfig } from './MapAmap/index'
+export default [ MapBaseConfig,MapAmapConfig ]

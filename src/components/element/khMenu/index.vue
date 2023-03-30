@@ -9,6 +9,9 @@
 
 <script lang="ts" setup> 
 import {khMenuItem}  from "../khMenuItem/index"
+defineOptions({
+  name:"khMenu"
+})
 // if (!window['$vue'].component("khMenuItem")) {
 //   window['$vue'].component("khMenuItem", khMenuItem)
 // }

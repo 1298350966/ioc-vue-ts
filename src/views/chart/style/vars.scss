@@ -1,7 +1,7 @@
-.el-input{
-
-}
 
 .el-tabs__content{
   height:calc(100% - 50px);
+}
+html.dark .el-card{
+  --el-card-bg-color:#101014;
 }

@@ -12,18 +12,23 @@ import '@/styles/pages/index.scss'
 import 'animate.css/animate.min.css'
 import '@/styles/element/index.scss'
 
-import { useStore } from './store'
+import { setupStore } from '@/store'
 import { setupDirectives,setupLoading } from '@/plugins'
+import { useDirective } from '@/directive/customDirective'
 
 const app = createApp(App)
 
+//注册全局自定义指令
+useDirective(app)
+
+//注册全局加载
 setupLoading(app)
 // app.component('SketchRule', SketchRule)
 // 注册全局自定义指令
 setupDirectives(app)
 
 // 挂载状态管理
-useStore(app)
+setupStore(app)
 
 // 注册路由
 useRouter(app)

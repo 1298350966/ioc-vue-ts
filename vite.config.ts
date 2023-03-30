@@ -40,7 +40,7 @@ export default defineConfig({
     // vueSetupExtend(),
     Components({
       // dirs: ["src/components"], // 目标文件夹
-      extensions: ["vue", "jsx"], // 文件类型
+      // extensions: ["vue", "jsx"], // 文件类型
       dts: "src/components.d.ts", // 输出文件，里面都是一些import的组件键值对
       // resolvers: [ElementPlusResolver()],
     }),
@@ -52,7 +52,7 @@ export default defineConfig({
           'vuex': ['useStore']
         }
       ],
-      include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
+      // include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       dts: 'src/auto-imports.d.ts',
       // resolvers: [ElementPlusResolver()],
     }),

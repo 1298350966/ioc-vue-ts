@@ -1,15 +1,19 @@
 <template>
-  <el-collapse>
-    <span>
+  <div class="ChartEvent">
+    <div class="title">
+      <span>
         组件 id：
       </span>
-    <el-collapse-item title="基础事件配置">
-      <chart-event-base-handle></chart-event-base-handle>
-    </el-collapse-item>
-    <el-collapse-item title="高级事件配置">
-      <chart-event-advanced-handle></chart-event-advanced-handle>
-    </el-collapse-item>
-  </el-collapse>
+    </div>
+
+      <el-collapse>
+        <!-- 基础事件配置 -->
+        <chart-event-base-handle></chart-event-base-handle>
+        <!-- 高级事件配置 -->
+        <chart-event-advanced-handle></chart-event-advanced-handle>
+      </el-collapse>
+  </div>
+
 </template>
 
 <script lang="ts" setup>
@@ -23,6 +27,11 @@ defineOptions({
 const { targetData } = useTargetData()
 </script>
 
-<style lang="" scoped>
-
+<style lang="scss" scoped>
+.ChartEvent{
+ .title{
+  font-size: 14px;
+  margin-bottom: 15px;
+ }
+}
 </style>

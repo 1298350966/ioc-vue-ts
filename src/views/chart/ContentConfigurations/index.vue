@@ -50,7 +50,7 @@ const { setItem } = useChartLayoutStore()
 const chartEditStore = useChartEditStore()
 
 const tabsSelect = ref<TabsEnum>(TabsEnum.PAGE_SETTING)
-console.log(CanvasPage);
+
 // 页面设置
 const globalTabList = [
   {

@@ -41,17 +41,29 @@ export enum MenuEnum {
   // 后退
   BACK = 'back',
   // 前进
-  FORWORD = 'forward'
+  FORWORD = 'forward',
+  // 保存
+  SAVE = 'save',
+  // 锁定
+  LOCK = 'lock',
+  // 解除锁定
+  UNLOCK = 'unLock',
+  // 隐藏
+  HIDE = 'hide',
+  // 显示
+  SHOW = 'show'
 }
 
 // Win 键盘枚举
+
 export enum WinKeyboard {
   CTRL = 'ctrl',
   SHIFT = 'shift',
   ALT = ' alt',
   CTRL_SOURCE_KEY = "control",
   SHIFT_SOURCE_KEY = "shift",
-  ALT_SOURCE_KEY = "alt"
+  ALT_SOURCE_KEY = "alt",
+  SPACE = 'Space'
 }
 
 // Mac 键盘枚举

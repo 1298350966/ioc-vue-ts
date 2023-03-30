@@ -48,6 +48,7 @@ export type EditCanvasType = {
 
 // 滤镜/背景色/宽高主题等
 export enum EditCanvasConfigEnum {
+  PROJECT_NAME = 'projectName',
   WIDTH = 'width',
   HEIGHT = 'height',
   CHART_THEME_COLOR = 'chartThemeColor',
@@ -77,6 +78,9 @@ export interface EditCanvasConfigType {
   [FilterEnum.ROTATE_Y]: number
   [FilterEnum.SKEW_X]: number
   [FilterEnum.SKEW_Y]: number
+  [FilterEnum.BLEND_MODE]: string
+  // 大屏名称
+  [EditCanvasConfigEnum.PROJECT_NAME]?: string
   // 大屏宽度
   [EditCanvasConfigEnum.WIDTH]: number
   // 大屏高度
@@ -149,16 +153,27 @@ type RequestPublicConfigType = {
   requestParams: RequestParams
 }
 
+// 数据池项类型
+export type RequestDataPondItemType = {
+  dataPondId: string,
+  dataPondName: string,
+  dataPondRequestConfig: RequestConfigType
+}
+
 // 全局的图表请求配置
 export interface RequestGlobalConfigType extends RequestPublicConfigType {
   // 组件定制轮询时间
   requestInterval: number
   // 请求源地址
   requestOriginUrl?: string
+  // 公共数据池
+  requestDataPond: RequestDataPondItemType[]
 }
 
 // 单个图表请求配置
 export interface RequestConfigType extends RequestPublicConfigType {
+  // 所选全局数据池的对应 id
+  requestDataPondId?: string
   // 组件定制轮询时间
   requestInterval?: number
   // 获取数据的方式

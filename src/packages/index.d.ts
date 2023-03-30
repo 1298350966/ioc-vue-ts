@@ -1,3 +1,4 @@
+import { BaseEvent, EventLife } from '@/enums/eventEnum'
 import type { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import type { RequestConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
 
@@ -22,7 +23,7 @@ export type ConfigType = {
   categoryName: string
   package: string
   chartFrame?: ChartFrameEnum
-  image: string | (() => Promise<typeof import('*.png')>)
+  image: string
 }
 
 // 数据请求
@@ -34,6 +35,12 @@ interface requestConfig {
 interface EchartsDataType {
   dimensions: string[]
   source: any[]
+}
+
+// 组件状态
+export interface StatusType {
+  lock: boolean
+  hide: boolean
 }
 
 // 滤镜/变换枚举
@@ -59,14 +66,36 @@ export enum FilterEnum {
 
   // 倾斜
   SKEW_X = 'skewX',
-  SKEW_Y = 'skewY'
+  SKEW_Y = 'skewY',
+
+  // 混合模式
+  BLEND_MODE = 'blendMode'
 }
+
+export const BlendModeEnumList = [
+  { label: '正常', value: 'normal' },
+  { label: '正片叠底', value: 'multiply' },
+  { label: '叠加', value: 'overlay' },
+  { label: '滤色', value: 'screen' },
+  { label: '变暗', value: 'darken' },
+  { label: '变亮', value: 'lighten' },
+  { label: '颜色减淡', value: 'color-dodge' },
+  { label: '颜色加深', value: 'color-burn;' },
+  { label: '强光', value: 'hard-light' },
+  { label: '柔光', value: 'soft-light' },
+  { label: '差值', value: 'difference' },
+  { label: '排除', value: 'exclusion' },
+  { label: '色相', value: 'hue' },
+  { label: '饱和度', value: 'saturation' },
+  { label: '颜色', value: 'color' },
+  { label: '亮度', value: 'luminosity' }
+]
 
 // 组件实例类
 export interface PublicConfigType {
   id: string
   isGroup: boolean
-  attr: { x: number; y: number; w: number; h: number; zIndex: number; offsetX: number; offsetY: number; }
+  attr: { x: number; y: number; w: number; h: number; zIndex: number; offsetX: number; offsetY: number }
   styles: {
     [FilterEnum.FILTERS_SHOW]: boolean
     [FilterEnum.OPACITY]: number
@@ -81,21 +110,26 @@ export interface PublicConfigType {
 
     [FilterEnum.SKEW_X]: number
     [FilterEnum.SKEW_Y]: number
+    [FilterEnum.BLEND_MODE]: string
     // 动画
     animations: string[]
-  },
-  status: {
-    lock: boolean,
-    hide: boolean,
-  },
+  }
   filter?: string
-  setPosition: Function
+  status: StatusType
+  events: {
+    baseEvent: {
+      [K in BaseEvent]?: string
+    },
+    advancedEvents: {
+      [K in EventLife]?: string
+    }
+  }
 }
 
 export interface CreateComponentType extends PublicConfigType, requestConfig {
   key: string
   chartConfig: ConfigType
-  option: GlobalThemeJsonType
+  option: GlobalThemeJsonType,
 }
 
 // 组件成组实例类

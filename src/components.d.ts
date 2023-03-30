@@ -9,8 +9,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Code: typeof import('./components/highlightCode/code.vue')['default']
     CollapseItem: typeof import('./components/Pages/ChartItemSetting/CollapseItem.vue')['default']
     DialogContent: typeof import('./components/Plugins/DialogContent/index.vue')['default']
+    DragDialog: typeof import('./components/element/dragDialog/index.vue')['default']
     EditorWorker: typeof import('./components/Pages/MonacoEditor/EditorWorker.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -38,9 +40,11 @@ declare module '@vue/runtime-core' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
+    F: typeof import('./components/element/drag/F.vue')['default']
     GlobalSetting: typeof import('./components/Pages/ChartItemSetting/GlobalSetting.vue')['default']
     GlobalSettingPosition: typeof import('./components/Pages/ChartItemSetting/GlobalSettingPosition.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    HighlightCode: typeof import('./components/highlightCode/code.vue')['default']
     KhMenu: typeof import('./components/element/khMenu/index.vue')['default']
     KhMenuItem: typeof import('./components/element/khMenuItem/index.vue')['default']
     MessageContent: typeof import('./components/Plugins/MessageContent/index.vue')['default']

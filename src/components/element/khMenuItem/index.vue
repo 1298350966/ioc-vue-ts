@@ -14,6 +14,9 @@
   </el-menu-item>
 </template>
 <script lang="ts" setup>
+defineOptions({
+  name:"khMenuItem"
+})
 const props = defineProps({
   option: {
     type: Object,
