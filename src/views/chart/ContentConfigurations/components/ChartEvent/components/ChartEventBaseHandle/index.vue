@@ -20,10 +20,10 @@
           <span class="func-keyword">async {{ eventName }}</span> (mouseEvent) {
         </p>
         <p class="go-ml-4">
-          <code
+          <h-code
             :code="(targetData.events.baseEvent || {})[eventName] || ''"
             language="typescript"
-          ></code>
+          ></h-code>
         </p>
         <p>}<span>,</span></p>
       </div>
@@ -31,7 +31,13 @@
   </el-collapse-item>
   <!-- 弹窗 -->
   <dragDialog custom-class="FunEditorDialog" v-model="showModal" title="基础事件编辑器">
-     <FunEditor :baseEvent="baseEvent"></FunEditor>
+     <FunEditor ref="funEditorRef" :baseEvent="baseEvent" :targetData="targetData" @close="closeEvents"></FunEditor>
+     <template #footer>
+      <el-space>
+        <el-button @click="closeEvents">取消</el-button>
+        <el-button type="primary" @click="saveEvents">保存</el-button>
+      </el-space>
+      </template>
   </dragDialog>
 </template>
 
@@ -41,7 +47,7 @@ import { MonacoEditor } from "@/components/Pages/MonacoEditor";
 import { useTargetData } from "../../../hooks/useTargetData.hook";
 import { BaseEvent } from "@/enums/eventEnum";
 import { EventTypeName } from "../../config";
-import { code } from "@/components/highlightCode/index";
+import { hCode } from "@/components/highlightCode/index";
 import FunEditor from "./FunEditor.vue"
 const { targetData, chartEditStore } = useTargetData();
 // const { DocumentTextIcon, ChevronDownIcon, PencilIcon } = icon.ionicons5
@@ -59,7 +65,11 @@ const closeEvents = () => {
   showModal.value = false;
 };
 
-
+const funEditorRef = ref<InstanceType<typeof FunEditor> | null>(null)
+// 新增事件
+const saveEvents = () => {
+  funEditorRef.value?.saveEvents()
+}
 
 watch(
   () => showModal.value,

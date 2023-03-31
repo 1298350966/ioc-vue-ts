@@ -44,6 +44,7 @@ const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/inde
 const ChartAnimation = loadAsyncComponent(() => import('./components/ChartAnimation/index.vue'))
 const ChartSetting = loadAsyncComponent(() => import('./components/ChartSetting/index.vue'))
 const ChartEvent = loadAsyncComponent(() => import('./components/ChartEvent/index.vue'))
+const ChartData = loadAsyncComponent(() => import('./components/ChartData/index.vue'))
 const { getDetails } = toRefs(useChartLayoutStore())
 const { setItem } = useChartLayoutStore()
 
@@ -112,7 +113,7 @@ const chartsTabList = [
   {
     key: TabsEnum.CHART_DATA,
     title: '数据',
-    render: null
+    render: ChartData
   },
   {
     key: TabsEnum.CHART_EVENT,

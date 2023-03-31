@@ -43,16 +43,18 @@
         </el-scrollbar>         
       </el-aside>
     </el-container>
+
 </template>
 
 <script setup lang="ts">
 import { BaseEvent } from '@/enums/eventEnum';
 import { EventTypeName } from "../../config";
 const props = defineProps<{
-  baseEvent: any
+  baseEvent: any,
+  targetData:any,
 }>()
 let tabsActiveName = ref(BaseEvent.ON_CLICK);
-
+const emit = defineEmits(["close"])
 
 const errorFlag = ref(false);
 // 验证语法
@@ -84,6 +86,32 @@ const validEvents = () => {
     name,
   };
 };
+
+// 新增事件
+const saveEvents = () => {
+  debugger
+  if (validEvents().errorFn) {
+    window['$message'].error('事件函数错误，无法进行保存')
+    return
+  }
+  if (Object.values(props.baseEvent).join('').trim() === '') {
+    // 清空事件
+    console.log(props.targetData);
+    props.targetData.events.baseEvent = {
+      [BaseEvent.ON_CLICK]: undefined,
+      [BaseEvent.ON_DBL_CLICK]: undefined,
+      [BaseEvent.ON_MOUSE_ENTER]: undefined,
+      [BaseEvent.ON_MOUSE_LEAVE]: undefined
+    }
+  } else {
+    props.targetData.events.baseEvent = { ...props.baseEvent }
+  }
+  emit("close") 
+}
+
+defineExpose({
+  saveEvents,
+});
 </script>
 
 <style lang="scss" scoped>

@@ -15,6 +15,7 @@
     "@types/lodash": "^4.14.191",
     "@vuemap/vue-amap": "^2.0.5",
     "animate.css": "^4.1.1",
+    "axios": "^1.3.4",
     "color": "^4.2.3",
     "crypto-js": "^4.1.1",
     "echarts-liquidfill": "^3.1.0",

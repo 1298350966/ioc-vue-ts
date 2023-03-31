@@ -8,9 +8,9 @@ import { App } from "vue";
  * @lick 参考：https://blog.csdn.net/weixin_46391323/article/details/105228020?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-10&spm=1001.2101.3001.4242
  */
 export function dragDirective(app: App) {
+
 	app.directive('drag', {
 		mounted(el, binding) {
-	
       let dragDom:HTMLElement,dragHeader:HTMLElement
       if(binding.value && binding.value[0] && binding.value[1]){
         dragDom = document.querySelector(binding.value[0]);

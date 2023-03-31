@@ -15,7 +15,7 @@ import '@/styles/element/index.scss'
 import { setupStore } from '@/store'
 import { setupDirectives,setupLoading } from '@/plugins'
 import { useDirective } from '@/directive/customDirective'
-
+import "@/plugins/feedback"
 const app = createApp(App)
 
 //注册全局自定义指令
@@ -34,7 +34,7 @@ setupStore(app)
 useRouter(app)
 
 // 注册UI
-app.use(ElementPlus,{ size: 'small', zIndex: 3000 })
+app.use(ElementPlus,{zIndex: 3000 })
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

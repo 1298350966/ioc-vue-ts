@@ -1,3 +1,3 @@
-import code from './code.vue';
+import hCode from './hCode.vue';
 
-export { code };
+export { hCode };

@@ -52,6 +52,7 @@ const props = defineProps<{
   advancedEvents: any,
   targetData: any,
 }>()
+const emit = defineEmits(["close"])
 let tabsActiveName = ref(EventLife.VNODE_MOUNTED);
 
 const errorFlag = ref(false);
@@ -89,15 +90,18 @@ const saveEvents = () => {
   }
   if (Object.values(props.advancedEvents).join('').trim() === '') {
     // 清空事件
-    props.targetData.value.events.advancedEvents = {
+    props.targetData.events.advancedEvents = {
       vnodeBeforeMount: undefined,
       vnodeMounted: undefined
     }
   } else {
-    props.targetData.value.events.advancedEvents = { ...props.advancedEvents.value }
+    props.targetData.events.advancedEvents = { ...props.advancedEvents }
   }
+  emit("close")
 }
-
+defineExpose({
+  saveEvents,
+});
 </script>
 
 <style lang="scss" scoped>

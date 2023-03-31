@@ -3,6 +3,7 @@
 </template>
 
 <script lang="ts">
+import 'highlight.js/styles/github-dark.css';
 import hljs from "highlight.js"
 function escapeHTML(value: string) {
   return value
@@ -61,7 +62,9 @@ export default {
 
 </script>
 
-<style lang="" scoped>
-
+<style lang="scss" scoped>
+// .hljs {
+//     background: initial;
+// }
 </style>
 

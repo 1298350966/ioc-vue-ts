@@ -20,7 +20,7 @@ import config, { includes, seriesItem } from './config'
 import { mergeTheme } from '@/packages/public/chart'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartDataFetch } from '@/hooks'
-import { isPreview } from '@/utils'
+import { isPreview, isArray } from '@/utils'
 import {
   DatasetComponent,
   GridComponent,
@@ -69,16 +69,21 @@ const option = computed(() => {
 watch(
   () => props.chartConfig.option.dataset,
   (newData, oldData) => {
-    if (newData?.length !== oldData?.length) {
-      replaceMergeArr.value = ['series']
-      // eslint-disable-next-line vue/no-mutating-props
-      props.chartConfig.option.series = newData.map((item: { dimensions: any[] }, index: number) => ({
-        ...seriesItem,
-        datasetIndex: index
-      }))
-      nextTick(() => {
-        replaceMergeArr.value = []
-      })
+    try {
+      if (!isArray(newData)) return
+      if (Array.isArray(newData)) {
+        replaceMergeArr.value = ['series']
+        // eslint-disable-next-line vue/no-mutating-props
+        props.chartConfig.option.series = newData.map((item: { dimensions: any[] }, index: number) => ({
+          ...seriesItem,
+          datasetIndex: index
+        }))
+        nextTick(() => {
+          replaceMergeArr.value = []
+        })
+      }
+    } catch (error) {
+      console.log(error)
     }
   },
   {

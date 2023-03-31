@@ -22,7 +22,7 @@
           <span class="func-keyword">async {{ eventName }}</span> (e, components, echarts, node_modules) {
         </p>
         <p class="go-ml-4">
-          <code :code="(targetData.events.advancedEvents || {})[eventName] || ''" language="typescript"></code>
+          <h-code :code="(targetData.events.advancedEvents || {})[eventName] || ''" language="typescript"></h-code>
         </p>
         <p>}<span>,</span></p>
       </div>
@@ -30,7 +30,13 @@
   </el-collapse-item>
   <!-- 弹窗 -->
   <dragDialog custom-class="FunEditorDialog" v-model="showModal" title="高级事件配置">
-     <FunEditor :advanced-events="advancedEvents" :target-data="targetData"></FunEditor>
+     <FunEditor ref="funEditorRef" :advanced-events="advancedEvents" :target-data="targetData" @close="closeEvents"></FunEditor>
+     <template #footer>
+      <el-space>
+        <el-button @click="closeEvents">取消</el-button>
+        <el-button type="primary" @click="saveEvents">保存</el-button>
+      </el-space>
+     </template>
   </dragDialog>
 </template>
 
@@ -43,7 +49,7 @@ import { npmPkgs } from '@/hooks'
 import { icon } from '@/plugins'
 import { CreateComponentType } from '@/packages/index.d'
 import { EventLife } from '@/enums/eventEnum'
-import  {code} from "@/components/highlightCode/index"
+import  {hCode} from "@/components/highlightCode/index"
 import FunEditor from "./FunEditor.vue"
 defineOptions({
   name:"ChartEventAdvancedHandle"
@@ -100,22 +106,10 @@ const closeEvents = () => {
   showModal.value = false
 }
 
+const funEditorRef = ref<InstanceType<typeof FunEditor> | null>(null)
 // 新增事件
 const saveEvents = () => {
-  if (validEvents().errorFn) {
-    window['$message'].error('事件函数错误，无法进行保存')
-    return
-  }
-  if (Object.values(advancedEvents.value).join('').trim() === '') {
-    // 清空事件
-    targetData.value.events.advancedEvents = {
-      vnodeBeforeMount: undefined,
-      vnodeMounted: undefined
-    }
-  } else {
-    targetData.value.events.advancedEvents = { ...advancedEvents.value }
-  }
-  closeEvents()
+  funEditorRef.value?.saveEvents()
 }
 
 watch(
