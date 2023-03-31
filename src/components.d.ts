@@ -43,6 +43,7 @@ declare module '@vue/runtime-core' {
     F: typeof import('./components/element/drag/F.vue')['default']
     GlobalSetting: typeof import('./components/Pages/ChartItemSetting/GlobalSetting.vue')['default']
     GlobalSettingPosition: typeof import('./components/Pages/ChartItemSetting/GlobalSettingPosition.vue')['default']
+    HCode: typeof import('./components/highlightCode/hCode.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     HighlightCode: typeof import('./components/highlightCode/code.vue')['default']
     KhMenu: typeof import('./components/element/khMenu/index.vue')['default']
