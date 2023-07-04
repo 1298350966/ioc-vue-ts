@@ -1,7 +1,18 @@
-
-.el-tabs__content{
-  height:calc(100% - 50px);
+.el-tabs__content {
+  // height:calc(100% - 50px);
 }
-html.dark .el-card{
-  --el-card-bg-color:#101014;
+html.dark .el-card {
+  --el-card-bg-color: #101014;
+}
+.kh-chart {
+  --dark-color-0: #000000;
+  --dark-color-1a: #1a1a1a;
+  --dark-color-1: #1e1e1e;
+  --dark-color-2: #232324;
+  --dark-color-3: #333333;
+  --dark-color-4: #37373d;
+  --left-sideBar-width: 350px;
+}
+.el-collapse-item__content {
+  padding-bottom: 0;
 }

@@ -12,7 +12,7 @@
 import { ref } from 'vue';
 
 const props = defineProps<{
-  name:String,
+  name:string,
 }>()
 
 const activeNames = ref([])

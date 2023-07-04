@@ -10,3 +10,5 @@ interface ImportMetaEnv {
   // 生产地址
   VITE_PRO_PATH: string
 }
+
+declare module "vue-tianditu";

@@ -57,7 +57,7 @@
 
     <!-- <n-slider
         class="scale-slider"
-        v-model:value="sliderValue"
+        v-model="sliderValue"
         :default-value="50"
         :min="10"
         :max="200"

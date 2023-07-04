@@ -9,8 +9,8 @@
         <SettingItem name="颜色">
           <el-color-picker
             size="small"
-            :modes="['hex']"
             v-model="optionData.colors[index]"
+            show-alpha
           ></el-color-picker>
         </SettingItem>
         <SettingItem>
@@ -29,8 +29,8 @@
         <SettingItem>
           <el-color-picker
             size="small"
-            :modes="['hex']"
             v-model="optionData.backgroundColor"
+            show-alpha
           ></el-color-picker>
         </SettingItem>
       </SettingItemBox>

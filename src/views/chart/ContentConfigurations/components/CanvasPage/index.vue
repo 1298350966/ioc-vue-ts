@@ -23,11 +23,19 @@
     </el-form>
     <el-upload
       v-model:file-list="uploadFileListRef"
-      class="upload-demo"
+      class="upload-box"
+      :show-file-list="false"
+      :http-request="customRequest"
+      :before-upload="beforeUploadHandle"
       drag
-      multiple
     >
-      <div>
+      <el-image
+        fit="cover"
+        v-if="canvasConfig.backgroundImage"
+        class="upload-show"
+        :src="canvasConfig.backgroundImage"
+      />
+      <div class="upload-img" v-else>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">将文件拖到此处或单击以上载</div>
       </div>
@@ -49,6 +57,24 @@
       <el-form-item label="颜色应用">
         <el-switch v-model="canvasConfig.selectColor" />
       </el-form-item>
+      <el-form-item label="适配方式">
+        <el-button-group>
+          <template v-for="item in previewTypeList">
+            <el-tooltip :content="item.desc">
+              <el-button
+                style="width: 23%"
+                :key="item.key"
+                :type="
+                  canvasConfig.previewScaleType === item.key ? 'primary' : ''
+                "
+                @click="selectPreviewType(item.key)"
+              >
+                <component :is="item.icon" style="width: 16px"></component>
+              </el-button>
+            </el-tooltip>
+          </template>
+        </el-button-group>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -64,7 +90,6 @@ import { EditCanvasConfigEnum } from "@/store/modules/chartEditStore/chartEditSt
 import { fileToUrl, loadAsyncComponent } from "@/utils";
 import { PreviewScaleEnum } from "@/enums/styleEnum";
 import { icon } from "@/plugins";
-
 const { ColorPaletteIcon } = icon.ionicons5;
 const { ScaleIcon, FitToScreenIcon, FitToHeightIcon, FitToWidthIcon } =
   icon.carbon;
@@ -141,8 +166,8 @@ const changeSizeHandle = () => {
 const beforeUploadHandle = async (file) => {
   console.log(file);
   uploadFileListRef.value = [];
-  const type = file.file.type;
-  const size = file.file.size;
+  const type = file.type;
+  const size = file.size;
 
   if (size > 1024 * 1024 * backgroundImageSize) {
     window["$message"].warning(
@@ -196,8 +221,8 @@ const switchSelectColorHandle = () => {
 const customRequest = (options: any) => {
   const { file } = options;
   nextTick(() => {
-    if (file.file) {
-      const ImageUrl = fileToUrl(file.file);
+    if (file) {
+      const ImageUrl = fileToUrl(file);
       chartEditStore.setEditCanvasConfig(
         EditCanvasConfigEnum.BACKGROUND_IMAGE,
         ImageUrl
@@ -228,25 +253,19 @@ $updloadHeight: 193px;
 :deep(.el-form-item:last-child) {
   margin-right: 0;
 }
-
+:deep(.el-upload) {
+  .el-upload-dragger {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+  }
+}
 .kh-canvas-setting {
-  padding: 10px;
+  // padding: 10px;
 
   .upload-box {
     cursor: pointer;
     margin-bottom: 20px;
-
-    @include deep() {
-      .n-card__content {
-        padding: 0;
-        overflow: hidden;
-      }
-
-      .n-upload-dragger {
-        padding: 5px;
-        width: $updloadWidth;
-      }
-    }
 
     .upload-show {
       width: -webkit-fill-available;
@@ -258,7 +277,9 @@ $updloadHeight: 193px;
       display: flex;
       flex-direction: column;
       align-items: center;
-
+      justify-content: center;
+      height: $updloadHeight;
+      width: -webkit-fill-available;
       img {
         height: 150px;
       }

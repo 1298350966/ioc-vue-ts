@@ -1,7 +1,12 @@
 <template>
   <div class="kh-setting-item" :style="{ width: width + 'px' }">
+    <span class="name">{{ name }}
+      <el-space>
+        <slot name="name"></slot>
+      </el-space>
+    </span>
     <slot ></slot>
-    <span class="name">{{ name }}</span>
+
   </div>
 </template>
 
@@ -26,7 +31,10 @@ defineProps({
   text-align: start;
   margin-bottom: 5px;
   .name {
+    display: flex;
+    justify-content: space-between;
     margin-top: 2px;
+    margin-bottom: 2px;
   }
 }
 </style>

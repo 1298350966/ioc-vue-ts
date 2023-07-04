@@ -1,12 +1,6 @@
 <template>
-  <v-chart
-    ref="vChartRef"
-    :theme="themeColor"
-    :option="option"
-    :manual-update="isPreview()"
-    :update-options="{ replaceMerge: replaceMergeArr }"
-    autoresize
-  >
+  <v-chart ref="vChartRef" :theme="themeColor" :option="option" :manual-update="isPreview()"
+    :update-options="{ replaceMerge: replaceMergeArr }" autoresize>
   </v-chart>
 </template>
 
@@ -18,11 +12,10 @@ import { use, registerTransform } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { ScatterChart, LineChart } from 'echarts/charts'
 import { UniversalTransition, LabelLayout } from 'echarts/features'
-import config, { includes } from './config'
+import config, { Events, includes } from './config'
 import { mergeTheme } from '@/packages/public/chart'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartDataFetch } from '@/hooks'
-import { isPreview } from '@/utils'
+import { getArrayData, isPreview } from '@/utils'
 import {
   DatasetComponent,
   GridComponent,
@@ -31,6 +24,8 @@ import {
   TransformComponent,
   VisualMapComponent
 } from 'echarts/components'
+import { cloneDeep } from 'lodash'
+import { useAddEvent } from '@/packages/hooks/useAddEvent.kooks'
 
 const props = defineProps({
   themeSetting: {
@@ -46,6 +41,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { rootConfig, getEvents } = useAddEvent(props.chartConfig, Events)
 
 use([
   DatasetComponent,
@@ -66,8 +63,10 @@ registerTransform((ecStat as any).transform.regression)
 const replaceMergeArr = ref<string[]>()
 
 const option = computed(() => {
-  return mergeTheme(props.chartConfig.option, props.themeSetting, includes)
+  let option = cloneDeep(props.chartConfig.option)
+  option.dataset = getArrayData(props.chartConfig.data)
+  return mergeTheme(option, props.themeSetting, includes)
 })
 
-const { vChartRef } = useChartDataFetch(props.chartConfig, useChartEditStore)
+const { vChartRef } = useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig)
 </script>

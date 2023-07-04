@@ -1,3 +1,4 @@
+export * from "./config"
 import image from '@/assets/images/chart/charts/line_gradient.png'
 import { ConfigType, PackagesCategoryEnum, ChartFrameEnum } from '@/packages/index.d'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../../index.d'

@@ -2,7 +2,7 @@ import { App } from 'vue';
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { createRouterGuards } from './routeGuard';
 import { Layout } from '@/router/constant'
-import { PageEnum} from '@/enums/pageEnum';
+import { PageEnum } from '@/enums/pageEnum';
 import { HttpErrorPage } from './base';
 import modules from './modules';
 
@@ -11,17 +11,30 @@ const constantRouter: RouteRecordRaw[] = [
     path: '/',
     name: 'Root',
     // redirect: PageEnum.BASE_HOME,
-    redirect:"/chart/home/1",
+    redirect: "/home",
     component: Layout,
     meta: {
       title: 'Root',
     },
     children: [
       ...HttpErrorPage,
+      modules.homeRoutes,
       modules.chartRoutes,
-      modules.previewRoutes
+      modules.previewRoutes,
+      modules.editRoutes,
+      {
+        path: "/dmoe",
+        name: "dmoe",
+        component: () => import("@/views/test/demo.vue")
+      },
+      {
+        path: "/replVue",
+        name: "replVue",
+        component: () => import("@/views/replVue/index.vue")
+      }
     ]
-  }
+  },
+  
 ]
 
 const router = createRouter({

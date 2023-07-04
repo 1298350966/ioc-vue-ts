@@ -8,7 +8,7 @@
       size="small"
       clearable
       show-count
-      v-model:value="chartConfig.title"
+      v-model="chartConfig.title"
       @focus="handleFocus"
       @blur="handleBlur"
     ></el-input>

@@ -87,6 +87,16 @@ export const defaultOptions: MenuOptionsItemType[] = [
     key: MenuEnum.DELETE,
     icon: renderIcon(TrashIcon),
     fnHandle: chartEditStore.removeComponentList
+  },
+  {
+    type: 'divider',
+    key: 'd3'
+  },
+  {
+    label: '导出图片',
+    key: MenuEnum.DOWNLOAD_IMAGE,
+    icon: renderIcon(TrashIcon),
+    fnHandle: chartEditStore.downloadComponentImage
   }
 ]
 
@@ -152,6 +162,7 @@ const handleContextMenu = (
   // 挑选选项列表
   pickOptionsList?: MenuEnum[]
 ) => {
+  console.log(e);
   e.stopPropagation()
   e.preventDefault()
 

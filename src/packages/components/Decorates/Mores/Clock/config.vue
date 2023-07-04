@@ -6,7 +6,7 @@
         <el-color-picker size="small" :modes="['hex']" v-model="optionData.bgColor"></el-color-picker>
       </SettingItem>
       <SettingItem name="边框色">
-        <el-color-picker size="small" :modes="['hex']" v-model="optionData.borderColor"></el-color-picker>
+        <el-color-picker size="small" v-model="optionData.borderColor" show-alpha></el-color-picker>
       </SettingItem>
       <SettingItem name="边框大小">
         <el-input-number v-model="optionData.border" size="small" :step="0.5" :min="0"></el-input-number>
@@ -14,7 +14,7 @@
     </SettingItemBox>
     <SettingItemBox name="指针">
       <SettingItem name="颜色">
-        <el-color-picker size="small" :modes="['hex']" v-model="optionData.color"></el-color-picker>
+        <el-color-picker size="small" v-model="optionData.color" show-alpha></el-color-picker>
       </SettingItem>
     </SettingItemBox>
   </CollapseItem>

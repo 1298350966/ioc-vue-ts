@@ -11,8 +11,9 @@
 import { PropType, toRefs, shallowReactive, watch } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { option as configOption } from './config'
+import { ChartEditStorageType } from '@/views/preview'
+
 
 const props = defineProps<{
   chartConfig:CreateComponentType
@@ -51,8 +52,10 @@ watch(
   }
 )
 
+const rootConfig: ChartEditStorageType = inject("rootConfig")
+
 // 预览更新
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: string) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: string) => {
   option.dataset = newData
 })
 

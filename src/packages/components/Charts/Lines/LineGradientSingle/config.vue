@@ -2,28 +2,14 @@
   <!-- Echarts 全局设置 -->
   <el-collapse>
     <global-setting :optionData="optionData"></global-setting>
-    <CollapseItem
-      v-for="(item, index) in seriesList"
-      :key="index"
-      name="单折线面积图"
-      :expanded="true"
-    >
+    <CollapseItem v-for="(item, index) in seriesList" :key="index" name="单折线面积图" :expanded="true">
       <SettingItemBox name="线条">
         <SettingItem name="宽度">
-          <el-input-number
-            v-model="item.lineStyle.width"
-            :min="1"
-            :max="100"
-            size="small"
-            placeholder="自动计算"
-          ></el-input-number>
+          <el-input-number v-model="item.lineStyle.width" :min="1" :max="100" size="small"
+            placeholder="自动计算"></el-input-number>
         </SettingItem>
         <SettingItem name="类型">
-          <el-select-v2
-            v-model="item.lineStyle.type"
-            size="small"
-            :options="lineConf.lineStyle.type"
-          ></el-select-v2>
+          <el-select-v2 v-model="item.lineStyle.type" size="small" :options="lineConf.lineStyle.type"></el-select-v2>
         </SettingItem>
       </SettingItemBox>
     </CollapseItem>
@@ -41,12 +27,9 @@ import {
   SettingItem
 } from '@/components/Pages/ChartItemSetting'
 
-const props = defineProps({
-  optionData: {
-    type: Object as PropType<GlobalThemeJsonType>,
-    required: true
-  },
-})
+const props = defineProps<{
+  optionData: GlobalThemeJsonType
+}>()
 
 const seriesList = computed(() => {
   return props.optionData.series

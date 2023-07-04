@@ -31,7 +31,7 @@
   </el-collapse-item>
   <!-- 弹窗 -->
   <dragDialog custom-class="FunEditorDialog" v-model="showModal" title="基础事件编辑器">
-     <FunEditor ref="funEditorRef" :baseEvent="baseEvent" :targetData="targetData" @close="closeEvents"></FunEditor>
+     <FunEditor  ref="funEditorRef" :baseEvent="baseEvent" :targetData="targetData" @close="closeEvents"></FunEditor>
      <template #footer>
       <el-space>
         <el-button @click="closeEvents">取消</el-button>

@@ -9,10 +9,10 @@ import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { PieChart } from 'echarts/charts'
 import { mergeTheme } from '@/packages/public/chart'
-import config, { includes } from './config'
+import config, { Events, includes } from './config'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { DatasetComponent, GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
+import { useAddEvent } from '@/packages/hooks/useAddEvent.kooks'
 
 const props = defineProps({
   themeSetting: {
@@ -28,6 +28,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { rootConfig, getEvents } = useAddEvent(props.chartConfig, Events)
 
 use([DatasetComponent, CanvasRenderer, PieChart, GridComponent, TooltipComponent, LegendComponent])
 
@@ -56,7 +58,7 @@ watch(
 )
 
 // 预览时
-useChartDataFetch(props.chartConfig, useChartEditStore, (resData: number) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (resData: number) => {
   let d = parseFloat(`${resData}`) * 100
   // @ts-ignore
   option.value.title.text = d.toFixed(2) + '%'

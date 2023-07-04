@@ -1,5 +1,5 @@
 <template>
-  <div class="kh-shape-box">
+  <div class="kh-shape-box" :class="{ lock, hide }">
     <slot></slot>
     <!-- 锚点 -->
     <template v-if="!hiddenPoint">
@@ -63,12 +63,30 @@ const select = computed(() => {
   const id = props.item.id
   return chartEditStore.getTargetChart.selectId.find((e: string) => e === id)
 })
+
+// 锁定
+const lock = computed(() => {
+  return props.item.status.lock
+})
+
+// 隐藏
+const hide = computed(() => {
+  return props.item.status.hide
+})
 </script>
 
 <style lang="scss" scoped>
 .kh-shape-box{
   position: absolute;
   cursor: move;
+
+  &.lock {
+    cursor: default !important;
+  }
+
+  &.hide {
+    display: none;
+  }
 
   /* 锚点 */
   .shape-point {

@@ -22,6 +22,7 @@ import { useChartDataFetch } from '@/hooks'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { option as configOption } from './config'
+import { ChartEditStorageType } from '@/views/preview'
 
 const props = defineProps({
   chartConfig: {
@@ -30,12 +31,14 @@ const props = defineProps({
   }
 })
 
+const rootConfig: ChartEditStorageType = inject("rootConfig")
+
 const { w, h } = toRefs(props.chartConfig.attr)
 let option = shallowReactive({ ...configOption })
 
 // 预览更新
 const vVideoRef = ref(null)
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: any) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: any) => {
   option = newData
 })
 

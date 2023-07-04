@@ -13,9 +13,11 @@ import {
   ChartFrameEnum,
   PublicConfigType,
   CreateComponentType,
-  CreateComponentGroupType
+  CreateComponentGroupType,
+  EventConfigType,
+  EventTriggerConfigType
 } from '@/packages/index.d'
-import { chartInitConfig } from '@/settings/designSetting'
+import { chartInitConfig, formInitConfig } from '@/settings/designSetting'
 import cloneDeep from 'lodash/cloneDeep'
 
 // 请求基础属性
@@ -87,8 +89,14 @@ export class PublicConfigClass implements PublicConfigType {
   public request = cloneDeep(requestConfig)
   // 数据过滤
   public filter = undefined
+  public filterNode = "datas"
   // 事件
   public events = {
+    configEvents: {
+      baseEvent: [],
+      eChartsEvents: [],
+      componentEvents: [],
+    },
     baseEvent: {
       [BaseEvent.ON_CLICK]: undefined,
       [BaseEvent.ON_DBL_CLICK]: undefined,
@@ -98,7 +106,77 @@ export class PublicConfigClass implements PublicConfigType {
     advancedEvents: {
       [EventLife.VNODE_MOUNTED]: undefined,
       [EventLife.VNODE_BEFORE_MOUNT]: undefined
-    }
+    },
+
+  }
+  public eventsConfig = {
+
+  }
+  public data = null
+}
+// “表单控件”单实例类
+export class FormConfigClass implements PublicConfigType {
+  public id = getUUID()
+  public isGroup = false
+  // 基本信息
+  public attr = { ...formInitConfig, zIndex: -1 }
+  // 基本样式
+  public styles = {
+    // 使用滤镜
+    filterShow: false,
+    // 色相
+    hueRotate: 0,
+    // 饱和度
+    saturate: 1,
+    // 对比度
+    contrast: 1,
+    // 亮度
+    brightness: 1,
+    // 透明
+    opacity: 1,
+
+    // 旋转
+    rotateZ: 0,
+    rotateX: 0,
+    rotateY: 0,
+
+    // 倾斜
+    skewX: 0,
+    skewY: 0,
+
+    // 混合模式
+    blendMode: 'normal',
+
+    // 动画
+    animations: []
+  }
+  // 状态
+  public status = {
+    lock: false,
+    hide: false
+  }
+  // 请求
+  public request = cloneDeep(requestConfig)
+  // 数据过滤
+  public filter = undefined
+  // 事件
+  public events = {
+    configEvents: {
+      baseEvent: [],
+      eChartsEvents: [],
+      componentEvents:[]
+    },
+    baseEvent: {
+      [BaseEvent.ON_CLICK]: undefined,
+      [BaseEvent.ON_DBL_CLICK]: undefined,
+      [BaseEvent.ON_MOUSE_ENTER]: undefined,
+      [BaseEvent.ON_MOUSE_LEAVE]: undefined
+    },
+    advancedEvents: {
+      [EventLife.VNODE_MOUNTED]: undefined,
+      [EventLife.VNODE_BEFORE_MOUNT]: undefined
+    },
+
   }
 }
 
@@ -124,9 +202,24 @@ export class PublicGroupConfigClass extends PublicConfigClass implements CreateC
   // key
   public key = 'group'
   // 配置
-  public option = {}
+  public option = {
+    dataset: null
+  }
   // 标识
   public id = getUUID()
   // 基本信息
   public attr = { w: 0, h: 0, x: 0, y: 0, offsetX: 0, offsetY: 0, zIndex: -1 }
+}
+
+
+//简单事件配置
+export const eventConfig: EventConfigType = {
+  type: "",
+  trigger: []
+}
+//简单事件触发配置
+export const eventTriggerConfig: EventTriggerConfigType = {
+  type: "globalDialog",
+  targetId: '',
+  update: []
 }

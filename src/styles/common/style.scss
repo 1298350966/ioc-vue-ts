@@ -1,17 +1,17 @@
-@import './var.scss';
-@import './format.scss';
-@import './animation.scss';
-@import './mixins/mixins.scss';
+@import "./var.scss";
+@import "./format.scss";
+@import "./animation.scss";
+@import "./mixins/mixins.scss";
 
 // 过度
-.go-transition {
+.kh-transition {
   transition: all 0.4s;
 }
 
-.go-transition-quick {
+.kh-transition-quick {
   transition: all 0.2s;
 }
-.flex-1{
+.flex-1 {
   flex: 1;
 }
 .kh-flex-center {
@@ -26,23 +26,31 @@
   justify-content: space-between;
   align-items: center;
 }
-.go-flex-items-center {
+.kh-flex-items-center {
   display: flex;
   align-items: center;
   text-align: center;
 }
 
-.go-flex-no-wrap {
+.kh-flex-no-wrap {
   flex-wrap: nowrap !important;
 }
 
-.go-absolute-center {
+.kh-absolute-center {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
+.kh-g-1 {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+}
+.kh-g-2 {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
 // cursor 小手
 .go-cursor-pointer {
   cursor: pointer;
@@ -56,14 +64,14 @@
 // 毛玻璃
 .go-background-filter {
   backdrop-filter: $--filter-blur-base;
-  @include fetch-bg-color('filter-color');
+  @include fetch-bg-color("filter-color");
   box-shadow: $--border-shadow;
 }
 
 // 毛玻璃
 .go-background-filter-shallow {
   backdrop-filter: $--filter-blur-base;
-  @include fetch-bg-color('filter-color-shallow');
+  @include fetch-bg-color("filter-color-shallow");
   box-shadow: $--border-shadow;
 }
 
@@ -75,7 +83,7 @@
 
 // 背景斑点需配合 @mixin background-image 使用
 .go-point-bg {
-  @include fetch-theme-custom('background-color', 'background-color1');
+  @include fetch-theme-custom("background-color", "background-color1");
   background-size: 15px 15px, 15px 15px;
 }
 
@@ -124,4 +132,19 @@
   .go-#{$typekey} {
     #{$type}: 0 !important;
   }
+}
+
+/* 外层也要使用 */
+.func-keyword {
+  color: #b478cf;
+}
+
+.func-annotate {
+  color: #70c0e8;
+}
+
+.kh-nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

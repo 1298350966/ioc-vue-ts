@@ -11,7 +11,7 @@
       <!-- Echarts 全局设置 -->
       <SettingItemBox name="进度条">
         <SettingItem name="颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="item.data[0].itemStyle.color"></el-color-picker>
+          <el-color-picker size="small" v-model="item.data[0].itemStyle.color" show-alpha></el-color-picker>
         </SettingItem>
         <SettingItem name="阴影模糊等级">
           <el-input-number
@@ -27,15 +27,15 @@
         <SettingItem name="阴影颜色">
           <el-color-picker
             size="small"
-            :modes="['hex']"
             v-model="item.data[0].itemStyle.shadowColor"
+            show-alpha
           ></el-color-picker>
         </SettingItem>
       </SettingItemBox>
       <!-- 中心标题 -->
       <SettingItemBox v-if="config.title" name="标题">
         <SettingItem name="颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="config.title.textStyle.color"></el-color-picker>
+          <el-color-picker size="small" v-model="config.title.textStyle.color" show-alpha></el-color-picker>
         </SettingItem>
         <SettingItem name="字体大小">
           <el-input-number
@@ -51,7 +51,7 @@
       <!-- 其他样式 -->
       <SettingItemBox name="轨道样式">
         <SettingItem name="颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="item.data[1].itemStyle.color"></el-color-picker>
+          <el-color-picker size="small" v-model="item.data[1].itemStyle.color" show-alpha></el-color-picker>
         </SettingItem>
         <SettingItem name="阴影模糊等级">
           <el-input-number
@@ -66,8 +66,8 @@
         <SettingItem name="阴影颜色">
           <el-color-picker
             size="small"
-            :modes="['hex']"
             v-model="item.data[1].itemStyle.shadowColor"
+            show-alpha
           ></el-color-picker>
         </SettingItem>
       </SettingItemBox>

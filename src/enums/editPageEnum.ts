@@ -9,6 +9,13 @@ export enum DragKeyEnum {
   DRAG_KEY = 'ChartData'
 }
 
+// 不同页面保存操作
+export enum SavePageEnum {
+  CHART = 'SaveChart',
+  CHART_TO_PREVIEW = 'ChartToPreview',
+  JSON = 'SaveJSON',
+  CLOSE = 'close'
+}
 // 操作枚举
 export enum MenuEnum {
   // 移动
@@ -51,7 +58,9 @@ export enum MenuEnum {
   // 隐藏
   HIDE = 'hide',
   // 显示
-  SHOW = 'show'
+  SHOW = 'show',
+  //下载组件图片
+  DOWNLOAD_IMAGE = "downloadImage"
 }
 
 // Win 键盘枚举

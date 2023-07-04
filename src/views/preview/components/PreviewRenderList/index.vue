@@ -1,5 +1,6 @@
 <template>
   <div
+    :id="item.id"
     class="chart-item"
     v-for="(item, index) in localStorageInfo.componentList"
     :class="animationsClass(item.styles.animations)"
@@ -22,11 +23,13 @@
     <!-- 单组件 -->
     <component
       v-else
+      :ref="item.id"
       :is="item.chartConfig.chartKey"
       :chartConfig="item"
       :themeSetting="themeSetting"
       :themeColor="themeColor"
       :style="{ ...getSizeStyle(item.attr) }"
+      v-on="useLifeHandler(item, this)"
     ></component>
   </div>
 </template>
@@ -38,7 +41,8 @@ import { PreviewRenderGroup } from '../PreviewRenderGroup/index'
 import { CreateComponentGroupType } from '@/packages/index.d'
 import { chartColors } from '@/settings/chartThemes/index'
 import { animationsClass, getFilterStyle, getTransformStyle } from '@/utils'
-import { getSizeStyle, getComponentAttrStyle } from '../../utils'
+import { getSizeStyle, getComponentAttrStyle} from '../../utils'
+import { useLifeHandler } from '@/hooks'
 
 const props = defineProps({
   localStorageInfo: {

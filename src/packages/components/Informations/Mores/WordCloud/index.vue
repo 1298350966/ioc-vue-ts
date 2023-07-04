@@ -22,6 +22,7 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { isPreview } from '@/utils'
 import { GridComponent, TooltipComponent } from 'echarts/components'
 import dataJson from './data.json'
+import { ChartEditStorageType } from '@/views/preview'
 
 const props = defineProps({
   themeSetting: {
@@ -37,6 +38,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const rootConfig: ChartEditStorageType = inject("rootConfig")
 
 use([CanvasRenderer, GridComponent, TooltipComponent])
 
@@ -63,7 +66,7 @@ watch(
   }
 )
 
-const { vChartRef } = useChartDataFetch(props.chartConfig, useChartEditStore, (newData: typeof dataJson) => {
+const { vChartRef } = useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: typeof dataJson) => {
   dataSetHandle(newData)
 })
 </script>

@@ -1,20 +1,10 @@
 <template>
-  <el-progress
-    :type="type"
-    :width="h"
-    :processing="processing"
-    :percentage="option.dataset"
-    :indicator-placement="indicatorPlacement"
-    :color="color"
-    :rail-color="railColor"
-    :offset-degree="offsetDegree"
-  >
-    <span
-      :style="{
-        color: indicatorTextColor,
-        fontSize: `${indicatorTextSize}px`
-      }"
-    >
+  <el-progress :type="type as any" :width="h" :processing="processing" :percentage="option.dataset"
+    :indicator-placement="indicatorPlacement" :color="color" :rail-color="railColor" :offset-degree="offsetDegree">
+    <span :style="{
+      color: indicatorTextColor,
+      fontSize: `${indicatorTextSize}px`
+    }">
       {{ option.dataset }} {{ unit }}
     </span>
   </el-progress>
@@ -23,9 +13,9 @@
 <script setup lang="ts">
 import { PropType, toRefs, watch, shallowReactive } from 'vue'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
-import config, { option as configOption } from './config'
+import config, { Events, option as configOption } from './config'
 import { toNumber } from '@/utils'
+import { useAddEvent } from '@/packages/hooks/useAddEvent.kooks'
 
 const props = defineProps({
   chartConfig: {
@@ -33,6 +23,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { rootConfig, getEvents } = useAddEvent(props.chartConfig, Events)
 
 // 取配置数据
 const { w, h } = toRefs(props.chartConfig.attr)
@@ -64,7 +56,7 @@ watch(
   }
 )
 // 预览更新
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: number) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: number) => {
   option.dataset = toNumber(newData, 2)
 })
 </script>

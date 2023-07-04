@@ -1,51 +1,48 @@
 <template>
   <!-- 选中内容 -->
-  <div class="go-chart-data-pond">
-    <n-card class="n-card-shallow">
+  <div class="chart-data-pond">
+    <el-card class="el-card-shallow">
       <setting-item-box name="请求名称" :alone="true">
-        <n-input size="small" :placeholder="pondData?.dataPondName || '暂无'" :disabled="true">
+        <el-input size="small" :placeholder="pondData?.dataPondName || '暂无'" :disabled="true">
           <template #prefix>
-            <n-icon :component="FishIcon" />
+            <el-icon :component="FishIcon" />
           </template>
-        </n-input>
+        </el-input>
       </setting-item-box>
 
       <setting-item-box name="接口地址" :alone="true">
-        <n-input size="small" :placeholder="pondData?.dataPondRequestConfig.requestUrl || '暂无'" :disabled="true">
+        <el-input size="small" :placeholder="pondData?.dataPondRequestConfig.requestUrl || '暂无'" :disabled="true">
           <template #prefix>
-            <n-icon :component="FlashIcon" />
+            <el-icon :component="FlashIcon" />
           </template>
-        </n-input>
+        </el-input>
       </setting-item-box>
 
       <div class="edit-text" @click="controlModelHandle">
-        <div class="go-absolute-center">
-          <n-button type="primary" secondary>编辑配置</n-button>
+        <div class="kh-absolute-center">
+          <el-button type="primary">编辑配置</el-button>
         </div>
       </div>
-    </n-card>
+    </el-card>
   </div>
 
   <setting-item-box :alone="true">
     <template #name>
       测试
-      <n-tooltip trigger="hover">
-        <template #trigger>
-          <n-icon size="21" :depth="3">
-            <help-outline-icon></help-outline-icon>
-          </n-icon>
-        </template>
-        默认赋值给 dataset 字段
-      </n-tooltip>
+      <el-tooltip trigger="hover" content="默认赋值给 dataset 字段">
+        <el-icon size="21" :depth="3">
+          <help-outline-icon></help-outline-icon>
+        </el-icon>
+      </el-tooltip>
     </template>
-    <n-button type="primary" ghost @click="sendHandle">
+    <el-button type="primary" ghost @click="sendHandle">
       <template #icon>
-        <n-icon>
+        <el-icon>
           <flash-icon />
-        </n-icon>
+        </el-icon>
       </template>
       发送请求
-    </n-button>
+    </el-button>
   </setting-item-box>
 
   <!-- 底部数据展示 -->
@@ -114,15 +111,17 @@ const sendHandle = async () => {
   }
   loading.value = true
   try {
-    // const res = await customizeHttp(
-    //   toRaw(pondData.value?.dataPondRequestConfig),
-    //   toRaw(chartEditStore.getRequestGlobalConfig)
-    // )
     const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
     loading.value = false
+    console.log(res);
     if (res) {
       if (!res?.data && !targetData.value.filter) window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
-      targetData.value.option.dataset = newFunctionHandle(res?.data, res, targetData.value.filter)
+      let { filter, filterNode } = targetData.value
+      if (!filter && filterNode) {
+        filter = "return data." + filterNode
+      }
+      targetData.value.data = newFunctionHandle(res?.data, res, filter)
+      
       showMatching.value = true
       return
     }
@@ -148,38 +147,40 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-@include go('chart-data-pond') {
+.chart-data-pond {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  .n-card-shallow {
-    &.n-card {
+
+  .el-card-shallow {
+    width: 99%;
+
+    &.el-card {
       @extend .go-background-filter;
-      @include deep() {
-        .n-card__content {
-          padding: 10px;
-        }
-      }
     }
+
     .edit-text {
       position: absolute;
       top: 0px;
       left: 0px;
-      width: 325px;
-      height: 136px;
+      width: 100%;
+      height: 100%;
       cursor: pointer;
       opacity: 0;
       transition: all 0.3s;
       @extend .go-background-filter;
       backdrop-filter: blur(2px) !important;
     }
+
     &:hover {
       border-color: v-bind('themeColor');
+
       .edit-text {
         opacity: 1;
       }
     }
   }
+
 }
 </style>

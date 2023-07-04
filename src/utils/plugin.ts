@@ -58,7 +58,7 @@ export const goDialog = (
     promise?: boolean
     promiseResCallback?: Function
     promiseRejCallback?: Function
-    [T:string]: any
+    [T: string]: any
   }
 ) => {
   const {
@@ -76,54 +76,99 @@ export const goDialog = (
     promiseRejCallback
   } = params
 
-  const typeObj = {
-    // 自定义
-    [DialogEnum.DELETE]: {
-      fn: window['$dialog'].warning,
-      message: message || '是否删除此数据?'
-    },
-    // 原有
-    [DialogEnum.WARNING]: {
-      fn: window['$dialog'].warning,
-      message: message || '是否执行此操作?'
-    },
-    [DialogEnum.ERROR]: {
-      fn: window['$dialog'].error,
-      message: message || '是否执行此操作?'
-    },
-    [DialogEnum.SUCCESS]: {
-      fn: window['$dialog'].success,
-      message: message || '是否执行此操作?'
-    }
-  }
 
-  const dialog = typeObj[type || DialogEnum.WARNING]['fn']({
-    // 导入其余 NaiveUI 支持参数
-    ...params,
-    title: title || '提示',
-    // icon: renderIcon(InformationCircleIcon, { size: dialogIconSize }),
-    content: typeObj[type || DialogEnum.WARNING]['message'],
-    positiveText: positiveText || '确定',
-    negativeText: closeNegativeText ? undefined : (negativeText || '取消'),
-    // 是否通过遮罩关闭
-    maskClosable: isMaskClosable || maskClosable,
-    onPositiveClick: async () => {
-      // 执行异步
-      if (promise && onPositiveCallback) {
-        dialog.loading = true
-        try {
-          const res = await onPositiveCallback()
-          promiseResCallback && promiseResCallback(res)
-        } catch (err) {
-          promiseRejCallback && promiseRejCallback(err)
-        }
-        dialog.loading = false
-        return
-      }
-      onPositiveCallback && onPositiveCallback(dialog)
-    },
-    onNegativeClick: async () => {
-      onNegativeCallback && onNegativeCallback(dialog)
-    }
-  })
+  if (type == DialogEnum.DELETE) {
+    window['$dialog'].confirm(this, message || '是否删除此数据?', title || '提示', {
+      confirmButtonText: positiveText || '确定',
+      cancelButtonText: negativeText || '取消',
+      type: 'error',
+    }).then((e) => {
+      onPositiveCallback && onPositiveCallback(e)
+      promiseResCallback && promiseResCallback(e)
+    }).catch((err) => {
+      onNegativeCallback && onNegativeCallback(err)
+      promiseRejCallback && promiseRejCallback(err)
+    });
+  } else if (type == DialogEnum.WARNING) {
+    window['$dialog'].confirm(message || '是否执行此操作?', title || '提示', {
+      confirmButtonText: positiveText || '确定',
+      cancelButtonText: negativeText || '取消',
+      type: 'warning ',
+    }).then((e) => {
+      onPositiveCallback && onPositiveCallback(e)
+      promiseResCallback && promiseResCallback(e)
+    }).catch((err) => {
+      onNegativeCallback && onNegativeCallback(err)
+      promiseRejCallback && promiseRejCallback(err)
+    });
+  } else if (type == DialogEnum.ERROR) {
+    window['$dialog'].confirm(message || '是否执行此操作?', title || '提示', {
+      confirmButtonText: positiveText || '确定',
+      cancelButtonText: negativeText || '取消',
+      type: 'error ',
+    }).then((e) => {
+      onPositiveCallback && onPositiveCallback(e)
+      promiseResCallback && promiseResCallback(e)
+    }).catch((err) => {
+      onNegativeCallback && onNegativeCallback(err)
+      promiseRejCallback && promiseRejCallback(err)
+    });
+  } else if (type == DialogEnum.SUCCESS) {
+    window['$dialog'].confirm(message || '是否执行此操作?', title || '提示', {
+      confirmButtonText: positiveText || '确定',
+      cancelButtonText: negativeText || '取消',
+      type: 'error ',
+    }).then((e) => {
+      onPositiveCallback && onPositiveCallback(e)
+      promiseResCallback && promiseResCallback(e)
+    }).catch((err) => {
+      onNegativeCallback && onNegativeCallback(err)
+      promiseRejCallback && promiseRejCallback(err)
+    });
+  }else{
+    window['$dialog'].confirm(message || '是否执行此操作?', title || '提示', {
+      confirmButtonText: positiveText || '确定',
+      cancelButtonText: negativeText || '取消',
+      type: 'warning ',
+    }).then((e) => {
+      onPositiveCallback && onPositiveCallback(e)
+      promiseResCallback &&  promiseResCallback(e)
+    }).catch((err) => {
+      onNegativeCallback && onNegativeCallback(err)
+      promiseRejCallback && promiseRejCallback(err)
+    });
+  }
 }
+
+
+
+  // const dialog = typeObj[type || DialogEnum.WARNING]['fn']({
+  //   // 导入其余 NaiveUI 支持参数
+  //   ...params,
+  //   title: title || '提示',
+  //   // icon: renderIcon(InformationCircleIcon, { size: dialogIconSize }),
+  //   content: typeObj[type || DialogEnum.WARNING]['message'],
+  //   positiveText: positiveText || '确定',
+  //   negativeText: closeNegativeText ? undefined : (negativeText || '取消'),
+  //   // 是否通过遮罩关闭
+  //   maskClosable: isMaskClosable || maskClosable,
+  //   onPositiveClick: async () => {
+  //     // 执行异步
+  //     if (promise && onPositiveCallback) {
+  //       dialog.loading = true
+  //       try {
+  //         const res = await onPositiveCallback()
+  //         promiseResCallback && promiseResCallback(res)
+  //       } catch (err) {
+  //         promiseRejCallback && promiseRejCallback(err)
+  //       }
+  //       dialog.loading = false
+  //       return
+  //     }
+  //     onPositiveCallback && onPositiveCallback(dialog)
+  //   },
+  //   onNegativeClick: async () => {
+  //     onNegativeCallback && onNegativeCallback(dialog)
+  //   }
+  // })
+

@@ -19,10 +19,10 @@
 
         <!-- 颜色粗细等等... -->
         <SettingItem name="进度条颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.color"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.color" show-alpha></el-color-picker>
         </SettingItem>
         <SettingItem name="轨道颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.railColor"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.railColor" show-alpha></el-color-picker>
         </SettingItem>
         <setting-item name="偏移角度" v-if="optionData.type !== types[0].value">
           <el-input-number v-model="optionData.offsetDegree" size="small"></el-input-number>
@@ -40,7 +40,7 @@
           <el-select v-model="optionData.indicatorPlacement" :options="indicatorPlacements" placeholder="选择形状" />
         </SettingItem>
         <SettingItem name="文本颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.indicatorTextColor"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.indicatorTextColor" show-alpha></el-color-picker>
         </SettingItem>
         <setting-item name="文本大小">
           <el-input-number v-model="optionData.indicatorTextSize" size="small"></el-input-number>

@@ -1,10 +1,15 @@
 <template>
-  <div class="go-chart-configurations-data-ajax">
-    <n-card class="n-card-shallow">
+  <div class="chart-configurations-data-ajax">
+    <el-card shadow="never" class="n-card-shallow" style="padding: 0">
       <setting-item-box name="请求配置">
         <setting-item name="类型">
-          <el-tag :bordered="false" type="primary" style="border-radius: 5px">
-            {{ targetData.request.requestContentType === RequestContentTypeEnum.DEFAULT ? '普通请求' : 'SQL请求' }}
+          <el-tag :bordered="false" type="success" style="border-radius: 5px">
+            {{
+              targetData.request.requestContentType ===
+              RequestContentTypeEnum.DEFAULT
+              ? "普通请求"
+              : "SQL请求"
+            }}
           </el-tag>
         </setting-item>
 
@@ -14,13 +19,19 @@
 
         <setting-item name="组件间隔">
           <el-input size="small" :placeholder="`${targetData.request.requestInterval || '暂无'}`" :disabled="true">
-            <template #suffix> {{ SelectHttpTimeNameObj[targetData.request.requestIntervalUnit] }} </template>
+            <template #suffix>
+              {{
+                SelectHttpTimeNameObj[targetData.request.requestIntervalUnit]
+              }}
+            </template>
           </el-input>
         </setting-item>
 
         <setting-item name="全局间隔（默认）">
           <el-input size="small" :placeholder="`${GlobalRequestInterval || '暂无'} `" :disabled="true">
-            <template #suffix> {{ SelectHttpTimeNameObj[GlobalRequestIntervalUnit] }} </template>
+            <template #suffix>
+              {{ SelectHttpTimeNameObj[GlobalRequestIntervalUnit] }}
+            </template>
           </el-input>
         </setting-item>
       </setting-item-box>
@@ -43,10 +54,10 @@
 
       <div class="edit-text" @click="requestModelHandle">
         <div class="go-absolute-center">
-          <el-button type="primary" secondary>编辑配置</el-button>
+          <el-button type="primary">编辑配置</el-button>
         </div>
       </div>
-    </n-card>
+    </el-card>
 
     <setting-item-box :alone="true">
       <template #name>
@@ -72,120 +83,154 @@
 
     <!-- 骨架图 -->
     <go-skeleton :load="loading" :repeat="3"></go-skeleton>
-    
+
     <!-- 请求配置model -->
-    <chart-data-request
-      v-model:modelShow="requestShow"
-      :targetData="targetData"
-      @sendHandle="sendHandle"
-    ></chart-data-request>
+    <chart-data-request v-model:modelShow="requestShow" :targetData="targetData"
+      @sendHandle="sendHandle"></chart-data-request>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs, computed, onBeforeUnmount, watchEffect, toRaw } from 'vue'
-import { icon } from '@/plugins'
-import { useDesignStore } from '@/store/modules/designStore/designStore'
-import { SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
-import { ChartDataRequest } from '../ChartDataRequest/index'
-import { RequestHttpEnum, ResultEnum, SelectHttpTimeNameObj, RequestContentTypeEnum } from '@/enums/httpEnum'
-import { chartDataUrl, rankListUrl, scrollBoardUrl, numberFloatUrl, numberIntUrl, textUrl, imageUrl } from '@/api/mock'
-import { http, customizeHttp } from '@/api/http'
-import { SelectHttpType } from '../../index.d'
-import { ChartDataMatchingAndShow } from '../ChartDataMatchingAndShow'
-import { useTargetData } from '../../../hooks/useTargetData.hook'
-import { newFunctionHandle } from '@/utils'
+import {
+  ref,
+  toRefs,
+  computed,
+  onBeforeUnmount,
+  watchEffect,
+  toRaw,
+} from "vue";
+import { icon } from "@/plugins";
+import { useDesignStore } from "@/store/modules/designStore/designStore";
+import {
+  SettingItemBox,
+  SettingItem,
+} from "@/components/Pages/ChartItemSetting";
+import { ChartDataRequest } from "../ChartDataRequest/index";
+import {
+  RequestHttpEnum,
+  ResultEnum,
+  SelectHttpTimeNameObj,
+  RequestContentTypeEnum,
+} from "@/enums/httpEnum";
+import {
+  chartDataUrl,
+  rankListUrl,
+  scrollBoardUrl,
+  numberFloatUrl,
+  numberIntUrl,
+  textUrl,
+  imageUrl,
+} from "@/api/mock";
+import { http, customizeHttp } from "@/api/http";
+import { SelectHttpType } from "../../index.d";
+import { ChartDataMatchingAndShow } from "../ChartDataMatchingAndShow";
+import { useTargetData } from "../../../hooks/useTargetData.hook";
+import { newFunctionHandle } from "@/utils";
 
-const { HelpOutlineIcon, FlashIcon, PulseIcon } = icon.ionicons5
-const { targetData, chartEditStore } = useTargetData()
+const { HelpOutlineIcon, FlashIcon, PulseIcon } = icon.ionicons5;
+const { targetData, chartEditStore } = useTargetData();
 
 const {
   requestOriginUrl,
   requestInterval: GlobalRequestInterval,
-  requestIntervalUnit: GlobalRequestIntervalUnit
-} = toRefs(chartEditStore.getRequestGlobalConfig)
-const designStore = useDesignStore()
+  requestIntervalUnit: GlobalRequestIntervalUnit,
+} = toRefs(chartEditStore.getRequestGlobalConfig);
+const designStore = useDesignStore();
 
 // 是否展示数据分析
-const loading = ref(false)
-const requestShow = ref(false)
-const showMatching = ref(false)
+const loading = ref(false);
+const requestShow = ref(false);
+const showMatching = ref(false);
 
-let firstFocus = 0
-let lastFilter: any = undefined
+let firstFocus = 0;
+let lastFilter: any = undefined;
 
 // 请求配置 model
 const requestModelHandle = () => {
-  requestShow.value = true
-}
+  requestShow.value = true;
+};
 
 // 发送请求
 const sendHandle = async () => {
-  if (!targetData.value?.request) return
-  loading.value = true
+  if (!targetData.value?.request) return;
+  loading.value = true;
   try {
-    const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
-    loading.value = false
+    const res = await customizeHttp(
+      toRaw(targetData.value.request),
+      toRaw(chartEditStore.getRequestGlobalConfig)
+    );
+    loading.value = false;
     if (res) {
-      if (!res?.data && !targetData.value.filter) window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
-      targetData.value.option.dataset = newFunctionHandle(res?.data, res, targetData.value.filter)
-      showMatching.value = true
-      return
+      const { data } = res;
+      if (!data && !targetData.value.filter)
+        window["$message"].warning("您的数据不符合默认格式，请配置过滤器！");
+      targetData.value.data = newFunctionHandle(
+        data,
+        res,
+        targetData.value.filter
+      );
+      showMatching.value = true;
+      return;
     }
-    window['$message'].warning('数据异常，请检查参数！')
+    window["$message"].warning("数据异常，请检查参数！");
   } catch (error) {
-    loading.value = false
-    window['$message'].warning('数据异常，请检查参数！')
+    loading.value = false;
+    window["$message"].warning("数据异常，请检查参数！");
   }
-}
+};
 
 // 颜色
 const themeColor = computed(() => {
-  return designStore.getAppTheme
-})
+  return designStore.getAppTheme;
+});
 
 watchEffect(() => {
-  const filter = targetData.value?.filter
+  const filter = targetData.value?.filter;
   if (lastFilter !== filter && firstFocus) {
-    lastFilter = filter
-    sendHandle()
+    lastFilter = filter;
+    sendHandle();
   }
-  firstFocus++
-})
+  firstFocus++;
+});
 
 onBeforeUnmount(() => {
-  lastFilter = null
-})
+  lastFilter = null;
+});
 </script>
 
 <style lang="scss" scoped>
-@include go('chart-configurations-data-ajax') {
-  .n-card-shallow {
-    &.n-card {
-      @extend .go-background-filter;
-      @include deep() {
-        .n-card__content {
-          padding: 10px;
-        }
-      }
-    }
+:deep(.el-card) {
+  position: relative;
+
+  .el-card__body {
+    padding: 0;
+    padding-right: 10px;
+    position: relative;
+  }
+}
+
+.chart-configurations-data-ajax {
+  .edit-text {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s;
+    @extend .go-background-filter;
+    backdrop-filter: blur(1px) !important;
+  }
+
+  &:hover {
+    border-color: v-bind("themeColor");
+
     .edit-text {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 325px;
-      height: 270px;
-      cursor: pointer;
-      opacity: 0;
-      transition: all 0.3s;
-      @extend .go-background-filter;
-      backdrop-filter: blur(2px) !important;
-    }
-    &:hover {
-      border-color: v-bind('themeColor');
-      .edit-text {
-        opacity: 1;
-      }
+      opacity: 1;
     }
   }
 }

@@ -38,8 +38,8 @@
       <SettingItem name="时间">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.timeColor"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
     </SettingItemBox>
@@ -65,8 +65,8 @@
       <SettingItem name="颜色">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.colorShadow"
+          show-alpha
         ></el-color-picker
       ></SettingItem>
     </SettingItemBox>

@@ -20,6 +20,7 @@ import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.
 import { setComponentPosition } from '@/utils'
 import throttle from 'lodash/throttle'
 import cloneDeep from 'lodash/cloneDeep'
+import { get } from 'lodash'
 // 全局颜色
 const designStore = useDesignStore()
 
@@ -74,7 +75,9 @@ const isSorption = (selectValue: number, componentValue: number) => {
 
 // * 当前目标
 const selectId = computed(() => chartEditStore.getTargetChart.selectId)
-const selectTarget = computed(() => chartEditStore.getComponentList[chartEditStore.fetchTargetIndex()])
+
+// const selectTarget = computed(() => chartEditStore.getComponentList[chartEditStore.fetchTargetIndex()])
+const selectTarget = computed(() => get(chartEditStore.getComponentList, chartEditStore.fetchTargetIndex()))
 const selectAttr = computed(() => selectTarget.value?.attr || {})
 
 // * 画布坐标

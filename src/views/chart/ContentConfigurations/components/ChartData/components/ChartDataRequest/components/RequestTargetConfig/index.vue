@@ -1,6 +1,6 @@
 <template>
   <!-- 组件配置 -->
-  <n-divider class="go-my-3" title-placement="left"></n-divider>
+  <el-divider />
   <setting-item-box
     :itemRightStyle="{
       gridTemplateColumns: '6fr 2fr'
@@ -9,48 +9,37 @@
   >
     <template #name>
       地址
-      <n-tooltip trigger="hover" v-if="isDev()">
-        <template #trigger>
-          <n-icon size="21" :depth="3">
-            <help-outline-icon></help-outline-icon>
-          </n-icon>
-        </template>
-        <ul class="go-pl-0">
-          开发环境使用 mock 数据，请输入
-          <li v-for="item in apiList" :key="item.value">
-            <n-text type="info"> {{ item.value }} </n-text>
-          </li>
-        </ul>
-      </n-tooltip>
     </template>
     <setting-item name="请求方式 & URL 地址">
-      <n-input-group>
-        <n-select class="select-type-options" v-model:value="requestHttpType" :options="selectTypeOptions" />
-        <n-input v-model:value.trim="requestUrl" :min="1" placeholder="请输入地址（去除前置URL）">
+        <el-input class="input-with-select" v-model.trim="requestUrl" :min="1" placeholder="请输入地址（去除前置URL）">
           <template #prefix>
-            <n-text>{{ requestOriginUrl }}</n-text>
-            <n-divider vertical />
+            <span>{{ requestOriginUrl }}</span>
+            <el-divider direction="vertical"/>
           </template>
-        </n-input>
-      </n-input-group>
+          <template #prepend>
+            <!-- <el-select-v2 class="select-type-options" v-model="requestHttpType" :options="selectTypeOptions" /> -->
+            <el-select v-model="requestHttpType"  class="select-type-options">
+              <el-option v-for="(item, index) in selectTypeOptions" :key="index" :label="item.label" :value="item.value" />
+            </el-select>
+          </template>
+        </el-input>
       <!-- 组件url -->
     </setting-item>
     <setting-item name="更新间隔，为 0 只会初始化">
-      <n-input-group>
-        <n-input-number
-          v-model:value.trim="requestInterval"
+      <el-space>
+        <el-input-number
+          v-model="requestInterval"
           class="select-time-number"
-          min="0"
-          :show-button="false"
+          :min="0"
           placeholder="默认使用全局数据"
         >
-        </n-input-number>
+        </el-input-number>
         <!-- 单位 -->
-        <n-select class="select-time-options" v-model:value="requestIntervalUnit" :options="selectTimeOptions" />
-      </n-input-group>
+        <el-select-v2 class="select-time-options" v-model="requestIntervalUnit" :options="selectTimeOptions" />
+      </el-space>
     </setting-item>
   </setting-item-box>
-  <setting-item-box name="选择方式" class="go-mt-0">
+  <setting-item-box alone name="选择方式" class="go-mt-0">
     <request-header :targetDataRequest="targetDataRequest"></request-header>
   </setting-item-box>
 </template>
@@ -156,4 +145,9 @@ const apiList = [
 .select-type-options {
   width: 120px;
 }
+
+// :deep(.el-input-group__prepend){
+//   background-color: var(--el-fill-color-blank);
+//   padding: 0;
+// }
 </style>

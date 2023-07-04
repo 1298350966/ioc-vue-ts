@@ -19,7 +19,6 @@ export const useFile = (targetData: any) => {
 
   // 自定义上传操作
   const customRequest = (options: UploadCustomRequestOptions) => {
-    debugger
     const { file } = options
     nextTick(() => {
 
@@ -36,7 +35,7 @@ export const useFile = (targetData: any) => {
   // 下载文件
   const download = () => {
     try {
-      
+
       window['$message'].success('下载中，请耐心等待...')
       downloadTextFile(JSONStringify(targetData.value.option.dataset), undefined, 'json')
     } catch (error) {

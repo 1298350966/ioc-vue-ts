@@ -152,7 +152,7 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
   // 处理头部
   let headers: RequestParamsObjType = {
     ...globalRequestParams.Header,
-    ...targetRequestParams.Header
+    ...targetRequestParams.Header,
   }
   headers = translateStr(headers)
 
@@ -172,7 +172,9 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
 
     case RequestBodyEnum.JSON:
       headers['Content-Type'] = ContentTypeEnum.JSON
-      data = translateStr(JSON.parse(targetRequestParams.Body['json']))
+      //json对象也能使用'javasctipt:'来动态拼接参数
+      data = translateStr(targetRequestParams.Body['json'])
+      if (typeof data === 'string') data = JSON.parse(data)
       // json 赋值给 data
       break
 
@@ -210,16 +212,17 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
   }
 
   try {
-    const url =  (new Function("return `" + `${requestOriginUrl}${requestUrl}`.trim() + "`"))();
+    const url = (new Function("return `" + `${requestOriginUrl}${requestUrl}`.trim() + "`"))();
     return axiosInstance({
-        url,
-        method: requestHttpType,
-        data,
-        params,
-        headers
+      url,
+      method: requestHttpType,
+      data,
+      params,
+      headers
     })
   } catch (error) {
     console.log(error)
     window['$message'].error('URL地址格式有误！')
   }
 }
+

@@ -1,6 +1,6 @@
 import { toRaw } from 'vue'
 import { defineStore } from 'pinia'
-import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
+import { CreateComponentType, CreateComponentGroupType, GlobalVarType } from '@/packages/index.d'
 import { PublicGroupConfigClass } from '@/packages/public/publicConfig'
 import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
@@ -16,7 +16,7 @@ import {
   HistoryTargetTypeEnum
 } from '@/store/modules/chartHistoryStore/chartHistoryStore.d'
 import { MenuEnum } from '@/enums/editPageEnum'
-import { getUUID, loadingStart, loadingFinish, loadingError, isString, isArray } from '@/utils'
+import { getUUID, loadingStart, loadingFinish, loadingError, isString, isArray, componentInstall, canvasCut } from '@/utils'
 import {
   ChartEditStoreEnum,
   ChartEditStorage,
@@ -26,12 +26,15 @@ import {
   TargetChartType,
   RecordChartType,
   RequestGlobalConfigType,
-  EditCanvasConfigType
+  EditCanvasConfigType,
+  GlobalFunctionType
 } from './chartEditStore.d'
+import { fetchChartComponent, fetchConfigComponent } from '@/packages'
+import { get, set } from 'lodash'
 
 const chartHistoryStore = useChartHistoryStore()
 const settingStore = useSettingStore()
-
+let isInit = false
 // 编辑区域内容
 export const useChartEditStore = defineStore({
   id: 'useChartEditStore',
@@ -54,7 +57,8 @@ export const useChartEditStore = defineStore({
       // 拖拽中
       isDrag: false,
       // 框选中
-      isSelect: false
+      isSelect: false,
+      isCodeEdit: false
     },
     // 右键菜单
     rightMenuShow: false,
@@ -131,7 +135,16 @@ export const useChartEditStore = defineStore({
       }
     },
     // 图表数组（需存储给后端）
-    componentList: []
+    componentList: [],
+    // 全局变量
+    globalVar: [],
+    // 全局请求接口
+    globalRequest: [],
+    //公共方法
+    globalFunction: [],
+    // 弹窗
+    globalDialog: [],
+    //
   }),
   getters: {
     getMousePosition(): MousePositionType {
@@ -156,16 +169,46 @@ export const useChartEditStore = defineStore({
       return this.requestGlobalConfig
     },
     getComponentList(): Array<CreateComponentType | CreateComponentGroupType> {
+      if (!isInit) {
+        this.intComponentList()
+      }
       return this.componentList
+    },
+    getGlobalVar(): GlobalVarType[] {
+      return this.globalVar
+    },
+    getGlobalRequest(): GlobalVarType[] {
+      return this.globalRequest
+    },
+    getGlobalData() {
+      let obj = {}
+      this.globalVar.forEach((e: { entitys: any[]; key: string | number }) => {
+        let entity = {}
+        e.entitys.forEach(e => {
+          entity[e.key] = e.value
+        });
+        obj[e.key] = entity
+      })
+      return obj
+    },
+    getGlobalDialog() {
+      return this.globalDialog
+    },
+    getGlobalFunction(): GlobalFunctionType {
+      return this.globalFunction
     },
     // 获取需要存储的数据项
     getStorageInfo(): ChartEditStorage {
       return {
         [ChartEditStoreEnum.EDIT_CANVAS_CONFIG]: this.getEditCanvasConfig,
         [ChartEditStoreEnum.COMPONENT_LIST]: this.getComponentList,
-        [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: this.getRequestGlobalConfig
+        [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: this.getRequestGlobalConfig,
+        [ChartEditStoreEnum.GLOBAL_VAR]: this.getGlobalVar,
+        [ChartEditStoreEnum.GLOBAL_REQUEST]: this.globalRequest,
+        [ChartEditStoreEnum.GLOBAL_Dialog]: this.globalDialog,
+        [ChartEditStoreEnum.GLOBAL_FUNCTION]: this.globalFunction,
       }
-    }
+    },
   },
   actions: {
     // * 设置 editCanvas 数据项
@@ -231,14 +274,13 @@ export const useChartEditStore = defineStore({
       if (startY) this.mousePosition.startY = startY
     },
     // * 找到目标 id 数据的下标位置，id可为父级或子集数组（无则返回-1）
-    fetchTargetIndex(id?: string): number {
+    fetchTargetIndex(id?: string): any {
       const targetId = id || (this.getTargetChart.selectId.length && this.getTargetChart.selectId[0]) || undefined
       if (!targetId) {
         loadingFinish()
         return -1
       }
       const targetIndex = this.componentList.findIndex(e => e.id === targetId)
-
       // 当前
       if (targetIndex !== -1) {
         return targetIndex
@@ -246,9 +288,11 @@ export const useChartEditStore = defineStore({
         const length = this.getComponentList.length
         for (let i = 0; i < length; i++) {
           if (this.getComponentList[i].isGroup) {
-            for (const cItem of (this.getComponentList[i] as CreateComponentGroupType).groupList) {
+            const { groupList } = this.getComponentList[i] as CreateComponentGroupType
+            for (let index = 0; index < groupList.length; index++) {
+              const cItem = groupList[index];
               if (cItem.id === targetId) {
-                return i
+                return [i, "groupList", index]
               }
             }
           }
@@ -309,7 +353,7 @@ export const useChartEditStore = defineStore({
         idArr.forEach(ids => {
           const index = this.fetchTargetIndex(ids)
           if (index !== -1) {
-            history.push(this.getComponentList[index])
+            history.push(get(this.getComponentList, index) )
             this.componentList.splice(index, 1)
           }
         })
@@ -324,7 +368,7 @@ export const useChartEditStore = defineStore({
     resetComponentPosition(item: CreateComponentType | CreateComponentGroupType, isForward: boolean): void {
       const index = this.fetchTargetIndex(item.id)
       if (index > -1) {
-        const componentInstance = this.getComponentList[index]
+        const componentInstance = get(this.getComponentList, index) 
         if (isForward) {
           componentInstance.attr = Object.assign(componentInstance.attr, {
             x: item.attr.x + item.attr.offsetX,
@@ -343,9 +387,14 @@ export const useChartEditStore = defineStore({
       chartHistoryStore.createMoveHistory(item)
     },
     // * 更新组件列表某一项的值
-    updateComponentList(index: number, newData: CreateComponentType | CreateComponentGroupType) {
-      if (index < 1 && index > this.getComponentList.length) return
-      this.componentList[index] = newData
+    updateComponentList(index: number | any[], newData: CreateComponentType | CreateComponentGroupType) {
+      debugger
+      if (Array.isArray(index)) {
+        if (index[index.length - 1] < 1 && index[index.length - 1] > get(this.getComponentList, index.slice(0, -1)).length) return
+      } else {
+        if (index < 1 && index > this.getComponentList.length) return
+      }
+      set(this.componentList, index, newData)
     },
     // * 设置页面样式属性
     setPageStyle<T extends keyof CSSStyleDeclaration>(key: T, value: any): void {
@@ -400,7 +449,7 @@ export const useChartEditStore = defineStore({
       } catch (value) {
         loadingError()
       }
-    },
+    },   
     // * 置顶
     setTop(isHistory = true): void {
       this.setBothEnds(false, isHistory)
@@ -422,7 +471,8 @@ export const useChartEditStore = defineStore({
           return
         }
 
-        const index: number = this.fetchTargetIndex()
+        const index = this.fetchTargetIndex()
+        debugger
         if (index !== -1) {
           // 下移排除最底层, 上移排除最顶层
           if ((isDown && index === 0) || (!isDown && index === length - 1)) {
@@ -430,10 +480,18 @@ export const useChartEditStore = defineStore({
             return
           }
           // 互换位置
-          const swapIndex = isDown ? index - 1 : index + 1
-          const targetItem = this.getComponentList[index]
-          const swapItem = this.getComponentList[swapIndex]
-
+          let swapIndex
+          if (Array.isArray(index)) {
+            var _index = index[index.length - 1] 
+            swapIndex = cloneDeep(index)
+            swapIndex[index.length - 1] = isDown ? _index - 1 : _index + 1
+          } else {
+            swapIndex = isDown ? index - 1 : index + 1 as number
+          }
+           
+          const targetItem = get(this.getComponentList, index) 
+          
+          const swapItem = get(this.getComponentList, swapIndex)
           // 历史记录
           if (isHistory) {
             chartHistoryStore.createLayerHistory(
@@ -441,8 +499,11 @@ export const useChartEditStore = defineStore({
               isDown ? HistoryActionTypeEnum.DOWN : HistoryActionTypeEnum.UP
             )
           }
-          this.updateComponentList(index, swapItem)
-          this.updateComponentList(swapIndex, targetItem)
+          if (swapItem && targetItem) {
+            this.updateComponentList(index, swapItem)
+            this.updateComponentList(swapIndex, targetItem)
+          }
+   
           loadingFinish()
           return
         }
@@ -470,7 +531,7 @@ export const useChartEditStore = defineStore({
         const index: number = this.fetchTargetIndex()
         if (index !== -1) {
           const copyData: RecordChartType = {
-            charts: this.getComponentList[index],
+            charts: get(this.getComponentList, index),
             type: isCut ? HistoryActionTypeEnum.CUT : HistoryActionTypeEnum.COPY
           }
           this.setRecordChart(copyData)
@@ -487,6 +548,7 @@ export const useChartEditStore = defineStore({
     },
     // * 粘贴
     setParse() {
+      debugger
       try {
         loadingStart()
         const recordCharts = this.getRecordChart
@@ -496,8 +558,8 @@ export const useChartEditStore = defineStore({
         }
         const parseHandle = (e: CreateComponentType | CreateComponentGroupType) => {
           e = cloneDeep(e)
-          e.attr.x = this.getMousePosition.x + 30
-          e.attr.y = this.getMousePosition.y + 30
+          e.attr.x = this.getMousePosition.startX 
+          e.attr.y = this.getMousePosition.startY
           // 外层生成新 id
           e.id = getUUID()
           // 分组列表生成新 id
@@ -506,11 +568,11 @@ export const useChartEditStore = defineStore({
               item.id = getUUID()
             })
           }
-        
+
           return e
         }
         const isCut = recordCharts.type === HistoryActionTypeEnum.CUT
-        const targetList = Array.isArray(recordCharts.charts) ? recordCharts.charts : [ recordCharts.charts ]
+        const targetList = Array.isArray(recordCharts.charts) ? recordCharts.charts : [recordCharts.charts]
         // 多项
         targetList.forEach((e: CreateComponentType | CreateComponentGroupType) => {
           this.addComponentList(parseHandle(e), undefined, true)
@@ -691,7 +753,7 @@ export const useChartEditStore = defineStore({
     setMove(keyboardValue: MenuEnum) {
       const index = this.fetchTargetIndex()
       if (index === -1) return
-      const attr = this.getComponentList[index].attr
+      const attr = get(this.getComponentList, index).attr
       const distance = settingStore.getChartMoveDistance
       switch (keyboardValue) {
         case MenuEnum.ARROW_UP:
@@ -797,8 +859,8 @@ export const useChartEditStore = defineStore({
         loadingStart()
 
         // 解组
-        const unGroup = (targetIndex: number) => {
-          const targetGroup = this.getComponentList[targetIndex] as CreateComponentGroupType
+        const unGroup = (targetIndex: number | any[]) => {
+          const targetGroup = get(this.getComponentList, targetIndex)  as CreateComponentGroupType
           if (!targetGroup.isGroup) return
 
           // 记录数据
@@ -958,6 +1020,127 @@ export const useChartEditStore = defineStore({
         this.getEditCanvas.userScale = scale
         this.getEditCanvas.scale = scale
       }
+    },
+
+    //添加全局变量
+    addGlobalVar(varInstance: GlobalVarType) {
+      this.globalVar.push(varInstance)
+    },
+    //删除全局变量
+    removeGlobalVar(id?: string | string[], isHistory = true): void {
+      try {
+        const idArr = this.idPreFormat(id)
+        // 遍历所有对象
+        if (!idArr.length) return
+
+        loadingStart()
+        idArr.forEach(ids => {
+          let index = this.globalVar.findIndex(e => e.key === ids)
+          if (index !== -1) {
+            this.globalVar.splice(index, 1)
+          }
+        })
+        loadingFinish()
+        return
+      } catch (value) {
+        loadingError()
+      }
+    },
+    //清空全局变量
+    clearGlobalVar() {
+      this.globalVar.length = 0
+    },
+    addGlobalDialog(data) {
+      if (!data) return
+      data.id = getUUID()
+      this.globalDialog.push(data)
+    },
+    removeGlobalDialog(id?: string | string[], isHistory = true): void {
+      try {
+        const idArr = this.idPreFormat(id)
+        // 遍历所有对象
+        if (!idArr.length) return
+
+        loadingStart()
+        idArr.forEach(ids => {
+          let index = this.globalDialog.findIndex(e => e.id === ids)
+          if (index !== -1) {
+            this.globalDialog.splice(index, 1)
+          }
+        })
+        loadingFinish()
+        return
+      } catch (value) {
+        loadingError()
+      }
+    },
+    clearGlobalDialog() {
+      this.globalDialog.length = 0
+    },
+    addGlobalFunction(data: GlobalFunctionType) {
+      if (!data) return
+      let f = this.globalFunction.find((f) => f.functionName == data.functionName)
+      if (f) return
+      this.globalFunction.push(data)
+    },
+    removeGlobalFunction(id?: string | string[], isHistory = true): void {
+      try {
+        const idArr = this.idPreFormat(id)
+        // 遍历所有对象
+        if (!idArr.length) return
+
+        loadingStart()
+        idArr.forEach(ids => {
+          let index = this.globalFunction.findIndex(e => e.functionName === ids)
+          if (index !== -1) {
+            this.globalFunction.splice(index, 1)
+          }
+        })
+        loadingFinish()
+        return
+      } catch (value) {
+        loadingError()
+      }
+    },
+    clearGlobalFunction() {
+      this.globalFunction.length = 0
+    },
+    //下载组件图片
+    downloadComponentImage(id?: string | string[]) {
+      console.log(`output-this`, this.getTargetChart)
+      const selectIds = this.idPreFormat(id) || this.getTargetChart.selectId
+      selectIds.forEach((selectId) => {
+        let dom: HTMLElement = document.getElementById(selectId)
+        canvasCut(dom)
+      })
+
+    },
+    //初始全部组件
+    intComponentList() {
+      this.componentList.forEach(async (e: CreateComponentType | CreateComponentGroupType) => {
+        if (e.isGroup) {
+          (e as CreateComponentGroupType).groupList.forEach(groupItem => {
+            if (!groupItem) return
+            componentInstall(groupItem.chartConfig.chartKey, fetchChartComponent(groupItem.chartConfig));
+            componentInstall(groupItem.chartConfig.conKey, fetchConfigComponent(groupItem.chartConfig));
+          })
+        } else {
+          componentInstall(e.chartConfig.chartKey, fetchChartComponent(e.chartConfig));
+          componentInstall(e.chartConfig.conKey, fetchConfigComponent(e.chartConfig));
+        }
+      })
     }
-  }
+  },
+  // persist: {
+  //   enabled: true,
+  //   strategies: [
+  //     {
+  //       key: "useChartEditStore",
+  //       storage: sessionStorage,
+  //       paths: ["editCanvasConfig", "requestGlobalConfig", "globalDialog", "globalVar", "globalFunction", 'componentList'],//指定要长久化的字段
+  //     }
+  //   ]
+  // }
 })
+
+// 'componentList'

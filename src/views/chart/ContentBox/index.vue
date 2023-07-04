@@ -9,10 +9,12 @@
     </el-space>
     <el-space>
       <slot name="top-right"></slot>
-
+      <!-- <el-icon v-show="backIcon" :size="20" :color="color" @click="backHandle">
+        <ArrowLeftBold />
+      </el-icon> -->
     </el-space>
   </div>
-  <el-scrollbar class="content">
+  <el-scrollbar class="content" view-style="height:100%;">
     <slot></slot>
   </el-scrollbar>
   
@@ -25,6 +27,9 @@
  </div>
 </template>
 <script setup lang="ts">
+
+const emit = defineEmits(['back'])
+
 defineProps({
   title: String,
   showTop: {
@@ -55,6 +60,10 @@ defineProps({
     default: false
   }
 })
+
+const backHandle = () => {
+  emit('back')
+}
 </script>
 
 

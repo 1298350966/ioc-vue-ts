@@ -30,6 +30,16 @@ export const chartInitConfig = {
   offsetX: 0,
   offsetY: 0,
 }
+// 表单控件初始配置(px)
+export const formInitConfig = {
+  x: 50,
+  y: 50,
+  w: 300,
+  h: 30,
+  // 不建议动 offset
+  offsetX: 0,
+  offsetY: 0,
+}
 
 // dialog 图标的大小
 export const dialogIconSize = '20'
@@ -53,10 +63,10 @@ export const carouselInterval = 4000
 export const backgroundImageSize = 5
 
 // 预览展示方式
-export const previewScaleType = PreviewScaleEnum.FIT
+export const previewScaleType = PreviewScaleEnum.FULL
 
 // 数据请求间隔
-export const requestInterval = 30
+export const requestInterval = 0
 
 // 数据请求间隔单位
 export const requestIntervalUnit = RequestHttpIntervalEnum.SECOND

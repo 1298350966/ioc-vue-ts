@@ -138,6 +138,18 @@ export const fileTobase64 = (file: File, callback: Function) => {
 }
 
 /**
+ * * base64转file
+ */
+export const  base64ToFile = (dataURI: string) => {
+  let binary = atob(dataURI.split(",")[1]);
+  let array = [];
+  for (let i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i));
+  }
+  let blob = new Blob([new Uint8Array(array)], { type: 'image/png'});
+  return new File([blob], new Date() + ".png")
+}
+/**
  * * 挂载监听
  */
 // eslint-disable-next-line no-undef
@@ -178,12 +190,12 @@ export const removeEventListener = <K extends keyof WindowEventMap>(
  * @param html 需要截取的 DOM
  */
 export const canvasCut = (html: HTMLElement | null, callback?: Function) => {
+   
   if (!html) {
     window['$message'].error('导出失败！')
     if (callback) callback()
     return
   }
-
   html2canvas(html, {
     backgroundColor: null,
     allowTaint: true,
@@ -193,6 +205,21 @@ export const canvasCut = (html: HTMLElement | null, callback?: Function) => {
     downloadByA(canvas.toDataURL(), undefined, 'png')
     if (callback) callback()
   })
+}
+/**
+ * * 截取画面为图片
+ * @param html 需要截取的 DOM
+ */
+export const getCanvasCutImg = async (html: HTMLElement | null) => {
+
+  const _canvasImg: HTMLCanvasElement = await html2canvas(html, {
+    backgroundColor: null,
+    allowTaint: true,
+    useCORS: true
+  })
+  let img = _canvasImg.toDataURL()
+  // downloadByA(img,undefined, 'png')
+  return  img
 }
 
 /**
@@ -341,3 +368,48 @@ export const JSONParse = (data: string) => {
 export const setTitle = (title?: string) => {
   title && (document.title = title)
 }
+
+
+/*
+ * 动态加载js
+ * */
+export function loadJs(src: string) {
+  return new Promise((resolve, reject) => {
+    let script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = src;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      resolve("success");
+    };
+    script.onerror = () => {
+      reject("error");
+    };
+  });
+}
+/*
+ * 获取数组数据
+ * */
+export function getArrayData(data) {
+  if (typeof data == "object") {
+    if (Array.isArray(data)) {
+      return data
+    } else {
+      let key = Object.keys(data).find((key) => Array.isArray(data[key]))
+      return data[key] || []
+    }
+  } else {
+    return []
+  }
+
+}
+
+//监听dom的宽高变化
+export function resizeListener(element: Element, callback: any, throttleTime = 300){
+  const _callback = throttle(callback, throttleTime)
+  const observer = new ResizeObserver(_callback)
+  observer.observe(element)
+  return observer
+}
+

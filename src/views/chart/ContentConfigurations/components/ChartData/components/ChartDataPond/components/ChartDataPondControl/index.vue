@@ -1,47 +1,39 @@
 <template>
-  <n-modal class="go-chart-data-pond-control" v-model:show="modelShowRef" :mask-closable="false">
-    <n-card :bordered="false" role="dialog" size="small" aria-modal="true" style="width: 900px; height: 650px">
-      <template #header></template>
-      <template #header-extra> </template>
+  <dragDialog title="公共接口配置" class="go-chart-data-pond-control" v-model="modelShowRef">
+    <el-card style=" height: 650px">
       <div class="pond-content">
         <!-- 展示区域 -->
-        <chart-data-display
-          v-if="pondData && !loading"
-          :targetData="pondData"
-          :globalData="chartEditStore.getRequestGlobalConfig"
-        ></chart-data-display>
+        <chart-data-display v-if="pondData && !loading" :targetData="pondData"
+          :globalData="chartEditStore.getRequestGlobalConfig"></chart-data-display>
         <!-- 无数据 -->
         <div v-else class="no-data go-flex-center">
           <img :src="noData" alt="暂无数据" />
-          <n-text :depth="3">暂未选择公共接口</n-text>
+          <span>暂未选择公共接口</span>
         </div>
         <!-- 左侧列表 -->
         <chart-data-pond-list @createPond="createPond" @deletePond="deletePond"></chart-data-pond-list>
       </div>
       <!-- 底部 -->
-      <template #action>
-        <n-space justify="space-between">
-          <n-button type="info" secondary :disabled="!pondData" @click="openPond(true)">
-            编辑内容
-            <template #icon>
-              <n-icon>
-                <pencil-icon />
-              </n-icon>
-            </template>
-          </n-button>
-          <n-button type="primary" @click="closeHandle">保存 & 发送请求</n-button>
-        </n-space>
-      </template>
-    </n-card>
-  </n-modal>
+
+    </el-card>
+    <template #footer>
+      <el-space justify="space-between">
+        <el-button type="info" secondary :disabled="!pondData" @click="openPond(true)">
+          编辑内容
+          <template #icon>
+            <el-icon>
+              <pencil-icon />
+            </el-icon>
+          </template>
+        </el-button>
+        <el-button type="primary" @click="closeHandle">保存 & 发送请求</el-button>
+      </el-space>
+    </template>
+  </dragDialog>
 
   <!-- 请求配置model -->
-  <pond-data-request
-    v-model:modelShow="requestShow"
-    :targetDataRequest="editData"
-    :isEdit="isEdit"
-    @editSaveHandle="saveHandle"
-  ></pond-data-request>
+  <pond-data-request v-if="requestShow" v-model:modelShow="requestShow" :targetDataRequest="editData" :isEdit="isEdit"
+    @editSaveHandle="saveHandle"></pond-data-request>
 </template>
 
 <script setup lang="ts">
@@ -67,7 +59,16 @@ const { PencilIcon } = icon.ionicons5
 const { chartEditStore, targetData } = useTargetData()
 const { requestDataPond } = toRefs(chartEditStore.getRequestGlobalConfig)
 const requestShow = ref(false)
-const modelShowRef = ref(false)
+
+const modelShowRef = computed({
+  get() {
+    return props.modelShow
+  },
+  set(val) {
+    emit('update:modelShow', val)
+  }
+})
+// const modelShowRef = ref(false)
 const loading = ref(false)
 const isEdit = ref(false)
 const editData = ref<RequestDataPondItemType>()
@@ -82,9 +83,9 @@ const pondData = computed(() => {
   return data[0]
 })
 
-watch(() => props.modelShow, (newValue) => {
-  modelShowRef.value = newValue
-})
+// watch(() => props.modelShow, (newValue) => {
+//   modelShowRef.value = newValue
+// })
 
 watch(
   () => pondData.value,
@@ -204,28 +205,35 @@ const closeHandle = () => {
 
 <style lang="scss" scoped>
 @include go('chart-data-pond-control') {
+
   /* 中间 */
   .pond-content {
     display: flex;
   }
+
   .no-data {
     flex-direction: column;
     width: 100%;
+
     img {
       width: 200px;
     }
   }
+
   &.n-card.n-modal,
   .n-card {
     @extend .go-background-filter;
   }
+
   .n-card-shallow {
     background-color: rgba(0, 0, 0, 0) !important;
   }
+
   @include deep() {
-    & > .n-card__content {
+    &>.n-card__content {
       padding-right: 0;
     }
+
     .n-card__content {
       padding-bottom: 5px;
     }

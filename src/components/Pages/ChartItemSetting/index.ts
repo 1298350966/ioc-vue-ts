@@ -11,6 +11,8 @@ import PositionSetting from './PositionSetting.vue'
 import SizeSetting from './SizeSetting.vue'
 // 样式
 import StylesSetting from './StylesSetting.vue'
+//组列表
+import GroupList from './GroupList.vue'
 
 export{
   CollapseItem,
@@ -21,5 +23,6 @@ export{
   NameSetting,
   PositionSetting,
   SizeSetting,
-  StylesSetting
+  StylesSetting,
+  GroupList
 }

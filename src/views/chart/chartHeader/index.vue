@@ -19,7 +19,8 @@ $min-width: 400px;
   grid-template-columns: repeat(3, 33.33%);
   height: 60px;
   padding: 0 60px;
-  background: var(--kh-header-bg);
+  background: var(--dark-color-3);
+  border-bottom: 1px solid var(--el-border-color-light);
   color:#fff;
   .header-item {
     display: flex;

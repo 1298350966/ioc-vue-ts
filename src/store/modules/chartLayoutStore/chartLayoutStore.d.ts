@@ -9,6 +9,8 @@ export enum LayerModeEnum {
 }
 
 export enum ChartLayoutStoreEnum {
+  LEFT_SIDEBAR = "leftSidebar",
+  RIGHT_SIDEBAR ="rightSidebar",
   LAYERS = 'layers',
   CHARTS = 'charts',
   DETAILS = 'details',
@@ -19,6 +21,10 @@ export enum ChartLayoutStoreEnum {
 }
 
 export interface ChartLayoutType {
+  //左侧边栏
+  [ChartLayoutStoreEnum.LEFT_SIDEBAR]: boolean
+  //右侧边栏
+  [ChartLayoutStoreEnum.RIGHT_SIDEBAR]: boolean
   // 图层控制
   [ChartLayoutStoreEnum.LAYERS]: boolean
   // 图表组件

@@ -1,13 +1,13 @@
 import { echartOptionProfixHandle, PublicConfigClass } from '@/packages/public'
 import { ScatterLogarithmicRegressionConfig } from './index'
-import { CreateComponentType } from '@/packages/index.d'
+import { CreateComponentType, EventsType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
 export const includes = ['legend', 'xAxis', 'yAxis']
 
 export const option = {
-  dataset: dataJson,
+  dataset: [],
 
   tooltip: {
     showDelay: 0,
@@ -85,9 +85,71 @@ export const option = {
   ]
 }
 
+//组件事件类型
+export enum BaseEventEnum {
+  // 单击
+  CLICK = 'click',
+  // 鼠标进入
+  MOUSE_ENTER = 'mouseenter',
+  // 鼠标移出
+  MOUSE_LEAVE = 'mouseleave',
+}
+
+let eChartsEventVars = [
+  {
+    label: "系列名称",
+    value: '${e.seriesName}',
+  },
+  {
+    label: "名称",
+    value: '${e.name}',
+  },
+  {
+    label: "值",
+    value: '${e.value}',
+  },
+]
+
+//事件
+export const Events: EventsType = {
+  [BaseEventEnum.CLICK]: {
+    key: BaseEventEnum.CLICK,
+    name: "单击",
+    paramsName: ["e", "config", 'rootConfig'],
+    vars: eChartsEventVars,
+  },
+  [BaseEventEnum.MOUSE_ENTER]: {
+    key: BaseEventEnum.MOUSE_ENTER,
+    name: "鼠标进入",
+    paramsName: ["e", "config", 'rootConfig'],
+    vars: eChartsEventVars,
+  },
+  [BaseEventEnum.MOUSE_LEAVE]: {
+    key: BaseEventEnum.MOUSE_LEAVE,
+    name: "鼠标移出",
+    paramsName: ["e", "config", 'rootConfig'],
+    vars: eChartsEventVars
+  },
+}
+
 export default class Config extends PublicConfigClass implements CreateComponentType {
   public key = ScatterLogarithmicRegressionConfig.key
   public chartConfig = cloneDeep(ScatterLogarithmicRegressionConfig)
   // 图表配置项
   public option = echartOptionProfixHandle(option, includes)
+  public data = dataJson
+  public eChartsEventVars = [
+    {
+      label: "系列名称",
+      value: '${e.seriesName}',
+    },
+    {
+      label: "名称",
+      value: '${e.name}',
+    },
+    {
+      label: "值",
+      value: '${e.value}',
+    },
+  ]
 }

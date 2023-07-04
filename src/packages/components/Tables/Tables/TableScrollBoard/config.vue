@@ -63,22 +63,22 @@
       <SettingItem name="表头背景色">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.headerBGC"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
       <SettingItem name="奇数行背景色">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.oddRowBGC"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
       <SettingItem name="偶数行背景色">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.evenRowBGC"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
     </SettingItemBox>

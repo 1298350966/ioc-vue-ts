@@ -15,6 +15,7 @@ import { PropType, toRefs, ref, reactive, watch, onMounted, onUnmounted } from "
 import { CreateComponentType } from "@/packages/index.d";
 import { useChartEditStore } from "@/store/modules/chartEditStore/chartEditStore";
 import { useChartDataFetch } from "@/hooks";
+import { ChartEditStorageType } from "@/views/preview";
 
 const props = defineProps({
   chartConfig: {
@@ -22,6 +23,9 @@ const props = defineProps({
     required: true,
   },
 });
+
+const rootConfig: ChartEditStorageType = inject("rootConfig")
+
 let yearMonthDay = ref("2021-2-3");
 let nowData = ref("08:00:00");
 let newData = ref("2021-2-3 08:00:00");
@@ -55,8 +59,9 @@ watch(
     immediate: true,
   }
 );
+let timer
 onMounted(() => {
-  const timer = setInterval(() => {
+  timer = setInterval(() => {
     var datetime = new Date();
     var year = datetime.getFullYear();
     var month =
@@ -80,9 +85,9 @@ onMounted(() => {
   }, 500);
 });
 onUnmounted(() => {
-  clearInterval();
+  clearInterval(timer);
 });
-useChartDataFetch(props.chartConfig, useChartEditStore);
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig);
 </script>
 
 <style lang="scss" scoped>

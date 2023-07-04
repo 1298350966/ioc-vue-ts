@@ -29,5 +29,5 @@ export const toNumber = (number: number | string, toFixedNumber = 2) => {
 }
 
 export const toString = (str: any) => {
-  return isNumber(str) ? `${str}` : (isObject(str) ? JSON.stringify(str) : str)
+  return isNumber(str) ? `${str}` : (isObject(str) ? JSON.stringify(str, null, 2) : str)
 }

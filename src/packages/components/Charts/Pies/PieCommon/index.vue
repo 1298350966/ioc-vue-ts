@@ -9,11 +9,12 @@ import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { PieChart } from 'echarts/charts'
 import { mergeTheme } from '@/packages/public/chart'
-import config, { includes } from './config'
+import config, { Events, includes } from './config'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
-import { isPreview } from '@/utils'
+import { getArrayData, isPreview } from '@/utils'
 import { DatasetComponent, GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
+import cloneDeep from 'lodash/cloneDeep'
+import { useAddEvent } from '@/packages/hooks/useAddEvent.kooks'
 
 const props = defineProps({
   themeSetting: {
@@ -30,11 +31,32 @@ const props = defineProps({
   }
 })
 
+const { rootConfig, getEvents } = useAddEvent(props.chartConfig, Events)
+
 use([DatasetComponent, CanvasRenderer, PieChart, GridComponent, TooltipComponent, LegendComponent])
 
 const option = computed(() => {
-  return mergeTheme(props.chartConfig.option, props.themeSetting, includes)
+  let option = cloneDeep(props.chartConfig.option)
+  // option.dataset.source = getArrayData(props.chartConfig.data)
+  setDataset(getArrayData(props.chartConfig.data), option)
+  return mergeTheme(option, props.themeSetting, includes)
 })
+
+
+function setDataset(datas: any[], option) {
+  let { valueAxis, classAxis } = props.chartConfig.dataMapping
+  let seriesArr = []
+
+  let data = datas.map((e) => {
+    return {
+      value: e[valueAxis[0].column],
+      name: e[classAxis[0].column],
+    }
+  })
+  option.series[0].name = valueAxis[0].name
+  option.series[0].data = data
+}
+
 
 watch(
   () => props.chartConfig.option.type,
@@ -53,5 +75,5 @@ watch(
   { deep: true, immediate: true }
 )
 
-const { vChartRef } = useChartDataFetch(props.chartConfig, useChartEditStore)
+const { vChartRef } = useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig)
 </script>

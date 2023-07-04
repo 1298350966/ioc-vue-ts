@@ -28,9 +28,9 @@
 import { PropType, onUnmounted, reactive, toRefs, watch, onMounted } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import merge from 'lodash/merge'
 import cloneDeep from 'lodash/cloneDeep'
+import { ChartEditStorageType } from '@/views/preview'
 
 const props = defineProps({
   chartConfig: {
@@ -38,6 +38,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const rootConfig: ChartEditStorageType = inject("rootConfig")
 
 // 这里能拿到图表宽高等
 const { w, h } = toRefs(props.chartConfig.attr)
@@ -308,7 +310,7 @@ watch(
 )
 
 // 数据更新 (默认更新 dataset，若更新之后有其它操作，可添加回调函数)
-useChartDataFetch(props.chartConfig, useChartEditStore, (resData: any[]) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (resData: any[]) => {
   props.chartConfig.option.dataset = resData
   onRestart()
 })

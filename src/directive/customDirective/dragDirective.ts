@@ -11,19 +11,19 @@ export function dragDirective(app: App) {
 
 	app.directive('drag', {
 		mounted(el, binding) {
-      let dragDom:HTMLElement,dragHeader:HTMLElement
-      if(binding.value && binding.value[0] && binding.value[1]){
-        dragDom = document.querySelector(binding.value[0]);
-        dragHeader = document.querySelector(binding.value[1]);
-      }else{
-        dragDom = el.querySelector('.el-dialog') ;
-        dragHeader = el.querySelector('.el-dialog__header')
-      }
-      if(!dragDom || !dragHeader) return
+			let dragDom: HTMLElement, dragHeader: HTMLElement
+			if (binding.value && binding.value[0] && binding.value[1]) {
+				dragDom = document.querySelector(binding.value[0]);
+				dragHeader = document.querySelector(binding.value[1]);
+			} else {
+				dragDom = el.querySelector('.el-dialog');
+				dragHeader = el.querySelector('.el-dialog__header')
+			}
+			if (!dragDom || !dragHeader) return
 
 			dragHeader.onmouseover = () => (dragHeader.style.cursor = `move`);
 
-			function down(e:any, type: string) {
+			function down(e: any, type: string) {
 				// 鼠标按下，计算当前元素距离可视区的距离
 				const disX = type === 'pc' ? e.clientX - dragHeader.offsetLeft : e.touches[0].clientX - dragHeader.offsetLeft;
 				const disY = type === 'pc' ? e.clientY - dragHeader.offsetTop : e.touches[0].clientY - dragHeader.offsetTop;
@@ -45,8 +45,8 @@ export function dragDirective(app: App) {
 				const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomheight;
 
 				// 获取到的值带px 正则匹配替换
-				let styL: String | Number  = getComputedStyle(dragDom).left;
-				let styT: String | Number  = getComputedStyle(dragDom).top;
+				let styL: String | Number = getComputedStyle(dragDom).left;
+				let styT: String | Number = getComputedStyle(dragDom).top;
 
 				// 注意在ie中 第一次获取到的值为组件自带50% 移动之后赋值为px
 				if (styL.includes('%')) {
@@ -69,7 +69,7 @@ export function dragDirective(app: App) {
 				};
 			}
 
-			function move(e:any, type: string, obj: any) {
+			function move(e: any, type: string, obj: any) {
 				let { disX, disY, minDragDomLeft, maxDragDomLeft, minDragDomTop, maxDragDomTop, styL, styT } = obj;
 
 				// 通过事件委托，计算移动的距离
@@ -85,8 +85,8 @@ export function dragDirective(app: App) {
 
 				if (-top > minDragDomTop) {
 					top = -minDragDomTop;
-				} 
-        // else if (top > maxDragDomTop) {
+				}
+				// else if (top > maxDragDomTop) {
 				// 	top = maxDragDomTop;
 				// }
 
@@ -100,7 +100,7 @@ export function dragDirective(app: App) {
 			 * onmousemove 鼠标按下时持续触发事件
 			 * onmouseup 鼠标抬起触发事件
 			 */
-			dragHeader.onmousedown = (e:MouseEvent) => {
+			dragHeader.onmousedown = (e: MouseEvent) => {
 				const obj = down(e, 'pc');
 				document.onmousemove = (e) => {
 					move(e, 'pc', obj);

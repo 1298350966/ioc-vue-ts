@@ -44,6 +44,14 @@ const packagesListObj = {
     icon: renderIcon(GraphicalDataFlowIcon),
     label: PackagesCategoryName.DECORATES,
   },
+  [PackagesCategoryEnum.FORMS]: {
+    icon: renderIcon(GraphicalDataFlowIcon),
+    label: PackagesCategoryName.FORMS,
+  },
+  [PackagesCategoryEnum.CUSTOM]: {
+    icon: renderIcon(GraphicalDataFlowIcon),
+    label: PackagesCategoryName.CUSTOM,
+  },
 }
 
 // 处理列表

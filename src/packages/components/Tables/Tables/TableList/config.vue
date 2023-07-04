@@ -31,22 +31,22 @@
       <SettingItem name="主体颜色">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.color"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
       <SettingItem name="数据颜色">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.textColor"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
       <SettingItem name="底部线条">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.borderColor"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
     </SettingItemBox>

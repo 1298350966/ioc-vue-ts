@@ -7,7 +7,7 @@ import { useContextMenu } from '@/views/chart/hooks/useContextMenu.hook'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { loadingStart, loadingFinish, loadingError, setComponentPosition, JSONParse } from '@/utils'
-import { throttle, cloneDeep } from 'lodash'
+import { throttle, cloneDeep, get } from 'lodash'
 
 const chartEditStore = useChartEditStore()
 const { onClickOutSide } = useContextMenu()
@@ -18,7 +18,7 @@ export const dragHandle = async (e: DragEvent) => {
 
   try {
     loadingStart()
-
+    debugger
     // 获取拖拽数据
     const drayDataString = e!.dataTransfer!.getData(DragKeyEnum.DRAG_KEY)
     if (!drayDataString) {
@@ -214,7 +214,8 @@ export const useMouseHandle = () => {
     chartEditStore.getTargetChart.selectId.forEach(id => {
       const index = chartEditStore.fetchTargetIndex(id)
       if (index !== -1) {
-        const { x, y, w, h } = toRaw(chartEditStore.getComponentList[index]).attr
+        // const { x, y, w, h } = toRaw(chartEditStore.getComponentList[index]).attr
+        const { x, y, w, h } = toRaw(get(chartEditStore.getComponentList, index)).attr
         targetMap.set(id, { x, y, w, h })
       }
     })
@@ -230,7 +231,7 @@ export const useMouseHandle = () => {
 
       const index = chartEditStore.fetchTargetIndex(id)
       // 拿到初始位置数据
-      prevComponentInstance.push(cloneDeep(chartEditStore.getComponentList[index]))
+      prevComponentInstance.push(cloneDeep(get(chartEditStore.getComponentList, index)))
     })
 
     // 记录初始位置
@@ -251,7 +252,7 @@ export const useMouseHandle = () => {
         const index = chartEditStore.fetchTargetIndex(id)
         // 拿到初始位置数据
         const { x, y, w, h } = targetMap.get(id)
-        const componentInstance = chartEditStore.getComponentList[index]
+        const componentInstance = get(chartEditStore.getComponentList, index)
 
         let currX = Math.round(x + offsetX)
         let currY = Math.round(y + offsetY)
@@ -285,7 +286,7 @@ export const useMouseHandle = () => {
           chartEditStore.getTargetChart.selectId.forEach(id => {
             if (!targetMap.has(id)) return
             const index = chartEditStore.fetchTargetIndex(id)
-            const curComponentInstance = chartEditStore.getComponentList[index]
+            const curComponentInstance = get(chartEditStore.getComponentList, index)
             // 找到记录的所选组件
             prevComponentInstance.forEach(preItem => {
               if (preItem.id === id) {

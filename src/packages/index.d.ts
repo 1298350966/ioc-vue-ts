@@ -1,16 +1,18 @@
 import { BaseEvent, EventLife } from '@/enums/eventEnum'
 import type { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import type { RequestConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
-
+import { EventConfigFiltersType } from "@/components/Pages/FilterConfig/type";
 export enum ChartFrameEnum {
   // 支持 dataset 的 echarts 框架
   ECHARTS = 'echarts',
   // UI 组件框架
   NAIVE_UI = 'naiveUI',
+  ELEMENT_PLUS = 'elementPlus',
   // 自定义带数据组件
   COMMON = 'common',
   // 无数据变更
-  STATIC = 'static'
+  STATIC = 'static',
+
 }
 
 // 组件配置
@@ -115,26 +117,64 @@ export interface PublicConfigType {
     animations: string[]
   }
   filter?: string
+  filterNode?: string
   status: StatusType
   events: {
+    configEvents: ConfigEventsType
+
     baseEvent: {
       [K in BaseEvent]?: string
     },
     advancedEvents: {
       [K in EventLife]?: string
-    }
+    },
+
   }
 }
-
+export interface ConfigEventsType {
+  baseEvent: EventConfigType[]
+  eChartsEvents: EventConfigType[],
+  componentEvents: EventConfigType[],
+  [T: string]: EventConfigType[],
+}
 export interface CreateComponentType extends PublicConfigType, requestConfig {
   key: string
   chartConfig: ConfigType
   option: GlobalThemeJsonType,
+  data?: any
+  dataMapping?: DataMappingType,
+  eChartsEventVars?: {
+    label: string,
+    value: string
+  }[],
+  [T: string]: any
+}
+export interface DataMappingType {
+  classAxis?: any[],
+  colorAxis?: any[],
+  valueAxis?: any[],
+  drillingAxis?: any[]
+  typeList?: any[]
+  xAxis?: any[]
+  yAxis?: any[]
+  sizeAxis?: any[]
+  [T: string]: any[]
+}
+
+export interface GlobalVarType {
+  name: string;
+  key: string;
+  entitys: {
+    key: string;
+    name: string;
+    type: string;
+    value: string;
+  }[];
 }
 
 // 组件成组实例类
 export interface CreateComponentGroupType extends CreateComponentType {
-  groupList: Array<CreateComponentType>
+  groupList?: Array<CreateComponentType>
 }
 
 // 获取组件实例类中某个key对应value类型的方法
@@ -145,7 +185,10 @@ export enum PackagesCategoryEnum {
   CHARTS = 'Charts',
   TABLES = 'Tables',
   INFORMATIONS = 'Informations',
-  DECORATES = 'Decorates'
+  DECORATES = 'Decorates',
+  FORMS = 'Forms',
+  BUSINESS = "Business",
+  CUSTOM = "Custom"
 }
 
 // 包分类名称
@@ -153,7 +196,10 @@ export enum PackagesCategoryName {
   CHARTS = '图表',
   TABLES = '列表',
   INFORMATIONS = '信息',
-  DECORATES = '小组件'
+  DECORATES = '小组件',
+  FORMS = '表单',
+  BUSINESS = '业务',
+  CUSTOM = "自定义"
 }
 
 // 获取组件
@@ -168,4 +214,104 @@ export type PackagesType = {
   [PackagesCategoryEnum.INFORMATIONS]: ConfigType[]
   [PackagesCategoryEnum.TABLES]: ConfigType[]
   [PackagesCategoryEnum.DECORATES]: ConfigType[]
+  [PackagesCategoryEnum.FORMS]: ConfigType[]
+  [PackagesCategoryEnum.CUSTOM]: ConfigType[]
+}
+
+
+export interface GlobalDialogType {
+  component: string,
+  name: string,
+  show: boolean,
+  attrs: {
+    title: string
+    width: string | number
+    fullscreen: boolean,
+    top: string,
+    modal: boolean
+    draggable: boolean
+  },
+  body: {
+    height: String,
+    type: string,
+    component?: any
+    iframe?: any
+  }
+}
+
+
+export interface EventConfigType {
+  name?: string,
+  type: string,
+  trigger: EventTriggerConfigType[]
+  filters?: EventConfigFiltersType
+}
+
+
+export enum FiltersEnum{
+  OR = "||",
+  AND = "&&"
+} 
+
+
+export interface EventTriggerConfigType {
+  type: string;
+  targetId: string;
+  updateValue?:any;
+  [T: string]: any
+}
+
+
+export interface EventType  {
+  type?:string
+  key?: string;
+  name: string;
+  paramsName: string[];
+  vars: {
+    label: string;
+    value: string;
+    type?:string
+  }[];
+  setVars?: (CreateComponentType) => void
+  [T: string]:any
+}
+
+export interface EventsType {
+  [T: string]: EventType
+}
+
+export interface EventsMapType {
+  [T: string]: EventsType
+}
+
+
+// 地图组件覆盖物组实例类
+export interface CoverGroupType{
+  id: any;
+  name: string;
+  visible: boolean;
+  type: string | coverEnum;
+  options: any;
+  dataset?: any;
+  request: RequestConfigType;
+  events: {
+      configEvents: {
+        componentEvents: any[];
+      };
+      codeEvents: {
+        baseEvent:{
+          [T:string]:string
+        }
+      };
+  };
+  data: any[];
+  dataKeyList:any[],
+  dataMapping?:{
+    [T:string]:{
+      key:string,
+      label: string,
+    }
+  },
+  filterNode?:string
+  filter?: string
 }

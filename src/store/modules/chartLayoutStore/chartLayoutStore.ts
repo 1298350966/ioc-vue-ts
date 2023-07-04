@@ -14,6 +14,10 @@ const storageChartLayout: Partial<ChartLayoutType> = getLocalStorage(GO_CHART_LA
 export const useChartLayoutStore = defineStore({
   id: 'useChartLayoutStore',
   state: (): ChartLayoutType => ({
+    //左侧边栏
+    leftSidebar: true,
+    //右侧边栏
+    rightSidebar: true,
     // 图层控制
     layers: true,
     // 图表组件
@@ -27,11 +31,17 @@ export const useChartLayoutStore = defineStore({
     // 当前加载数量
     percentage: 0,
     // 是否重置当前画布位置
-    rePositionCanvas: false,
+    rePositionCanvas: true,
     // 防止值不存在
-    ...storageChartLayout
+    ...storageChartLayout,
   }),
   getters: {
+    getLeftSidebar(): boolean {
+      return this.leftSidebar
+    },
+    getRightSidebar(): boolean {
+      return this.rightSidebar
+    },
     getLayers(): boolean {
       return this.layers
     },
@@ -55,7 +65,11 @@ export const useChartLayoutStore = defineStore({
     }
   },
   actions: {
-    setItem<T extends keyof ChartLayoutType, K extends ChartLayoutType[T]>(key: T, value: K): void {
+    setItem<T extends keyof ChartLayoutType, K extends ChartLayoutType[T]>(
+      key: T,
+      value: K,
+      computedScale = true
+    ): void {
       this.$patch(state => {
         state[key] = value
       })
@@ -64,9 +78,11 @@ export const useChartLayoutStore = defineStore({
       // 这里需要标记重置画布位置
       this.rePositionCanvas = true;
       // 重新计算拖拽区域缩放比例
-      setTimeout(() => {
-        chartEditStore.computedScale()
-      }, 500)
+      if (computedScale) {
+        setTimeout(() => {
+          chartEditStore.computedScale()
+        }, 500)
+      }
     },
     setItemUnHandle<T extends keyof ChartLayoutType, K extends ChartLayoutType[T]>(key: T, value: K): void {
       this.$patch(state => {

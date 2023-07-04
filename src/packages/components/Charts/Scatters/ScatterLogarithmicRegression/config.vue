@@ -1,7 +1,7 @@
 <template>
   <el-collapse>
     <!-- Echarts 全局设置 -->
-    <global-setting :optionData="optionData" :in-chart="true"></global-setting>
+    <!-- <global-setting :optionData="optionData" :in-chart="true"></global-setting> -->
   </el-collapse>
 </template>
 

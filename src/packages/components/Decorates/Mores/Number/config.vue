@@ -44,22 +44,22 @@
       <SettingItem name="前缀">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.prefixColor"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
       <SettingItem name="后缀">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.suffixColor"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
       <SettingItem name="数值">
         <el-color-picker
           size="small"
-          :modes="['hex']"
           v-model="optionData.numberColor"
+          show-alpha
         ></el-color-picker>
       </SettingItem>
     </SettingItemBox>

@@ -15,10 +15,10 @@
       </setting-item-box>
       <setting-item-box name="渐变色参数">
         <setting-item name="起始值">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.gradient.from"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.gradient.from" show-alpha></el-color-picker>
         </setting-item>
         <setting-item name="结束值">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.gradient.to"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.gradient.to" show-alpha></el-color-picker>
         </setting-item>
         <setting-item name="偏移角度">
           <el-input-number v-model="optionData.gradient.deg" size="small" placeholder="颜色旋转"></el-input-number>

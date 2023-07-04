@@ -1,10 +1,10 @@
 <template>
   <setting-item-box name="位置">
     <setting-item :name="`偏移 X：${targetData.left || 0}px`">
-      <el-input-number v-model:value="targetData.left" size="small" step="10"></el-input-number>
+      <el-input-number v-model="targetData.left" size="small" step="10"></el-input-number>
     </setting-item>
     <setting-item :name="`偏移 Y：${targetData.top || 0}px`">
-      <el-input-number v-model:value="targetData.top" size="small" step="10"></el-input-number>
+      <el-input-number v-model="targetData.top" size="small" step="10"></el-input-number>
     </setting-item>
   </setting-item-box>
 </template>

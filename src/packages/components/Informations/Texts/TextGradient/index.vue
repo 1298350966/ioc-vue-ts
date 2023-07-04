@@ -9,8 +9,8 @@
 import { PropType, toRefs, shallowReactive, watch, computed } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { option as configOption } from './config'
+import { ChartEditStorageType } from '@/views/preview'
 
 const props = defineProps({
   chartConfig: {
@@ -18,6 +18,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const rootConfig: ChartEditStorageType = inject("rootConfig")
 
 const option = shallowReactive({
   dataset: configOption.dataset
@@ -43,7 +45,7 @@ watch(
   }
 )
 
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: any) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: any) => {
   option.dataset = newData
 })
 </script>

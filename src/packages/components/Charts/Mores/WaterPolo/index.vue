@@ -9,11 +9,12 @@ import { use } from 'echarts/core'
 import 'echarts-liquidfill/src/liquidFill.js'
 import { CanvasRenderer } from 'echarts/renderers'
 import { GridComponent } from 'echarts/components'
-import config from './config'
+import config, { Events } from './config'
 import { isPreview, isString } from '@/utils'
 import { chartColorsSearch, defaultTheme } from '@/settings/chartThemes/index'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartDataFetch } from '@/hooks'
+import { useAddEvent } from '@/packages/hooks/useAddEvent.kooks'
 
 const props = defineProps({
   themeSetting: {
@@ -30,6 +31,8 @@ const props = defineProps({
   }
 })
 
+const { rootConfig, getEvents } = useAddEvent(props.chartConfig, Events)
+
 use([CanvasRenderer, GridComponent])
 
 const chartEditStore = useChartEditStore()
@@ -40,7 +43,7 @@ const option = reactive({
 
 // 渐变色处理
 watch(
-  () => chartEditStore.getEditCanvasConfig.chartThemeColor,
+  () => rootConfig.editCanvasConfig.chartThemeColor,
   (newColor: keyof typeof chartColorsSearch) => {
     if (!isPreview()) {
       const themeColor = chartColorsSearch[newColor] || chartColorsSearch[defaultTheme]
@@ -73,9 +76,9 @@ const dataHandle = (newData: number | string) => {
 
 // 编辑
 watch(
-  () => props.chartConfig.option.dataset,
+  () => props.chartConfig.data,
   newData => {
-    props.chartConfig.option.series[0].data = [dataHandle(newData)]
+    props.chartConfig.option.series[0].data = [dataHandle(newData.value)]
     option.value = props.chartConfig.option
   },
   {
@@ -85,7 +88,7 @@ watch(
 )
 
 // 预览
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: number) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: number) => {
   // @ts-ignore
   option.value.series[0].data = [dataHandle(newData)]
 })

@@ -34,7 +34,7 @@
 import { PropType, onUnmounted, reactive, toRefs, watch } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 import { useChartDataFetch } from '@/hooks'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import { ChartEditStorageType } from '@/views/preview'
 
 const props = defineProps({
   chartConfig: {
@@ -46,6 +46,8 @@ const { w, h } = toRefs(props.chartConfig.attr)
 const { rowNum, unit, color, textColor, borderColor, indexFontSize, leftFontSize, rightFontSize } = toRefs(
   props.chartConfig.option
 )
+
+const rootConfig: ChartEditStorageType = inject("rootConfig")
 
 const status = reactive({
   mergedConfig: props.chartConfig.option,
@@ -176,7 +178,7 @@ watch(
 )
 
 // 数据callback处理（预览时触发）
-useChartDataFetch(props.chartConfig, useChartEditStore, (resData: any[]) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (resData: any[]) => {
   props.chartConfig.option.dataset = resData
   onRestart()
 })

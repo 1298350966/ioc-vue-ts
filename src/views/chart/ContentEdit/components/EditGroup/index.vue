@@ -18,33 +18,36 @@
       @mouseenter="mouseenterHandle($event, groupData)"
       @mouseleave="mouseleaveHandle($event, groupData)"
       @contextmenu="handleContextMenu($event, groupData, optionsHandle)"
-    >
-      <!-- 组合组件 -->
-      <edit-shape-box
-        v-for="item in groupData.groupList"
-        :key="item.id"
-        :data-id="item.id"
-        :index="groupIndex"
-        :item="item"
-        :hiddenPoint="true"
-        :style="{
-          ...useComponentStyle(item.attr, groupIndex)
-        }"
-      >
-        <component
-          class="edit-content-chart"
-          :class="animationsClass(item.styles.animations)"
-          :is="item.chartConfig.chartKey"
-          :chartConfig="item"
-          :themeSetting="themeSetting"
-          :themeColor="themeColor"
+    > 
+    <div :id="groupData.id" style="width: 100%;height: 100%;">
+        <!-- 组合组件 -->
+        <edit-shape-box
+          v-for="item in groupData.groupList"
+          :key="item.id"
+          :data-id="item.id"
+          :index="groupIndex"
+          :item="item"
+          :hiddenPoint="true"
           :style="{
-            ...useSizeStyle(item.attr),
-            ...getFilterStyle(item.styles),
-            ...getTransformStyle(item.styles)
+            ...useComponentStyle(item.attr, groupIndex)
           }"
-        ></component>
-      </edit-shape-box>
+        >
+          <component
+            class="edit-content-chart"
+            :class="animationsClass(item.styles.animations)"
+            :is="item.chartConfig.chartKey"
+            :chartConfig="item"
+            :themeSetting="themeSetting"
+            :themeColor="themeColor"
+            :style="{
+              ...useSizeStyle(item.attr),
+              ...getFilterStyle(item.styles),
+              ...getTransformStyle(item.styles)
+            }"
+          ></component>
+        </edit-shape-box>
+    </div>
+
     </edit-shape-box>
   </div>
 </template>
@@ -86,7 +89,7 @@ const optionsHandle = (
   targetInstance: CreateComponentType
 ) => {
   // 多选
-  const moreMenuEnums = [MenuEnum.GROUP, MenuEnum.DELETE]
+  const moreMenuEnums = [MenuEnum.GROUP, MenuEnum.DELETE, MenuEnum.DOWNLOAD_IMAGE]
   // 单选
   const singleMenuEnums = [MenuEnum.UN_GROUP]
 

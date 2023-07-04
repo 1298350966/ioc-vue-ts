@@ -1,3 +1,4 @@
+export * from "./config"
 import image from '@/assets/images/chart/charts/bar_y.png'
 import { ConfigType, PackagesCategoryEnum, ChartFrameEnum } from '@/packages/index.d'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../../index.d'

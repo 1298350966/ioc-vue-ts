@@ -1,62 +1,57 @@
 <template>
   <div class="go-chart-data-pond-list">
-    <n-timeline style="width: 20px">
-      <n-timeline-item type="info"> </n-timeline-item>
-      <n-timeline-item type="success"></n-timeline-item>
-    </n-timeline>
+    <el-timeline style="width: 20px">
+      <el-timeline-item type="info"> </el-timeline-item>
+      <el-timeline-item type="success"></el-timeline-item>
+    </el-timeline>
     <div class="pond-item-box">
       <!-- 新增 -->
-      <n-button class="create-btn go-py-4" ghost @click="createPond">
+      <el-button class="create-btn go-py-4" type="primary" @click="createPond">
         <span> 创建 </span>
         <template #icon>
-          <n-icon>
+          <el-icon>
             <DuplicateOutlineIcon></DuplicateOutlineIcon>
-          </n-icon>
+          </el-icon>
         </template>
-      </n-button>
-      <n-divider style="margin: 10px 0"></n-divider>
-      <n-space v-if="!requestDataPond.length" justify="center">
-        <n-text class="not-layer-text" :depth="3">
+      </el-button>
+      <el-divider style="margin: 10px 0"></el-divider>
+      <el-space v-if="!requestDataPond.length" justify="center">
+        <span class="not-layer-text" :depth="3">
           暂无数据内容，
-          <n-a @click="createPond">立即创建</n-a>
-        </n-text>
-      </n-space>
-      <n-scrollbar style="max-height: 490px">
-        <div
-          v-for="item in requestDataPond"
-          :key="item.dataPondId"
-          :class="{ select: item.dataPondId === selectPondId }"
-          class="pond-item"
-          @click="clickHandle(item)"
-        >
+          <span @click="createPond">立即创建</span>
+        </span>
+      </el-space>
+      <el-scrollbar>
+        <div v-for="item in requestDataPond" :key="item.dataPondId" :class="{ select: item.dataPondId === selectPondId }"
+          class="pond-item" @click="clickHandle(item)">
           <div class="item-content">
             <div class="item-content-body">
               <div>
-                <n-tag class="go-mr-1" :type="item.dataPondId === selectPondId ? 'warning' : ''" :bordered="false">
+                <el-tag class="go-mr-1" :type="item.dataPondId === selectPondId ? 'warning' : ''" :bordered="false">
                   名称
-                </n-tag>
-                <n-ellipsis style="max-width: 180px">
+                </el-tag>
+                <span class="kh-nowrap flex-1">
                   {{ item.dataPondName || '暂无' }}
-                </n-ellipsis>
+                </span>
               </div>
-              <div>
-                <n-tag class="go-mr-1" :type="item.dataPondId === selectPondId ? 'warning' : ''" :bordered="false">
+              <div class="kh-flex-between">
+                <el-tag class="go-mr-1" :type="item.dataPondId === selectPondId ? 'warning' : ''" :bordered="false">
                   地址
-                </n-tag>
-                <n-ellipsis style="max-width: 180px">
+                </el-tag>
+                <span class="kh-nowrap flex-1">
                   {{ item.dataPondRequestConfig.requestUrl || '暂无' }}
-                </n-ellipsis>
+                </span>
               </div>
             </div>
             <div class="item-content-icon go-transition-quick" @click="deletePond($event, item)">
-              <n-icon>
-                <trash-icon></trash-icon>
-              </n-icon>
+              <el-icon>
+                <Close></Close>
+              </el-icon>
             </div>
           </div>
           <div :class="{ 'select-modal': item.dataPondId === selectPondId }"></div>
         </div>
-      </n-scrollbar>
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -115,41 +110,47 @@ $textSize: 10px;
   padding-bottom: 5px;
   margin-right: 5px;
   display: flex;
+
   @include deep() {
-    .n-timeline > .n-timeline-item {
+    .el-timeline>.el-timeline-item {
       &:first-child {
         height: $height;
       }
     }
   }
+
   .pond-item-box {
     width: $listWidth;
     position: relative;
+
     .create-btn {
-      width: calc(#{$listWidth - 15px});
-      margin-right: 15px;
+      width: 100%;
     }
+
     .pond-item {
       position: relative;
       height: $centerHeight;
       padding: 5px;
       margin-bottom: 10px;
-      margin-right: 15px;
+      // margin-right: 15px;
       border-radius: 5px;
       cursor: pointer;
       border: 1px solid rgba(0, 0, 0, 0);
       @include fetch-bg-color('background-color3');
-      @extend .go-transition-quick;
+      @extend .kh-transition-quick;
+
       &.hover,
       &:hover {
         @include fetch-bg-color('background-color4');
       }
+
       &:hover {
         @include deep() {
           .icon-item {
             opacity: 1;
           }
         }
+
         .item-content-icon {
           opacity: 1 !important;
         }
@@ -158,9 +159,6 @@ $textSize: 10px;
       &.select {
         border: 1px solid v-bind('themeColor');
         background-color: rgba(0, 0, 0, 0);
-        .item-content-icon {
-          display: none;
-        }
       }
 
       .select-modal,
@@ -176,17 +174,24 @@ $textSize: 10px;
         justify-content: space-between;
         align-items: center;
         padding: 5px;
+        width: 100%;
+        box-sizing: border-box;
+
         .item-content-body {
-          width: 230px;
+          width: 100%;
+          flex: 1;
           display: flex;
           flex-direction: column;
           gap: 5px;
+
         }
+
         .item-content-icon {
           opacity: 0;
-          height: $centerHeight;
-          line-height: $centerHeight;
           padding-left: 5px;
+          position: absolute;
+          top: 5px;
+          right: 5px;
         }
       }
 

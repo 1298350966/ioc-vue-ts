@@ -8,7 +8,6 @@
       </setting-item-box>
       <setting-item-box name="链接" :alone="true">
         <setting-item>
-          <el-input-group>
             <el-select-v2
               v-model="optionData.linkHead"
               size="small"
@@ -17,7 +16,6 @@
             />
             <el-input v-model="optionData.link" size="small"></el-input>
             <el-button :disabled="!optionData.link" secondary size="small" @click="handleLinkClick">跳转</el-button>
-          </el-input-group>
         </setting-item>
       </setting-item-box>
     </collapse-item>
@@ -25,7 +23,7 @@
     <collapse-item name="样式" :expanded="true">
       <setting-item-box name="文字">
         <setting-item name="颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.fontColor"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.fontColor" show-alpha></el-color-picker>
         </setting-item>
         <setting-item name="字体大小">
           <el-input-number v-model="optionData.fontSize" size="small" placeholder="字体大小"></el-input-number>
@@ -66,7 +64,7 @@
           ></el-input-number>
         </setting-item>
         <setting-item name="颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.borderColor"></el-color-picker>
+          <el-color-picker size="small" v-model="optionData.borderColor" show-alpha></el-color-picker>
         </setting-item>
         <setting-item name="圆角">
           <el-input-number
@@ -80,7 +78,7 @@
 
       <setting-item-box name="背景" :alone="true">
         <setting-item name="背景颜色">
-          <el-color-picker size="small" :modes="['hex']" v-model="optionData.backgroundColor"></el-color-picker>
+          <el-color-picker size="small" show-alpha v-model="optionData.backgroundColor"></el-color-picker>
         </setting-item>
       </setting-item-box>
     </collapse-item>

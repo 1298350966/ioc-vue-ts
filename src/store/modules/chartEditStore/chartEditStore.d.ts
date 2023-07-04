@@ -11,6 +11,7 @@ import {
 } from '@/enums/httpEnum'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
 import type { ChartColorsNameType, GlobalThemeJsonType } from '@/settings/chartThemes/index'
+import { AnyColumn } from 'element-plus/es/components/table-v2/src/common'
 
 // 编辑画布属性
 export enum EditCanvasTypeEnum {
@@ -22,7 +23,8 @@ export enum EditCanvasTypeEnum {
   LOCK_SCALE = 'lockScale',
   IS_CREATE = 'isCreate',
   IS_DRAG = 'isDrag',
-  IS_SELECT = 'isSelect'
+  IS_SELECT = 'isSelect',
+  IS_CODE_EDIT = "isCodeEdit"
 }
 
 // 编辑区域
@@ -44,6 +46,8 @@ export type EditCanvasType = {
   [EditCanvasTypeEnum.IS_DRAG]: boolean
   // 框选中
   [EditCanvasTypeEnum.IS_SELECT]: boolean
+  // 代码编辑中
+  [EditCanvasTypeEnum.IS_CODE_EDIT]: boolean
 }
 
 // 滤镜/背景色/宽高主题等
@@ -142,7 +146,12 @@ export enum ChartEditStoreEnum {
   // 以下需要存储
   EDIT_CANVAS_CONFIG = 'editCanvasConfig',
   REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
-  COMPONENT_LIST = 'componentList'
+  COMPONENT_LIST = 'componentList',
+  GLOBAL_VAR = 'globalVar',
+  GLOBAL_REQUEST = "globalRequest",
+  GLOBAL_Dialog = "globalDialog",
+  GLOBAL_FUNCTION = "globalFunction"
+
 }
 
 // 请求公共类型
@@ -202,11 +211,31 @@ export interface ChartEditStoreType {
   [ChartEditStoreEnum.RECORD_CHART]?: RecordChartType
   [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType
   [ChartEditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>
+  [ChartEditStoreEnum.GLOBAL_VAR]: Array<GlobalVarType>
+  [ChartEditStoreEnum.GLOBAL_REQUEST]: any[]
+  [ChartEditStoreEnum.GLOBAL_Dialog]: any[]
+  [ChartEditStoreEnum.GLOBAL_FUNCTION]: GlobalFunctionType[]
 }
+
 
 // 存储数据类型
 export interface ChartEditStorage {
   [ChartEditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType
   [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType
   [ChartEditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>
+  [ChartEditStoreEnum.GLOBAL_VAR]: Array<GlobalVarType>
+  [ChartEditStoreEnum.GLOBAL_REQUEST]: any[]
+  [ChartEditStoreEnum.GLOBAL_Dialog]: any[]
+  [ChartEditStoreEnum.GLOBAL_FUNCTION]: GlobalFunctionType[]
 }
+
+
+export interface GlobalFunctionType {
+  name: string,
+  functionName: string
+  functionContext: string
+  [T: string]: any
+}
+
+
+

@@ -1,3 +1,4 @@
+export * from "./config"
 import { ConfigType, PackagesCategoryEnum, ChartFrameEnum } from '@/packages/index.d'
 import image from '@/assets/images/chart/charts/map.png'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../../index.d'

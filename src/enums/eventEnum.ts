@@ -11,12 +11,14 @@ export enum BaseEvent {
 }
 
 // vue3 生命周期事件
-export enum EventLife { 
+export enum EventLife {
   // 渲染之后
   VNODE_MOUNTED = 'vnodeMounted',
   // 渲染之前
   VNODE_BEFORE_MOUNT = 'vnodeBeforeMount',
 }
+
+
 
 // 内置字符串函数对象列表
 export const excludeParseEventKeyList = [
@@ -29,3 +31,14 @@ export const excludeParseEventKeyList = [
   //过滤器
   'filter'
 ]
+
+export enum MapBaseEvent {
+  // 点击
+  ON_CLICK = 'click',
+  // 双击
+  ON_DBL_CLICK = 'dblclick',
+  // 移入
+  ON_MOUSE_OVER = 'mouseover',
+  // 移出
+  ON_MOUSE_OUT = 'mouseout',
+}

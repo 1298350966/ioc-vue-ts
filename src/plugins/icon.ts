@@ -1,4 +1,5 @@
 import {
+  Add as AddIcon,
   Close as CloseIcon,
   Remove as RemoveIcon,
   Resize as ResizeIcon,
@@ -27,6 +28,7 @@ import {
   LockClosedOutline as LockClosedOutlineIcon,
   HelpCircleOutline as HelpOutlineIcon,
   CodeSlash as CodeSlashIcon,
+  Create as CreateIcon,
   Rocket as RocketIcon,
   Duplicate as DuplicateIcon,
   DuplicateOutline as DuplicateOutlineIcon,
@@ -51,13 +53,21 @@ import {
   ColorWand as ColorWandIcon,
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
+  ArrowDown as ArrowDownIcon,
   Planet as PawIcon,
   Search as SearchIcon,
   ChevronUpOutline as ChevronUpOutlineIcon,
   ChevronDownOutline as ChevronDownOutlineIcon,
   Pulse as PulseIcon,
   Folder as FolderIcon,
-  FolderOpen as FolderOpenIcon
+  FolderOpen as FolderOpenIcon,
+  Image as ImageIcon,
+  Images as ImagesIcon,
+  List as ListIcon,
+  EyeOutline as EyeOutlineIcon,
+  EyeOffOutline as EyeOffOutlineIcon,
+  Albums as AlbumsIcon,
+  Analytics as AnalyticsIcon
 } from '@vicons/ionicons5'
 
 import {
@@ -89,10 +99,13 @@ import {
   Carbon3DCursor as Carbon3DCursorIcon,
   Carbon3DSoftware as Carbon3DSoftwareIcon,
   Filter as FilterIcon,
-  FilterEdit as FilterEditIcon
+  FilterEdit as FilterEditIcon,
+  Laptop as LaptopIcon
 } from '@vicons/carbon'
 
 const ionicons5 = {
+  // 新增
+  AddIcon,
   // 帮助（问号）
   HelpOutlineIcon,
   // 添加
@@ -101,6 +114,8 @@ const ionicons5 = {
   DuplicateOutlineIcon,
   // 代码
   CodeSlashIcon,
+  // 修改代码
+  CreateIcon,
   // 事件(火箭)
   RocketIcon,
   // 退出
@@ -196,6 +211,8 @@ const ionicons5 = {
   ArrowBackIcon,
   // 前进
   ArrowForwardIcon,
+  // 向下
+  ArrowDownIcon,
   // 狗爪
   PawIcon,
   // 搜索（放大镜）
@@ -211,7 +228,20 @@ const ionicons5 = {
   // 文件夹
   FolderIcon,
   // 文件夹打开
-  FolderOpenIcon
+  FolderOpenIcon,
+  // 图片
+  ImageIcon,
+  // 多个图片
+  ImagesIcon,
+  // 列表
+  ListIcon,
+  // 眼睛
+  EyeOutlineIcon,
+  EyeOffOutlineIcon,
+  // 图表列表 
+  AlbumsIcon,
+  // 分析
+  AnalyticsIcon
 }
 
 const carbon = {
@@ -262,7 +292,9 @@ const carbon = {
   Carbon3DSoftwareIcon,
   // 过滤器
   FilterIcon,
-  FilterEditIcon
+  FilterEditIcon,
+  // 图层
+  LaptopIcon
 }
 
 // https://www.xicons.org/#/ 还有很多

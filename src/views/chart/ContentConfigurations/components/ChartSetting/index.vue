@@ -9,12 +9,14 @@
     <!-- 滤镜 -->
     <styles-setting :isGroup="targetData.isGroup" :chartStyles="targetData.styles"></styles-setting>
     <!-- 自定义配置项 -->
-    <component :is="targetData.chartConfig.conKey" :optionData="targetData.option"></component>
+    <component :is="targetData.chartConfig.conKey" :optionData="targetData.option" :targetData="targetData"></component>
+    <!-- 组件列表 -->
+    <group-list v-if="targetData.isGroup" :targetData="targetData"></group-list>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NameSetting, PositionSetting, SizeSetting, StylesSetting } from '@/components/Pages/ChartItemSetting'
+import { NameSetting, PositionSetting, SizeSetting, StylesSetting, GroupList } from '@/components/Pages/ChartItemSetting'
 import { useTargetData } from '../hooks/useTargetData.hook'
 const { targetData, chartEditStore } = useTargetData()
 

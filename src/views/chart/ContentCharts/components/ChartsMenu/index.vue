@@ -52,9 +52,9 @@ function setActive(option: { key: any; },index:number){
   }
   
 .active{
-  color: #f6dead;
+  color: var(--el-color-primary);;
   &::before{
-    background: rgba(246, 222, 173, 0.15);
+    background: rgba(173, 205, 246, 0.15);
   }
 }
 }

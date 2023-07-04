@@ -1,34 +1,28 @@
 <template>
-    <dragDialog
-    custom-class="FunEditorDialog"
-    v-model="modelShowRef"
-    title="请求设置"
-  >
-  <!-- <n-modal class="go-chart-data-request" v-model:show="modelShowRef" :mask-closable="false" :closeOnEsc="false"> -->
-    <n-card :bordered="false" role="dialog" size="small" aria-modal="true" style="width: 1000px; height: 800px">
-      <el-scrollbar height="500px">
+  <dragDialog v-model="modelShowRef" title="请求设置" @close="closeHandle">
+    <!-- <n-modal class="go-chart-data-request" v-model:show="modelShowRef" :mask-closable="false" :closeOnEsc="false"> -->
+    <el-container>
+      <el-scrollbar height="70vh">
         <div class="go-pr-3">
-          <el-space direction="vertical">
-            <request-global-config></request-global-config>
-            <!-- <request-target-config :target-data-request="targetData?.request"></request-target-config> -->
-          </el-space>
+          <request-global-config></request-global-config>
+          <request-target-config :target-data-request="targetData?.request"></request-target-config>
         </div>
       </el-scrollbar>
       <!-- 底部 -->
 
-    </n-card>
+    </el-container>
     <template #footer>
-        <el-space style="width: 100%;justify-content:space-between;">
-          <div>
-            <span>「 {{ chartConfig.categoryName }} 」</span>
-            <span>—— </span>
-            <el-tag type="success" :bordered="false" style="border-radius: 5px">
-              {{ requestContentTypeObj[requestContentType] }}
-            </el-tag>
-          </div>
-          <el-button type="primary" @click="closeAndSendHandle"> {{ saveBtnText || '保存 & 发送请求' }}</el-button>
-        </el-space>
-      </template>
+      <el-space style="width: 100%;justify-content:space-between;">
+        <div>
+          <span>「 {{ chartConfig.categoryName }} 」</span>
+          <span>—— </span>
+          <el-tag type="success" style="border-radius: 5px">
+            {{ requestContentTypeObj[requestContentType] }}
+          </el-tag>
+        </div>
+        <el-button type="primary" @click="closeAndSendHandle"> {{ saveBtnText || '保存 & 发送请求' }}</el-button>
+      </el-space>
+    </template>
   </dragDialog>
 </template>
 
@@ -50,27 +44,36 @@ const emit = defineEmits(['update:modelShow', 'sendHandle'])
 // 解构基础配置
 const { chartConfig } = toRefs(props.targetData as CreateComponentType)
 const { requestContentType } = toRefs((props.targetData as CreateComponentType).request)
-const modelShowRef = ref(false)
+
+const modelShowRef = computed({
+  get() {
+    return props.modelShow
+  },
+  set(val) {
+    emit('update:modelShow', val)
+  }
+})
 const requestContentTypeObj = {
   [RequestContentTypeEnum.DEFAULT]: '普通请求',
   [RequestContentTypeEnum.SQL]: 'SQL 请求'
 }
 
-watch(
-  () => props.modelShow,
-  newValue => {
-    modelShowRef.value = newValue
-  },
-  {
-    immediate: true
-  }
-)
+// watch(
+//   () => props.modelShow,
+//   newValue => {
+//     modelShowRef.value = newValue
+//   },
+//   {
+//     immediate: true
+//   }
+// )
 
 const closeHandle = () => {
   emit('update:modelShow', false)
 }
 
 const closeAndSendHandle = () => {
+  console.log(111);
   emit('update:modelShow', false)
   emit('sendHandle')
 }
@@ -78,17 +81,21 @@ const closeAndSendHandle = () => {
 
 <style lang="scss" scoped>
 @include go('chart-data-request') {
+
   &.n-card.n-modal,
   .n-card {
     @extend .go-background-filter;
   }
+
   .n-card-shallow {
     background-color: rgba(0, 0, 0, 0) !important;
   }
+
   @include deep() {
-    & > .n-card__content {
+    &>.n-card__content {
       padding-right: 0;
     }
+
     .n-card__content {
       padding-bottom: 5px;
     }

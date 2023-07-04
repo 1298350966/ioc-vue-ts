@@ -1,9 +1,10 @@
 <template>
+  <!-- :class="{ scoped: !getCharts }" -->
   <content-box
     class="kh-content-charts"
-    title="组件"
+    title="组件模板"
     >
-    <div class="charts-menu-box">
+    <div class="charts-menu-box" >
       <charts-menu class="charts-menu-1" @menuItemClick="clickItemHandle" :options="menuOptions"></charts-menu>
       <charts-option-content
         class="charts-option-content" 
@@ -40,20 +41,34 @@ $widthScoped: 65px;
 /* 此高度与 ContentBox 组件关联 */
 $topHeight: 40px;
 .kh-content-charts{
-   width:$width;
+   @extend .kh-transition;
+    &.scoped,
+    .menu-width {
+      width: $widthScoped;
+    }
    .charts-menu-box{
     display: flex;
     height: calc(100vh - #{$--header-height} - #{$topHeight} - 2px);
-   }
+    .menu-width {
+      flex-shrink: 0;
+    }
+    .menu-component-box {
+      flex-shrink: 0;
+      width: $width - $widthScoped;
+      overflow: hidden;
+    } 
+  }
    .charts-menu-1{
     width:$widthScoped;
     background: $--color-dark-bg-2;
     margin-top:1px;
     box-sizing: border-box;
+    // overflow: hidden;
    }
 
    .charts-option-content{
     flex: 1;
+    overflow: hidden;
    }
 }
 </style>

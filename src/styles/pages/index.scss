@@ -1,5 +1,15 @@
 // 页面全局样式
-:root{
-  --kh-header-bg:rgb(24, 24, 28);
-  --bg:linear-gradient(120deg, #18181c 0%, #18181c 100%);
+:root {
+  --kh-header-bg: rgb(24, 24, 28);
+  --bg: linear-gradient(120deg, #18181c 0%, #18181c 100%);
+}
+
+:root {
+  --dark-color-0: #000000;
+  --dark-color-1a: #1a1a1a;
+  --dark-color-1: #1e1e1e;
+  --dark-color-2: #232324;
+  --dark-color-3: #333333;
+  --dark-color-4: #37373d;
+  --left-sideBar-width: 350px;
 }

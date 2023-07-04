@@ -1,5 +1,5 @@
 <template>
-  <pre><code :class="className" v-html="highlighted"></code></pre>
+  <pre><code :class="className" v-html="highlighted" contenteditable="true"></code></pre>
 </template>
 
 <script lang="ts">
@@ -63,6 +63,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+code.hljs{
+  padding: 0;
+}
 // .hljs {
 //     background: initial;
 // }

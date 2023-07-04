@@ -2,27 +2,36 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
+    "moduleResolution": "Node",
+    "strict": false,
     "jsx": "preserve",
-    "baseUrl": ".",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "strictFunctionTypes": false,
     "skipLibCheck": true,
-    "declaration": true, // 生成声明文件.d.ts，开启后会自动生成声明文件
-    "declarationDir": "type", // 指定生成声明文件存放目录
-    "lib": ["es6", "ESNext", "dom"],
-    "types": ["vite/client","unplugin-vue-define-options/macros-global"  ],
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "lib": ["es2020", "dom", "esnext", "es6", "dom.iterable"],
+    "incremental": true,
     "paths": {
       "@/*": ["src/*"],
+      "/@/*": ["src/*"],
+      "@build/*": ["build/*"],
+      "@static/*": ["public/static/*"], 
       "/#/*": ["types/*"]
     },
-    "noImplicitAny": true, //不允许使用any
-    // "strictNullChecks": true, //不允许使用null
-    "noImplicitThis": true, //不允许往this上面挂属性
-    
+    "typeRoots": ["node_modules/@types", "./types", "./src/router/types.ts"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*"],
+  "include": [
+    "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*",
+    "build/**/*.ts",
+    "build/**/*.d.ts",
+    "vite.config.ts",
+  ],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

@@ -15,75 +15,89 @@
         <span class="list-header-text" depth="3">{{ item.title }}</span>
       </div>
       <div class="list-center kh-flex-center">
-        <img class="list-img" v-lazy="item.image" alt="图表图片" />
+        <el-image
+          fit="contain"
+          class="list-img"
+          :src="item.image"
+          alt="图表图片"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
+import { PropType } from "vue";
 // import { MacOsControlBtn } from '@/components/Tips/MacOsControlBtn/index'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
-import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
-import { componentInstall, loadingStart, loadingFinish, loadingError } from '@/utils'
-import { DragKeyEnum } from '@/enums/editPageEnum'
-import { createComponent } from '@/packages'
-import { ConfigType, CreateComponentType } from '@/packages/index.d'
-import { fetchConfigComponent, fetchChartComponent } from '@/packages/index'
-import omit from 'lodash/omit'
-const chartEditStore = useChartEditStore()
+import { useChartEditStore } from "@/store/modules/chartEditStore/chartEditStore";
+import { EditCanvasTypeEnum } from "@/store/modules/chartEditStore/chartEditStore.d";
+import {
+  componentInstall,
+  loadingStart,
+  loadingFinish,
+  loadingError,
+} from "@/utils";
+import { DragKeyEnum } from "@/enums/editPageEnum";
+import { createComponent } from "@/packages";
+import { ConfigType, CreateComponentType } from "@/packages/index.d";
+import { fetchConfigComponent, fetchChartComponent } from "@/packages/index";
+import omit from "lodash/omit";
+const chartEditStore = useChartEditStore();
 
 defineProps({
   menuOptions: {
     type: Array as PropType<ConfigType[]>,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 
 // 拖拽处理
 const dragStartHandle = (e: DragEvent, item: ConfigType) => {
   // 动态注册图表组件
-  componentInstall(item.chartKey, fetchChartComponent(item))
-  componentInstall(item.conKey, fetchConfigComponent(item))
+  componentInstall(item.chartKey, fetchChartComponent(item));
+  componentInstall(item.conKey, fetchConfigComponent(item));
   // 将配置项绑定到拖拽属性上
-  e!.dataTransfer!.setData(DragKeyEnum.DRAG_KEY, JSON.stringify(omit(item, ['image'])))
+  e!.dataTransfer!.setData(
+    DragKeyEnum.DRAG_KEY,
+    JSON.stringify(omit(item, ["image"]))
+  );
   // 修改状态
-  chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CREATE, true)
-}
+  chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CREATE, true);
+};
 
 // 拖拽结束
 const dragendHandle = () => {
-  chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CREATE, false)
-}
+  chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CREATE, false);
+};
 
 // 双击添加
 const dblclickHandle = async (item: ConfigType) => {
   try {
-    loadingStart()
+    debugger
+    loadingStart();
     // 动态注册图表组件
-    componentInstall(item.chartKey, fetchChartComponent(item))
-    componentInstall(item.conKey, fetchConfigComponent(item))
+    componentInstall(item.chartKey, fetchChartComponent(item));
+    componentInstall(item.conKey, fetchConfigComponent(item));
     // 创建新图表组件
-    let newComponent: CreateComponentType = await createComponent(item)
+    let newComponent: CreateComponentType = await createComponent(item);
     // 添加
-    chartEditStore.addComponentList(newComponent, false, true)
+    chartEditStore.addComponentList(newComponent, false, true);
     // 选中
-    chartEditStore.setTargetSelectChart(newComponent.id)
-    loadingFinish()
+    chartEditStore.setTargetSelectChart(newComponent.id);
+    loadingFinish();
   } catch (error) {
-    loadingError()
-    window['$message'].warning(`图表正在研发中, 敬请期待...`)
+    loadingError();
+    window["$message"].warning(`图表正在研发中, 敬请期待...`);
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 /* 列表项宽度 */
 $itemWidth: 86%;
 /* 内容高度 */
-$centerHeight: 100px;
-.content-charts-item-box{
+$centerHeight: 80px;
+.content-charts-item-box {
   width: 100%;
   .item-box {
     margin: 0 7%;
@@ -108,7 +122,7 @@ $centerHeight: 100px;
       // @include fetch-bg-color('background-color3');
       &-text {
         font-size: 12px;
-        margin-left: 8px;
+        // margin-left: 8px;
       }
     }
     .list-center {
@@ -116,9 +130,10 @@ $centerHeight: 100px;
       height: $centerHeight;
       overflow: hidden;
       .list-img {
+        width:110px;
         height: 100%;
         border-radius: 6px;
-        @extend .go-transition;
+        @extend .kh-transition;
       }
     }
   }

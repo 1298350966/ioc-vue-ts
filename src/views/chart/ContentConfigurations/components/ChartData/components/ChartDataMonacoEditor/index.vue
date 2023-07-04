@@ -19,54 +19,34 @@
     </el-card>
   </template>
   <template v-else>
-    <el-button @click="addFilter"> 新增过滤器 </el-button>
+    <el-button type="primary" @click="addFilter"> 新增过滤器 </el-button>
   </template>
 
   <!-- 弹窗 -->
-  <dragDialog
-    custom-class="FunEditorDialog"
-    v-model="showModal"
-    title="过滤器函数编辑器"
-  >
-    <el-container>
+  <dragDialog custom-class="FunEditorDialog" v-model="showModal" title="过滤器函数编辑器">
+    <el-container style="height:680px">
       <el-main style="padding: 0">
         <div>
           <el-tag size="large" type="info">
             <span class="func-keyword">function</span>&nbsp;&nbsp;filter(data,
             res)&nbsp;&nbsp;{
           </el-tag>
-          <monaco-editor
-            v-model:modelValue="filter"
-            height="410px"
-            language="javascript"
-          />
+          <monaco-editor v-model:modelValue="filter" height="610px" language="javascript" />
           <el-tag size="large" type="info">}</el-tag>
         </div>
       </el-main>
-      <el-divider direction="vertical" style="height: 480px" />
+      <el-divider direction="vertical" style="height: 680px" />
       <el-aside width="300px">
-        <el-scrollbar height="480px">
-          <el-collapse :model-value="[1,2,3]">
+        <el-scrollbar>
+          <el-collapse :model-value="[1, 2, 3]">
             <el-collapse-item title="默认过滤数据(data)" :name="1">
-              <h-code
-                :code="toString(sourceData?.data) || '暂无'"
-                language="json"
-                :word-wrap="true"
-              ></h-code>
+              <h-code :code="toString(sourceData?.data) || '暂无'" language="json" :word-wrap="true"></h-code>
             </el-collapse-item>
             <el-collapse-item title="接口返回数据(res)" :name="2">
-              <h-code
-                :code="toString(sourceData) || '暂无'"
-                language="json"
-                :word-wrap="true"
-              ></h-code>
+              <h-code :code="toString(sourceData) || '暂无'" language="json" :word-wrap="true"></h-code>
             </el-collapse-item>
             <el-collapse-item title="过滤器结果" :name="3">
-              <h-code
-                :code="filterRes || '暂无'"
-                language="json"
-                :word-wrap="true"
-              ></h-code>
+              <h-code :code="filterRes || '暂无'" language="json" :word-wrap="true"></h-code>
             </el-collapse-item>
           </el-collapse>
         </el-scrollbar>
@@ -149,7 +129,7 @@ import { useTargetData } from "../../../hooks/useTargetData.hook";
 import { MonacoEditor } from "@/components/Pages/MonacoEditor";
 import { icon } from "@/plugins";
 import { goDialog, toString } from "@/utils";
-// import { customizeHttp } from '@/api/http'
+import { customizeHttp } from '@/api/http'
 import cloneDeep from "lodash/cloneDeep";
 
 const { DocumentTextIcon } = icon.ionicons5;
@@ -170,11 +150,11 @@ const sourceData = ref<any>("");
 // 动态获取数据
 const fetchTargetData = async () => {
   try {
-    // const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
-    // if (res) {
-    //   sourceData.value = res
-    //   return
-    // }
+    const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
+    if (res) {
+      sourceData.value = res
+      return
+    }
     window["$message"].warning("数据异常，请检查参数！");
   } catch (error) {
     window["$message"].warning("数据异常，请检查参数！");
@@ -242,11 +222,14 @@ watch(
 .func-keyword {
   color: #b478cf;
 }
+
 @include go("chart-data-monaco-editor") {
+
   &.n-card.n-modal,
   .n-card {
     @extend .go-background-filter;
   }
+
   .editor-data-show {
     @include fetch-bg-color("filter-color");
     width: 420px;

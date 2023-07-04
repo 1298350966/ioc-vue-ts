@@ -1,3 +1,4 @@
+export * from './config'
 import image from '@/assets/images/chart/charts/water_WaterPolo.png'
 import { ConfigType, PackagesCategoryEnum, ChartFrameEnum } from '@/packages/index.d'
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../../index.d'

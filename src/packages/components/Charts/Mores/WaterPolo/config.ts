@@ -1,5 +1,5 @@
 import { echartOptionProfixHandle, PublicConfigClass } from '@/packages/public'
-import { CreateComponentType } from '@/packages/index.d'
+import { CreateComponentType, EventsType } from '@/packages/index.d'
 import { WaterPoloConfig } from './index'
 import cloneDeep from 'lodash/cloneDeep'
 
@@ -37,7 +37,6 @@ export const shapes = [
 export const includes = []
 
 export const option = {
-  dataset: 0.5,
   series: [
     {
       type: 'liquidFill',
@@ -89,9 +88,42 @@ export const option = {
   ]
 }
 
-export default class Config extends PublicConfigClass implements CreateComponentType
-{
+//组件基础事件类型
+export enum BaseEventEnum {
+  // 单击
+  CLICK = 'click',
+  // 鼠标进入
+  MOUSE_ENTER = 'mouseenter',
+  // 鼠标移出
+  MOUSE_LEAVE = 'mouseleave',
+}
+
+export const Events: EventsType = {
+  [BaseEventEnum.CLICK]: {
+    key: BaseEventEnum.CLICK,
+    name: "单击",
+    paramsName: ["e", "config", 'rootConfig'],
+    vars: [],
+  },
+  [BaseEventEnum.MOUSE_ENTER]: {
+    key: BaseEventEnum.MOUSE_ENTER,
+    name: "鼠标进入",
+    paramsName: ["e", "config", 'rootConfig'],
+    vars: [],
+  },
+  [BaseEventEnum.MOUSE_LEAVE]: {
+    key: BaseEventEnum.MOUSE_LEAVE,
+    name: "鼠标移出",
+    paramsName: ["e", "config", 'rootConfig'],
+    vars: [],
+  },
+}
+
+export default class Config extends PublicConfigClass implements CreateComponentType {
   public key = WaterPoloConfig.key
   public chartConfig = cloneDeep(WaterPoloConfig)
   public option = echartOptionProfixHandle(option, includes)
+  public data = {
+    value: 0.5
+  }
 }

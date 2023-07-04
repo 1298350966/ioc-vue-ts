@@ -36,7 +36,7 @@
         <el-input v-model="xAxis.name" size="small"></el-input>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker size="small" v-model="xAxis.nameTextStyle.color"></el-color-picker>
+        <el-color-picker size="small"  show-alpha v-model="xAxis.nameTextStyle.color"></el-color-picker>
       </setting-item>
       <setting-item name="大小">
         <el-input-number v-model="xAxis.nameTextStyle.fontSize" :min="12" size="small"></el-input-number>
@@ -52,7 +52,7 @@
         </el-space>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker size="small" v-model="xAxis.axisLabel.color"></el-color-picker>
+        <el-color-picker size="small"  show-alpha v-model="xAxis.axisLabel.color"></el-color-picker>
       </setting-item>
       <setting-item name="大小">
         <el-input-number v-model="xAxis.axisLabel.fontSize" :min="8" size="small"></el-input-number>
@@ -65,7 +65,7 @@
         </el-space>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker v-model="xAxis.axisLine.lineStyle.color" size="small"></el-color-picker>
+        <el-color-picker v-model="xAxis.axisLine.lineStyle.color" size="small"  show-alpha></el-color-picker>
       </setting-item>
       <setting-item name="粗细">
         <el-input-number v-model="xAxis.axisLine.lineStyle.width" :min="1" size="small"></el-input-number>
@@ -128,7 +128,7 @@
         <el-input v-model="yAxis.name" size="small"></el-input>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker size="small" v-model="yAxis.nameTextStyle.color"></el-color-picker>
+        <el-color-picker size="small" v-model="yAxis.nameTextStyle.color" show-alpha></el-color-picker>
       </setting-item>
       <setting-item name="大小">
         <el-input-number v-model="yAxis.nameTextStyle.fontSize" :min="8" size="small"></el-input-number>
@@ -144,7 +144,7 @@
         </el-space>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker size="small" v-model="yAxis.axisLabel.color"></el-color-picker>
+        <el-color-picker size="small" v-model="yAxis.axisLabel.color" show-alpha></el-color-picker>
       </setting-item>
       <setting-item name="大小">
         <el-input-number v-model="yAxis.axisLabel.fontSize" :min="8" size="small"></el-input-number>
@@ -157,7 +157,7 @@
         </el-space>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker v-model="yAxis.axisLine.lineStyle.color" size="small"></el-color-picker>
+        <el-color-picker v-model="yAxis.axisLine.lineStyle.color" size="small" show-alpha></el-color-picker>
       </setting-item>
       <setting-item name="粗细">
         <el-input-number v-model="yAxis.axisLine.lineStyle.width" :min="1" size="small"></el-input-number>
@@ -193,7 +193,7 @@
         </el-space>
       </setting-item>
       <setting-item name="颜色">
-        <el-color-picker v-model="yAxis.splitLine.lineStyle.color" size="small"></el-color-picker>
+        <el-color-picker v-model="yAxis.splitLine.lineStyle.color" size="small" show-alpha></el-color-picker>
       </setting-item>
       <setting-item name="粗细">
         <el-input-number v-model="yAxis.splitLine.lineStyle.width" :min="1" size="small"></el-input-number>
@@ -217,7 +217,7 @@
     </template>
     <setting-item-box name="图例文字">
       <setting-item>
-        <el-color-picker size="small" v-model="legend.textStyle.color"></el-color-picker>
+        <el-color-picker size="small" v-model="legend.textStyle.color" show-alpha></el-color-picker>
       </setting-item>
     </setting-item-box>
   </el-collapse-item>
@@ -276,17 +276,14 @@ import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import { axisConfig } from '@/packages/chartConfiguration/echarts/index'
 import { CollapseItem, SettingItemBox, SettingItem, GlobalSettingPosition } from '@/components/Pages/ChartItemSetting'
 
-const props = defineProps({
-  optionData: {
-    type: Object as PropType<GlobalThemeJsonType>,
-    required: true
-  },
-  inChart: {
-    type: Boolean,
-    required: false,
-    default: false
+const props = withDefaults(
+  defineProps<{
+    optionData: GlobalThemeJsonType,
+    inChart: boolean
+  }>(), {
+    inChart: false
   }
-})
+)
 
 const title = computed(() => {
   return props.optionData.title

@@ -1,44 +1,31 @@
 <template>
-  <n-modal class="go-chart-data-request" v-model:show="modelShowRef" :mask-closable="false" :closeOnEsc="false">
-    <n-card :bordered="false" role="dialog" size="small" aria-modal="true" style="width: 1000px; height: 800px">
-      <template #header></template>
-      <template #header-extra> </template>
-      <n-scrollbar style="max-height: 718px">
-        <div class="go-pr-3">
-          <n-space vertical>
-            <request-global-config></request-global-config>
-            <request-target-config
-              :target-data-request="targetDataRequest?.dataPondRequestConfig"
-            ></request-target-config>
-          </n-space>
+  <dragDialog title="接口设置" class="go-chart-data-request" v-model="modelShowRef" @close="closeHandle">
+
+    <el-scrollbar height="640px" wrap-style="padding:20px;">
+
+      <div class="go-pr-3">
+        <div>
+          <request-global-config></request-global-config>
+          <request-target-config :target-data-request="targetDataRequest?.dataPondRequestConfig"></request-target-config>
         </div>
-      </n-scrollbar>
-      <!-- 底部 -->
-      <template #action>
-        <n-space justify="space-between">
-          <n-space v-if="targetDataRequest">
-            <n-tag  :bordered="false" type="primary">名称：</n-tag>
-            <n-input
-              v-model:value="targetDataRequest.dataPondName"
-              ref="inputInstRef"
-              type="text"
-              size="small"
-              :autofocus="true"
-              :clearable="true"
-              :minlength="1"
-              :maxlength="16"
-              placeholder="请输入名称"
-            ></n-input>
-          </n-space>
-          <span v-else></span>
-          <n-space>
-            <n-button @click="closeHandle">取消</n-button>
-            <n-button type="primary" @click="closeAndSendHandle">保存</n-button>
-          </n-space>
-        </n-space>
-      </template>
-    </n-card>
-  </n-modal>
+      </div>
+    </el-scrollbar>
+    <!-- 底部 -->
+    <template #footer>
+      <el-space justify="space-between" style="width: 100%;justify-content: space-between;">
+        <el-space v-if="targetDataRequest">
+          <el-tag type="success" size="large">名称：</el-tag>
+          <el-input v-model="targetDataRequest.dataPondName" ref="inputInstRef" type="text" size="small" :autofocus="true"
+            :clearable="true" :minlength="1" :maxlength="16" placeholder="请输入名称"></el-input>
+        </el-space>
+        <span v-else></span>
+        <el-space>
+          <el-button @click="closeHandle">取消</el-button>
+          <el-button type="primary" @click="closeAndSendHandle">保存</el-button>
+        </el-space>
+      </el-space>
+    </template>
+  </dragDialog>
 </template>
 
 <script script lang="ts" setup>
@@ -58,11 +45,19 @@ const emit = defineEmits(['update:modelShow', 'editSaveHandle'])
 
 const pondName = ref()
 const inputInstRef = ref()
-const modelShowRef = ref(false)
-
-watch(() => props.modelShow, (newValue) => {
-  modelShowRef.value = newValue
+// const modelShowRef = ref(false)
+const modelShowRef = computed({
+  get() {
+    return props.modelShow
+  },
+  set(val) {
+    emit('update:modelShow', val)
+  }
 })
+
+// watch(() => props.modelShow, (newValue) => {
+//   modelShowRef.value = newValue
+// })
 
 
 const closeHandle = () => {
@@ -89,17 +84,21 @@ const closeAndSendHandle = () => {
 
 <style lang="scss" scoped>
 @include go('chart-data-request') {
+
   &.n-card.n-modal,
   .n-card {
     @extend .go-background-filter;
   }
+
   .n-card-shallow {
     background-color: rgba(0, 0, 0, 0) !important;
   }
+
   @include deep() {
-    & > .n-card__content {
+    &>.n-card__content {
       padding-right: 0;
     }
+
     .n-card__content {
       padding-bottom: 5px;
     }

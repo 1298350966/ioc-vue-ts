@@ -5,17 +5,17 @@
 
 <script setup lang="ts">
 import { PropType, reactive, watch, ref, nextTick } from 'vue'
-import config, { includes } from './config'
+import config, { Events, includes } from './config'
 import VChart from 'vue-echarts'
 import { use, registerMap } from 'echarts/core'
 import { EffectScatterChart, MapChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { useChartDataFetch } from '@/hooks'
 import { mergeTheme } from '@/packages/public/chart'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { isPreview } from '@/utils'
 import mapJsonWithoutHainanIsLands from './mapWithoutHainanIsLands.json'
 import { DatasetComponent, GridComponent, TooltipComponent, GeoComponent, VisualMapComponent } from 'echarts/components'
+import { useAddEvent } from '@/packages/hooks/useAddEvent.kooks'
 
 const props = defineProps({
   themeSetting: {
@@ -31,6 +31,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { rootConfig, getEvents } = useAddEvent(props.chartConfig, Events)
 
 use([
   MapChart,
@@ -131,7 +133,7 @@ watch(
 )
 
 // 预览
-useChartDataFetch(props.chartConfig, useChartEditStore, (newData: any) => {
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: any) => {
   dataSetHandle(newData)
 })
 </script>

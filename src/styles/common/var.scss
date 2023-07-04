@@ -4,11 +4,14 @@ $--color-warn: #fcbc40;
 $--color-success: #34c749;
 
 // 文字
-$--color-text: #1d2129;
+$--color-text:rgba(0, 0, 0, 1.00);
+// $--color-text: #1d2129;
 $--color-text-1: #4e5969;
 $--color-text-2: #86909c;
 $--color-text-3: #c9cdd4;
 $--color-text-4: #f2f3f5;
+
+// $--color-text: rgba(0, 0, 0, 1.00);
 
 //.mt-1 => margin top
 //spacing
@@ -85,3 +88,29 @@ $--filter-color-login-light-shallow: rgba(240, 240, 240, 0.3);
 $--border-radius-base: 8px;
 // 阴影
 $--border-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+
+
+:root{
+  // 文字
+  --color-text:rgba(0, 0, 0, 1.00);
+  // $--color-text: #1d2129;
+  --color-text-1: #4e5969;
+  --color-text-2: #86909c;
+  --color-text-3: #c9cdd4;
+  --color-text-4: #f2f3f5;
+  // 背景
+  --color-bg:#000000;
+  --color-bg-1:#030303;
+  --color-bg-2:#202124;
+  --color-bg-3:#323232;
+  --color-bg-4:#5f6368;
+
+  --color-bg-10:#ffffff;
+  --color-bg-11:#ffffffcc;
+  --color-bg-12:#ffffff4d;
+  --color-bg-13:#f4f4f5;
+  --color-bg-14:#7d7d7d1a;
+
+
+}

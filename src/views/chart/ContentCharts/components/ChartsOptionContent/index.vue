@@ -111,6 +111,7 @@ $menuWidth: 65px;
     flex: 1;
     padding-top: 10px;
     box-sizing: border-box;
+    background-color: var(--dark-color-1a);
   }
 }
 .charts-menu-2{

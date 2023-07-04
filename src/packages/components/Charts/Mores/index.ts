@@ -1,8 +1,10 @@
 import { ProcessConfig } from './Process/index'
-import { RadarConfig } from './Radar/index'
-import { FunnelConfig } from './Funnel/index'
-import { HeatmapConfig } from './Heatmap/index'
-import { WaterPoloConfig } from './WaterPolo/index'
-import { TreeMapConfig } from './TreeMap/index'
+import {
+  Events as WaterPoloEvents,
+  WaterPoloConfig
+} from './WaterPolo/index'
 
-export default [ProcessConfig, RadarConfig, FunnelConfig, HeatmapConfig, WaterPoloConfig, TreeMapConfig]
+export const MoresEvents = {
+  [WaterPoloConfig.key]: WaterPoloEvents,
+}
+export default [ProcessConfig, WaterPoloConfig]

@@ -18,7 +18,7 @@
       <el-input-number
         style="width: calc(100% - 30px)"
         v-model="chartAttr.h"
-        :min="50"
+        :min="20"
         :disabled="isGroup"
         size="small"
         placeholder="px"

@@ -1,0 +1,136 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="keywords" content="天地图"/>
+<title>天地图－地图API－范例－画面</title>
+<script type="text/javascript" src="http://api.tianditu.gov.cn/api?v=4.0&tk=ce5a88c3140fe5ed788f757afdab0f77"></script>
+<script>
+	var map;
+	var zoom = 1;
+	var polygon;
+	function onLoad()
+	{
+		//初始化地图对象
+	   	map=new TMap("mapDiv");
+	   	//设置显示地图的中心点和级别
+		map.centerAndZoom(new TLngLat(116.40969,39.94940),zoom);
+		//允许鼠标滚轮缩放地图
+		map.enableHandleMouseScroll();
+		
+		var points = [];
+		  points.push(new TLngLat(116.41136,39.97569));
+   		points.push(new TLngLat(116.411794,39.9068));
+    	points.push(new TLngLat(116.32969,39.92940));
+    	// points.push(new TLngLat(116.385438,39.90610));
+
+
+      var points1 = [];
+      points1.push(new TLngLat(-180,90));
+   		points1.push(new TLngLat(-180,-90));
+    	points1.push(new TLngLat(180,-90));
+    	points1.push(new TLngLat(180,90));
+    	//创建面对象);
+	    //向地图上添加面
+	    polygon = new TPolygon([points1,points],{strokeColor:"red", strokeWeight:5, strokeOpacity:1, fillOpacity:1})
+	    map.addOverLay(polygon);
+	}
+</script>
+</head>
+<body onLoad="onLoad()">
+	<div id="mapDiv" style="position:absolute;width:500px; height:400px"></div>
+	</div>
+	<div style="position:absolute;left:520px;">
+		<input type="button" value="启动编辑" onclick="polygon.enableEdit();">
+		<input type="button" value="禁止编辑" onclick="polygon.disableEdit();"/>
+		<ul>
+			<li>本示例演示如何启动和禁止多边形编辑功能。</li>
+			<p><a href="http://lbs.tianditu.gov.cn/api-new/examples.html">返回所有范例列表</a></p>
+		</ul>
+	</div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="keywords" content="天地图" />
+  <title>天地图－地图API－范例－画带洞多边形</title>
+  <script type="text/javascript"
+    src="http://api.tianditu.gov.cn/api?v=4.0&tk=ce5a88c3140fe5ed788f757afdab0f77"></script>
+  <style type="text/css">
+    body,
+    html {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      font-family: "Microsoft YaHei";
+    }
+
+    #mapDiv {
+      width: 100%;
+      height: 400px;
+    }
+
+    input,
+    b,
+    p {
+      margin-left: 5px;
+      font-size: 14px;
+    }
+  </style>
+  <script>
+    var map;
+    var zoom = 12;
+    function onLoad() {
+      //初始化地图对象
+      map = new T.Map("mapDiv");
+      //设置显示地图的中心点和级别
+      map.centerAndZoom(new T.LngLat(116.38969, 39.9094), zoom);
+
+      var points = [];
+      points.push(new T.LngLat(-360, 90));
+      points.push(new T.LngLat(-360, -90));
+      points.push(new T.LngLat(360, -90));
+      points.push(new T.LngLat(360, 90));
+      // points.push(new T.LngLat(116.3665, 39.85573));
+      // points.push(new T.LngLat(116.44238, 39.85652));
+      // points.push(new T.LngLat(116.45508, 39.86548));
+      // points.push(new T.LngLat(116.45611, 39.95002));
+      // points.push(new T.LngLat(116.42899, 39.96739));
+      // 	      points1.push(new T.LngLat(-360,90));
+      // points1.push(new T.LngLat(-180,-90));
+      // points1.push(new T.LngLat(180,-90));
+      // points1.push(new T.LngLat(180,90));
+
+      var points1 = [];
+      points1.push(new T.LngLat(116.34933, 39.94159));
+      points1.push(new T.LngLat(116.35062, 39.90065));
+      points1.push(new T.LngLat(116.35311, 39.89867));
+      points1.push(new T.LngLat(116.41388, 39.89999));
+      points1.push(new T.LngLat(116.41834, 39.90315));
+      points1.push(new T.LngLat(116.42933, 39.90394));
+      points1.push(new T.LngLat(116.42727, 39.94791));
+      points1.push(new T.LngLat(116.36581, 39.9466));
+      //创建面对象
+      var polygon = new T.Polygon([points, points1], {
+        color: "black",
+        weight: 3,
+        opacity: 0.2,
+        fillColor: "blue",
+        fillOpacity: 0.5,
+      });
+      //向地图上添加面
+      map.addOverLay(polygon);
+    }
+  </script>
+</head>
+
+<body onLoad="onLoad()">
+  <div id="mapDiv"></div>
+  <p>在地图上添加一个带洞多边形。</p>
+</body>
+
+</html>

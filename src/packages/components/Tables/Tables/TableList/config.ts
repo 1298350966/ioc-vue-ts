@@ -33,4 +33,5 @@ export default class Config extends PublicConfigClass implements CreateComponent
   public key = TableListConfig.key
   public chartConfig = cloneDeep(TableListConfig)
   public option = cloneDeep(option)
+  public data = cloneDeep(dataJson)
 }

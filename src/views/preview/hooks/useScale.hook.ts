@@ -1,22 +1,28 @@
-import { ref, onMounted, onUnmounted} from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { usePreviewFitScale, usePreviewScrollYScale, usePreviewScrollXScale, usePreviewFullScale } from '@/hooks/index'
 import type { ChartEditStorageType } from '../index.d'
 import { PreviewScaleEnum } from '@/enums/styleEnum'
 
+export const SCALE_KEY = 'scale-value'
+
 export const useScale = (localStorageInfo: ChartEditStorageType) => {
   const entityRef = ref()
   const previewRef = ref()
+  const contextRef = ref()
   const width = ref(localStorageInfo.editCanvasConfig.width)
   const height = ref(localStorageInfo.editCanvasConfig.height)
 
   // 屏幕适配
   onMounted(() => {
+    console.dir(entityRef.value)
+    console.dir(contextRef.value)
     switch (localStorageInfo.editCanvasConfig.previewScaleType) {
       case PreviewScaleEnum.FIT: (() => {
         const { calcRate, windowResize, unWindowResize } = usePreviewFitScale(
           width.value as number,
           height.value as number,
           previewRef.value,
+          contextRef.value,
         )
         calcRate()
         windowResize()
@@ -30,11 +36,13 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
           width.value as number,
           height.value as number,
           previewRef.value,
+          contextRef.value,
           (scale) => {
             const dom = entityRef.value
             dom.style.width = `${width.value * scale.width}px`
             dom.style.height = `${height.value * scale.height}px`
-          }
+          },
+ 
         )
         calcRate()
         windowResize()
@@ -49,11 +57,13 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
           width.value as number,
           height.value as number,
           previewRef.value,
+          contextRef.value,
           (scale) => {
             const dom = entityRef.value
             dom.style.width = `${width.value * scale.width}px`
             dom.style.height = `${height.value * scale.height}px`
-          }
+          },
+ 
         )
         calcRate()
         windowResize()
@@ -68,6 +78,7 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
           width.value as number,
           height.value as number,
           previewRef.value,
+          contextRef.value
         )
         calcRate()
         windowResize()
@@ -81,6 +92,7 @@ export const useScale = (localStorageInfo: ChartEditStorageType) => {
 
   return {
     entityRef,
-    previewRef
+    previewRef,
+    contextRef
   }
 }

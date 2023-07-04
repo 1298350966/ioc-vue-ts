@@ -1,5 +1,5 @@
 <template>
-  <div :class="`kh-preview ${localStorageInfo.editCanvasConfig.previewScaleType}`">
+  <div ref="contextRef" :class="`kh-preview ${localStorageInfo.editCanvasConfig.previewScaleType}`">
     <template v-if="showEntity">
       <!-- 实体区域 -->
       <div ref="entityRef" class="kh-preview-entity">
@@ -23,66 +23,93 @@
         </div>
       </div>
     </template>
+
+    <!-- 弹窗 -->
+    <template v-for="(config, index) in localStorageInfo.globalDialog" :key="index">
+      <component :is="config.component" v-if="config.show" :config="config"></component>
+    </template>
+     <!-- 弹窗11 -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { PreviewRenderList } from './components/PreviewRenderList'
-import { getFilterStyle } from '@/utils'
-import { getEditCanvasConfigStyle, getSessionStorageInfo } from './utils'
-import { useComInstall } from './hooks/useComInstall.hook'
-import { useScale } from './hooks/useScale.hook'
-import { useStore } from './hooks/useStore.hook'
-import { PreviewScaleEnum } from '@/enums/styleEnum'
-import type { ChartEditStorageType } from './index.d'
+import { computed } from "vue";
+import { PreviewRenderList } from "./components/PreviewRenderList";
+import { getFilterStyle } from "@/utils";
+import { getEditCanvasConfigStyle, getSessionStorageInfo } from "./utils";
+import { useComInstall } from "./hooks/useComInstall.hook";
+import { useScale } from "./hooks/useScale.hook";
+import { useStore } from "./hooks/useStore.hook";
+import { PreviewScaleEnum } from "@/enums/styleEnum";
+import type { ChartEditStorageType } from "./index.d";
+import { useChartEditStore } from "@/store/modules/chartEditStore/chartEditStore";
+// const { getStorageInfo  } = useChartEditStore();
+// const localStorageInfo = reactive(getStorageInfo as ChartEditStorageType)
+const props = defineProps<{
+  rootConfig?:ChartEditStorageType
+}>()
+const localStorageInfo = reactive(
+  props.rootConfig || getSessionStorageInfo() as ChartEditStorageType
+);
 
-const localStorageInfo: ChartEditStorageType = getSessionStorageInfo() as ChartEditStorageType
-
+provide("rootConfig", localStorageInfo);
 const previewRefStyle = computed(() => {
   return {
     ...getEditCanvasConfigStyle(localStorageInfo.editCanvasConfig),
-    ...getFilterStyle(localStorageInfo.editCanvasConfig)
-  }
-})
+    ...getFilterStyle(localStorageInfo.editCanvasConfig),
+  };
+});
 
 const showEntity = computed(() => {
-  const type = localStorageInfo.editCanvasConfig.previewScaleType
-  return type === PreviewScaleEnum.SCROLL_Y || type === PreviewScaleEnum.SCROLL_X
-})
+  const type = localStorageInfo.editCanvasConfig.previewScaleType;
+  return (
+    type === PreviewScaleEnum.SCROLL_Y || type === PreviewScaleEnum.SCROLL_X
+  );
+});
 
-useStore(localStorageInfo)
-const { entityRef, previewRef } = useScale(localStorageInfo)
-const { show } = useComInstall(localStorageInfo)
+useStore(localStorageInfo);
+const { entityRef, previewRef,contextRef } = useScale(localStorageInfo);
+
+const { show } = useComInstall(localStorageInfo);
+
+
+
 </script>
 
 <style lang="scss" scoped>
-.kh-preview{
+.kh-preview {
   position: relative;
   height: 100vh;
   width: 100vw;
+
   &.fit,
   &.full {
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
     .kh-preview-scale {
-      transform-origin: top left;
+      transform-origin: center center;
     }
   }
+
   &.scrollY {
     overflow-x: hidden;
+
     .kh-preview-scale {
       transform-origin: left top;
     }
   }
+
   &.scrollX {
     overflow-y: hidden;
+
     .kh-preview-scale {
       transform-origin: left top;
     }
   }
+
   .kh-preview-entity {
     overflow: hidden;
   }

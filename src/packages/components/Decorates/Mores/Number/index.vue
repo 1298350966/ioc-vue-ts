@@ -25,8 +25,8 @@
 <script setup lang="ts">
 import { PropType, toRefs, ref, reactive, watch } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
-import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartDataFetch } from '@/hooks'
+import { ChartEditStorageType } from '@/views/preview'
 
 const props = defineProps({
   chartConfig: {
@@ -34,6 +34,9 @@ const props = defineProps({
     required: true
   }
 })
+
+const rootConfig: ChartEditStorageType = inject("rootConfig")
+
 const option = reactive({
   from: 0,
   dataset: 0
@@ -67,7 +70,7 @@ watch(
   }
 )
 
-useChartDataFetch(props.chartConfig, useChartEditStore, updateNumber)
+useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, updateNumber)
 </script>
 
 <style lang="scss" scoped>
