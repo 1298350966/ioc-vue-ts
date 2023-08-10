@@ -8,6 +8,9 @@
           v-on="getEvents"
         ></component>
       </template>
+      <template v-if="config.InfoWindow.enable">
+        <InfoWindow v-if="config.InfoWindow.options.visible" :config="config.InfoWindow.options" :data="InfoWindowData"></InfoWindow>
+      </template>
     </template>
     <div ref="content">
       <slot />
@@ -16,18 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import {
-  TdtMarker as Marker,
-  TdtPolygon as Polygon,
-  TdtPolyline as Polyline,
-  TdtCircle as Circle,
-} from "vue-tianditu/packages/index";
+// @ts-ignore
+import { TdtMarker as Marker, TdtPolygon as Polygon, TdtPolyline as Polyline,TdtCircle as Circle} from "vue-tianditu";
 import { ControlGroupEvents, coverGroupOptions } from "../../config";
 import { CoverGroupType } from "@/packages/index.d";
-import { useDataMappingHook } from "./useDataMappingHook";
+import { useDataMappingHook } from "../../hooks/useDataMappingHook";
 import { coverEnum } from "../../type";
 import { useAddMapEvent } from "@/packages/hooks/useAddEvent.kooks";
 import { useAmapType } from "../../hooks/useTmapHooks";
+import {InfoWindow} from "../index"
 defineOptions({
   name: "coverGroup",
   components: {
@@ -52,8 +52,22 @@ const mapIns:useAmapType = inject("mapIns")
 const componentIs = computed(() => {
   return props.config.type || null;
 });
+
+const InfoWindowData = ref(null)
+
 //事件
-const { rootConfig, getEvents } = useAddMapEvent(props.config, ControlGroupEvents)
+const { rootConfig, getEvents, setEvents } = useAddMapEvent(props.config, ControlGroupEvents,(emitEvent)=>{
+  const {options,eventType} = props.config.InfoWindow
+  emitEvent.on(eventType,(e) =>{
+    console.log(e);
+    const { lng, lat } = e.lnglat
+    options.position = [lng, lat]
+    if(e.extData){
+      InfoWindowData.value = e.extData
+    }
+    options.visible = true
+  })
+})
 //字段映射方法
 const {setDataMappingOptions} = useDataMappingHook(props.config)
 //数据配置
@@ -114,7 +128,9 @@ watch(configData,(newVal)=>{
   })
 })
 
-
+watch(()=>[props.config.InfoWindow.eventType],()=>{
+  setEvents()
+})
 
 
 </script>

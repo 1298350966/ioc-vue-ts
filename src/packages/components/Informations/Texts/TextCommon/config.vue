@@ -21,7 +21,15 @@
     </collapse-item>
 
     <collapse-item name="样式" :expanded="true">
+      
       <setting-item-box name="文字">
+        <setting-item name="字体类型">
+          <el-select-v2
+            v-model="optionData.fontFamily"
+            size="small"
+            :options="fontFamilyOptions"
+          />
+        </setting-item>
         <setting-item name="颜色">
           <el-color-picker size="small" v-model="optionData.fontColor" show-alpha></el-color-picker>
         </setting-item>
@@ -33,6 +41,13 @@
             v-model="optionData.fontWeight"
             size="small"
             :options="fontWeightOptions"
+          />
+        </setting-item>
+        <setting-item name="字体样式">
+          <el-select-v2
+            v-model="optionData.fontStyle"
+            size="small"
+            :options="fontStyleOptions"
           />
         </setting-item>
         <setting-item name="X轴内边距">
@@ -52,6 +67,8 @@
         <setting-item name="字间距">
           <el-input-number v-model="optionData.letterSpacing" size="small" placeholder="输入字间距"></el-input-number>
         </setting-item>
+
+        
       </setting-item-box>
 
       <setting-item-box name="边框">
@@ -130,5 +147,51 @@ const handleLinkClick = () => {
 const linkHeadOptions = [
   { label: 'http://', value: 'http://' },
   { label: 'https://', value: 'https://' }
+]
+
+const fontFamilyOptions = [
+  {
+    label:"宋体",
+    value:"SimSun"
+  },
+  {
+    label:"黑体",
+    value:"SimHei"
+  },
+  {
+    label:"微软雅黑",
+    value:"Microsoft Yahei"
+  },
+  {
+    label:"微软正黑体",
+    value:"Microsoft JhengHei"
+  },
+  {
+    label:"楷体",
+    value:"KaiTi"
+  },
+  {
+    label:"新宋体",
+    value:"NSimSun"
+  },
+  {
+    label:"仿宋",
+    value:"FangSong"
+  }
+]
+
+const fontStyleOptions = [
+  {
+    label:"正常",
+    value:"normal"
+  },
+  {
+    label:"斜体",
+    value:"italic"
+  },
+  {
+    label:"倾斜",
+    value:"oblique"
+  },
 ]
 </script>

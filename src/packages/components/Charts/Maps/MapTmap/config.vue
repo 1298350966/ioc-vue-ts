@@ -167,24 +167,24 @@ import { ThemeEnum } from "./type";
 import { cloneDeep } from "lodash";
 import { getUUID } from "@/utils";
 const coverGroupDialog = defineAsyncComponent(
-  () => import("./components/coverGroupDialog.vue")
+  () => import("./configComponents/coverGroupDialog.vue")
 );
 const coverGroupList = defineAsyncComponent(
-  () => import("./components/coverGroupList.vue")
+  () => import("./configComponents/coverGroupList.vue")
 );
 const controlGroupDialog = defineAsyncComponent(
-  () => import("./components/controlGroupDialog.vue")
+  () => import("./configComponents/controlGroupDialog.vue")
 );
 const controlGroupList = defineAsyncComponent(
-  () => import("./components/controlGroupList.vue")
+  () => import("./configComponents/controlGroupList.vue")
 );
 
 
 const PolygonConfig = defineAsyncComponent(
-  () => import("./components/coverGroupDialog/coverConfig/PolygonConfig.vue")
+  () => import("./configComponents/coverGroupDialog/coverConfig/PolygonConfig.vue")
 );
 const editPolygon = defineAsyncComponent(
-  () => import("./components/editPolygon.vue")
+  () => import("./configComponents/editPolygon.vue")
 );
 const InfoWindowSetting = defineAsyncComponent(
   () => import("./configComponents/InfoWindowSetting/index.vue")

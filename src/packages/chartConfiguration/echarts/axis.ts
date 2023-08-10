@@ -54,3 +54,46 @@ export const axisConfig = {
     ]
   }
 }
+
+
+export const xConfig = [
+  {
+    label: 'left',
+    value: 'left'
+  },
+  {
+    label: 'center',
+    value: 'center'
+  },
+  {
+    label: 'right',
+    value: 'right'
+  },
+]
+
+
+export const yConfig = [
+  {
+    label: 'top',
+    value: 'top'
+  },
+  {
+    label: 'center',
+    value: 'center'
+  },
+  {
+    label: 'bottom',
+    value: 'bottom'
+  },
+]
+
+export const orientConfig = [
+  {
+    label: '水平',
+    value: 'horizontal'
+  },
+  {
+    label: '垂直',
+    value: 'vertical'
+  },
+]

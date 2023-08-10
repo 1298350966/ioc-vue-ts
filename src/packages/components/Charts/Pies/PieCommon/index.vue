@@ -55,7 +55,14 @@ function setDataset(datas: any[], option) {
   })
   option.series[0].name = valueAxis[0].name
   option.series[0].data = data
+
+  option.series[0].label.formatter = new Function("params", option.series[0].label.formatter)
 }
+
+const { vChartRef } = useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig)
+
+
+let timerForChar =  null
 
 
 watch(
@@ -75,5 +82,5 @@ watch(
   { deep: true, immediate: true }
 )
 
-const { vChartRef } = useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig)
+
 </script>

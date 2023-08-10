@@ -11,4 +11,4 @@ interface ImportMetaEnv {
   VITE_PRO_PATH: string
 }
 
-declare module "vue-tianditu";
+// declare module "vue-tianditu";

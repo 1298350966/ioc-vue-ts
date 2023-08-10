@@ -73,6 +73,22 @@
                     <el-select-v2 v-model="paginationLayout" size="small" multiple collapse-tags :options="layoutOptions" />
                     <!-- <el-select-v2 v-model="optionData.extAttrs.pagingAttrs.layout" size="small" multiple :options="layoutOptions" /> -->
                 </setting-item>
+                <setting-item name="背景颜色">
+                    <el-color-picker
+                        size="small"
+                        :modes="['hex']"
+                        v-model="optionData.extAttrs.pagingAttrs.style['--el-pagination-bg-color']"
+                        show-alpha
+                    ></el-color-picker>
+                </setting-item>
+                <setting-item name="字体颜色">
+                    <el-color-picker
+                        size="small"
+                        :modes="['hex']"
+                        v-model="optionData.extAttrs.pagingAttrs.style['--el-pagination-text-color']"
+                        show-alpha
+                    ></el-color-picker>
+                </setting-item>
             </setting-item-box>
         </collapse-item>
 

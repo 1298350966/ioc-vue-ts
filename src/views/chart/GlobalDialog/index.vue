@@ -56,7 +56,6 @@
 import { useChartEditStore } from "@/store/modules/chartEditStore/chartEditStore";
 import { ContentBox } from "../ContentBox/index";
 import addAndEditGlobalDialog from "./components/addAndEditGlobalDialog.vue"
-import { config } from "process";
 const {getGlobalDialog,addGlobalDialog,removeGlobalDialog,clearGlobalDialog } = useChartEditStore();
 const addAndEditGlobalDialogRef = ref()
 const GlobalDialogData = ref(null)

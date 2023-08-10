@@ -205,6 +205,13 @@ const handleContextMenu = (
   })
 }
 
+//设置鼠标位置事件
+const handleMousePosition = (
+  e: MouseEvent,
+) => {
+  chartEditStore.setMousePosition(e.clientX, e.clientY,e.offsetX,e.offsetY)
+}
+
 /**
  * * 右键hook
  * @param menuConfig
@@ -242,6 +249,7 @@ export const useContextMenu = () => {
     handleContextMenu,
     onClickOutSide,
     handleMenuSelect,
-    mousePosition: chartEditStore.getMousePosition
+    mousePosition: chartEditStore.getMousePosition,
+    handleMousePosition
   }
 }

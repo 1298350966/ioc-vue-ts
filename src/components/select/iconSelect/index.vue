@@ -2,9 +2,9 @@
   <DragDialog title="图标选择" v-model="dialogShow">
     <div class="dragDialog-body">
       <el-tabs v-model="tabsActiveName" class="demo-tabs">
-      <el-tab-pane label="地图标记" name="1">
+      <el-tab-pane :label="ImgsClassNameEnum[key] || key" :name="key" v-for="(imgList, key) in imgsClass" :key="key">
         <div class="iconSelectBox grid grid-items-center grid-gap-15px">
-      <div class="img-box " :class="{select:item.src == selectSrc}" v-for="item in MarkerData" :key="item.id" @click="select(item)">
+      <div class="img-box " :class="{select:item.src == selectSrc}" v-for="(item,index) in imgList" :key="index" @click="select(item)">
         <el-image fit="contain" class="icon" :src="item.src"></el-image>
         <span>{{ item.name }}</span>
       </div>
@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 
-import MarkerData from "./config/config/Marker"
+import imgsClass, { ImgsClassNameEnum } from "./config"
 defineOptions({
   name:"imgSelect"
 })
@@ -33,7 +33,8 @@ const props = defineProps<{
   show:boolean
 }>()
 const emit =defineEmits(["update:show","update:modelValue"])
-const tabsActiveName = ref("1")
+const tabsActiveName = ref(Object.keys(imgsClass)[0])
+
 const selectSrc = ref(props.modelValue || "")
 const dialogShow = computed({
  get(){
@@ -43,6 +44,8 @@ const dialogShow = computed({
   emit("update:show",val)
  }
 })
+
+
 
 function closeHandle(){
   dialogShow.value = false
@@ -62,25 +65,34 @@ function select(item){
 .dragDialog-body{
   height: 700px;
   padding: 0 20px;
+  overflow: scroll;
 }
 .iconSelectBox{
   display: grid;
-  grid-template-columns: repeat(auto-fill, 100px);
+  grid-template-columns: repeat(auto-fill, minmax(100px,1fr) );
 }
 .img-box{
-  background:  var(--dark-color-2);
+  background:  var(--bg-color-3);
   border-radius: 5px;
   display: flex;
   flex-flow: column;
   align-items: center;
   padding: 15px;
+  position: relative;
+  transition: all .9s linear;
  span{
+  width: 100%;
   text-align: center;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   margin-top: 10px;
   font-size: 12px;
+ }
+ &:hover{
+  .icon{
+    transform: scale(2);
+  }
  }
 }
 .select{

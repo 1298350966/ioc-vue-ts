@@ -4,7 +4,7 @@ import { CreateComponentType, EventsType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 export const option = {
   src:"",
-  dataset:{}
+  dataset:"{name:111}"
 }
 
 //组件基础事件类型

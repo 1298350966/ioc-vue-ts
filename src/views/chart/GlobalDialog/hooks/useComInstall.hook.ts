@@ -1,7 +1,7 @@
 import { ref } from 'vue'
-import { ChartEditStorageType } from '../index.d'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
 import { fetchChartComponent, fetchDialogComponent } from '@/packages/index'
+import { ChartEditStorageType } from '@/views/preview'
 
 export const useComInstall = (localStorageInfo: ChartEditStorageType) => {
   const show = ref(false)

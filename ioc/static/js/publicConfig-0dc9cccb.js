@@ -1,0 +1,1 @@
+const e={id:"",name:"",component:"darkDialog",show:!1,attrs:{title:"",width:"60%",fullscreen:!1,top:"15vh",modal:!0,draggable:!1},body:{height:"60vh",type:"component",attrs:{},component:{is:""},iframe:{src:""}}},t=Object.freeze(Object.defineProperty({__proto__:null,publicOption:e},Symbol.toStringTag,{value:"Module"}));export{t as _,e as p};

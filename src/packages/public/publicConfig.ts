@@ -78,7 +78,14 @@ export class PublicConfigClass implements PublicConfigType {
     blendMode: 'normal',
 
     // 动画
-    animations: []
+    animations: [],
+    
+    //背景色
+    backgroundColor:"",
+    
+    //内边距
+    paddingX:0,
+    paddingY:0
   }
   // 状态
   public status = {
@@ -90,6 +97,10 @@ export class PublicConfigClass implements PublicConfigType {
   // 数据过滤
   public filter = undefined
   public filterNode = "datas"
+  public dataBinding = {
+    codeMode:"",
+    configMode:[]
+  }
   // 事件
   public events = {
     configEvents: {
@@ -107,7 +118,7 @@ export class PublicConfigClass implements PublicConfigType {
       [EventLife.VNODE_MOUNTED]: undefined,
       [EventLife.VNODE_BEFORE_MOUNT]: undefined
     },
-
+    componentEvents:{},
   }
   public eventsConfig = {
 
@@ -148,7 +159,9 @@ export class FormConfigClass implements PublicConfigType {
     blendMode: 'normal',
 
     // 动画
-    animations: []
+    animations: [],
+    
+    backgroundColor:""
   }
   // 状态
   public status = {
@@ -159,6 +172,11 @@ export class FormConfigClass implements PublicConfigType {
   public request = cloneDeep(requestConfig)
   // 数据过滤
   public filter = undefined
+  public filterNode = "datas"
+  public dataBinding = {
+    codeMode:"",
+    configMode:[]
+  }
   // 事件
   public events = {
     configEvents: {
@@ -176,7 +194,7 @@ export class FormConfigClass implements PublicConfigType {
       [EventLife.VNODE_MOUNTED]: undefined,
       [EventLife.VNODE_BEFORE_MOUNT]: undefined
     },
-
+    componentEvents: {},
   }
 }
 

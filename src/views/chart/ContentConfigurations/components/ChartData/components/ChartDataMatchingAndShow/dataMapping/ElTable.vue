@@ -1,5 +1,5 @@
 <template>
-  <el-table size="small" border striped row-key="id" :data="tableData" default-expand-all>
+  <el-table size="small" border striped row-key="id" :data="tableData" default-expand-all targetData>
     <el-table-column prop="label" label="名称" align="center">
       <template #default="{ row }">
           <span v-if="row.id">{{ row.label }}</span>
@@ -83,7 +83,6 @@ function handleCopy() {
 }
 // 删除列
 function handleDelete(row) {
-  debugger
   if (props.targetData.option.columns.length <= 1) return
   let index = props.targetData.option.columns.indexOf(row)
   props.targetData.option.columns.splice(index, 1);

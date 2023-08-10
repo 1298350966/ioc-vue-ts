@@ -19,6 +19,9 @@
           </div>
         </div>
       </template>
+      <SettingItemBox name="类型">
+          <el-select-v2 v-model="item.type" :options="seriesTypeOptions"></el-select-v2>
+      </SettingItemBox>
       <SettingItemBox name="图形">
         <SettingItem name="颜色">
           <el-color-picker size="small" v-model="item.itemStyle.color" show-alpha></el-color-picker>
@@ -44,7 +47,7 @@ import { option, seriesItem } from './config'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { cloneDeep, get } from 'lodash'
-
+import { seriesTypeOptions } from '../config'
 const props = defineProps<{
   optionData: GlobalThemeJsonType
 }>()

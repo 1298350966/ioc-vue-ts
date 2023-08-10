@@ -6,6 +6,12 @@
     <SettingItem name="是否显示">
       <el-switch v-model="config.visible"></el-switch>
     </SettingItem>
+    <SettingItem name="宽度">
+      <el-input-number v-model="config.width"></el-input-number>
+    </SettingItem>
+    <SettingItem name="高度">
+      <el-input-number v-model="config.height"></el-input-number>
+    </SettingItem>
     <SettingItem name="是否自定义窗体">
       <el-switch v-model="config.isCustom"></el-switch>
     </SettingItem>
@@ -187,12 +193,6 @@ function componentSelectFun(data){
   componentAttrsStr.value = JSONStringify(props.config.content.attrs)
 }
 
-onMounted(()=>{
-  props.config.visible = true  
-})
-onUnmounted(() => {
-  props.config.visible = false
-});
 </script>
 
 <style scoped></style>

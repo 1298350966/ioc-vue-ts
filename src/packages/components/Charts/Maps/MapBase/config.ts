@@ -8,7 +8,7 @@ import { cloneDeep } from 'lodash'
 export const includes = []
 
 export const option = {
-  dataset: dataJson,
+  // dataset: dataJson,
   mapRegion: {
     adcode: 'china',
     showHainanIsLands: true
@@ -212,6 +212,52 @@ export default class Config extends PublicConfigClass implements CreateComponent
     {
       label: "经纬度",
       value: '${e.value}',
+    }
+  ]
+  public dataMapping = [
+    { 
+      key:"point",
+      name:"点维度", 
+      column:"point",
+      children:[
+        {
+          key:"name",
+          name:"点名称",
+          column:"name"
+        },
+        {
+          key:"lng",
+          name:"经度",
+          column:"lng"
+        },
+        {
+          key:"lat",
+          name:"纬度",
+          column:"lat"
+        },
+        {
+          key:"value",
+          name:"值",
+          column:"value"
+        }
+      ]
+    },
+    {
+      key:"map",
+      name:"省维度",
+      column:"map",
+      children:[
+        {
+          key:"name",
+          name:"省名称",
+          column:"name"
+        },
+        {
+          key:"value",
+          name:"值",
+          column:"value"
+        }
+      ]
     }
   ]
 }

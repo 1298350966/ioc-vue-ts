@@ -57,7 +57,26 @@ const option = computed(() => {
 const vChartRef = ref<typeof VChart>()
 
 const dataSetHandle = (dataset: typeof dataJson) => {
-  const { seriesData, xAxis, yAxis } = dataset
+  // const { x, y, data  } = props.chartConfig.dataMapping
+  const x = props.chartConfig.dataMapping.find(e => e.key == "x")
+  const y = props.chartConfig.dataMapping.find(e => e.key == "y")
+  const data = props.chartConfig.dataMapping.find(e => e.key == "data")
+  let xAxis = []
+  let yAxis = []
+  let seriesData = []
+  dataset.forEach((e)=>{
+    if(!xAxis.includes(e[x.column])){
+      xAxis.push(e[x.column])
+    }
+    if(!yAxis.includes(e[y.column])){
+      yAxis.push(e[y.column])
+    }
+    let xIndex = xAxis.findIndex((v) => v == e[x.column])
+    let yIndex = yAxis.findIndex((v) => v == e[y.column])
+    seriesData.push([xIndex,yIndex,e[data.column] || "-"])
+  })
+  console.log(`output->`,xAxis,yAxis,seriesData)
+
   if (xAxis) {
     // @ts-ignore
     props.chartConfig.option.xAxis.data = xAxis
@@ -75,12 +94,23 @@ const dataSetHandle = (dataset: typeof dataJson) => {
 }
 
 watch(
-  () => props.chartConfig.option.dataset,
+  () => props.chartConfig.data,
   newData => {
     dataSetHandle(newData)
   },
   {
-    deep: false
+    deep: false,
+    immediate:true
+  }
+)
+
+watch(
+  () => props.chartConfig.dataMapping,
+  newData => {
+    dataSetHandle(props.chartConfig.data)
+  },
+  {
+    deep: true,
   }
 )
 

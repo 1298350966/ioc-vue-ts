@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div    class="bb">
     <BMap
       :ak="mapKey"
       :center="center"
@@ -23,7 +23,7 @@
         v-for="(config, index) in chartConfig.option.coverGroupList"
         :key="index"
       >
-        <coverGroup v-if="config.visible" :config="config"></coverGroup>
+        <coverGroup  class="kh" v-if="config.visible" :config="config"></coverGroup>
       </template>
       <!-- 信息窗口 -->
       <template
@@ -42,7 +42,7 @@ import { CreateComponentType } from "@/packages/index.d";
 import { coverGroup, InfoWindow,controlGroup } from "./components/index";
 import { useBmap } from './hooks/useBmapHooks';
 //解决截图问题
-HTMLCanvasElement.prototype.getContext = function (origFn) {
+(HTMLCanvasElement.prototype as any).getContext = function (origFn) {
   return function (type, attributes) {
     if (type === 'webgl') {
       attributes = Object.assign({}, attributes, {

@@ -1,5 +1,5 @@
 <template>
-  <div class="sketch-rule">
+  <div class="sketch-rule" ref="sketchRuleRefs">
     <SketchRule
       v-if="sketchRuleReDraw"
       lang="zh-CN"
@@ -45,6 +45,7 @@ import throttle from "lodash/throttle";
 import { SketchRule } from "vue3-sketch-ruler";
 // 引入标尺
 import "vue3-sketch-ruler/lib/style.css";
+import { getCssVar } from "@/utils";
 const chartEditStore = useChartEditStore();
 const chartLayoutStore = useChartLayoutStore();
 const designStore = useDesignStore();
@@ -74,20 +75,22 @@ const containerWidth = computed(() => {
   return `${height.value * 2}px`;
 });
 
+
 // 主题
 const paletteStyle = computed(() => {
+  const bgColor = getCssVar("--bg-color")
+  const fontColor = getCssVar("--font-color")
+  const borderColor = getCssVar("--el-border-color")
   const isDarkTheme = designStore.getDarkTheme;
-  return isDarkTheme
-    ? {
-        bgColor: "#18181c",
-        longfgColor: "#4d4d4d",
-        shortfgColor: "#4d4d4d",
-        fontColor: "#4d4d4d",
-        shadowColor: "#18181c",
-        borderColor: "#18181c",
-        cornerActiveColor: "#18181c",
+  return {
+        bgColor:bgColor,
+        longfgColor: fontColor,
+        shortfgColor: fontColor,
+        fontColor: fontColor,
+        shadowColor: bgColor,
+        borderColor: borderColor,
+        cornerActiveColor: bgColor,
       }
-    : {};
 });
 
 // 颜色
@@ -183,7 +186,6 @@ const canvasBox = () => {
 
 // 重绘标尺
 const reDraw = () => {
-  // debugger
   sketchRuleReDraw.value = false;
   setTimeout(() => {
     sketchRuleReDraw.value = true;
@@ -343,7 +345,7 @@ window.onKeySpacePressHold = (isHold: boolean) => {
     right: 0;
     width: 10px;
     height: 10px;
-    background-color: $--color-dark-bg-1;
+    background-color: var(--bg-color-1);
   }
 
   .edit-screen-container {

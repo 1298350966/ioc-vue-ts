@@ -35,7 +35,12 @@
         </SettingItem>
         <template v-if="optionData.body.type === 'component'">
           <SettingItem name="组件名称">
-            <el-input v-model="optionData.body.component.is"></el-input>
+            <el-input v-model="optionData.body.component.is">
+              <template #append>
+              <el-button icon="Tools" @click="componentSelectShow = true" />
+            </template>
+            </el-input>
+            <componentSelect v-model:show="componentSelectShow" @select="componentSelectFun"></componentSelect>
           </SettingItem>
         </template>
         <template v-else-if="optionData.body.type === 'iframe'">
@@ -59,7 +64,6 @@
 </template>
 
 <script lang="ts" setup>
-import { config } from "process";
 import { GlobalDialogType } from "../type";
 import { Json } from "@vicons/carbon";
 import { JSONParse, JSONStringify } from "@/utils";
@@ -71,7 +75,7 @@ const props = defineProps({
   },
 });
 const collapseActive = ["1", "2"];
-
+const componentSelectShow = ref(false)
 const componentAttrsStr = ref(
   JSONStringify(props.optionData.body.attrs)
 );
@@ -89,6 +93,15 @@ const bodyTypeOptions = [
   { value: "component", label: "内部组件" },
   { value: "iframe", label: "嵌入页面" },
 ];
+
+function componentSelectFun(data) {
+  props.optionData.body.component.is = ""
+  nextTick(() => {
+    props.optionData.body.component.is = data.componentName
+  });
+  props.optionData.body.attrs = data.props
+  componentAttrsStr.value = JSONStringify(props.optionData.body.attrs)
+}
 </script>
 
 <style scoped></style>

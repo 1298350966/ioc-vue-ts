@@ -7,7 +7,8 @@ export const option = {
   colors: ['#3faacb', '#fff'],
   dur: 3,
   lineHeight: 2,
-  endWidth: 5
+  endWidth: 5,
+  reverse:false
 }
 
 export default class Config extends PublicConfigClass implements CreateComponentType {

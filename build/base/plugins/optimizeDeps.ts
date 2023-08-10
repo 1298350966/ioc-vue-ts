@@ -9,7 +9,7 @@ const rootPath = path.resolve(__dirname, `./`);
 export function optimizeDeps() {
   return {
     name: "optimizeDeps",
-    configResolved: (config) => {
+    configResolved: (config: { optimizeDeps: { include: any[]; }; }) => {
       console.log(config.optimizeDeps);
       let concat = config.optimizeDeps.include.concat(optimizeAntd());
 

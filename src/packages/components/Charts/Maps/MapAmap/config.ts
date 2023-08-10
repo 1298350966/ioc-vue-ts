@@ -139,6 +139,7 @@ export const MarkerOptions = {
   offset: [-20, -65],
   extData: null,
 };
+
 //海量标注
 export const LabelMarkerOptions = {
   visible: true,
@@ -309,6 +310,7 @@ const pathTypeOptions = [
     label:"json|数组(LngLat)"
   },
 ]
+
 export const MarkerDataMapping = {
   position:{
     type:"LngLat",
@@ -382,30 +384,7 @@ export const CircleMarkerDataMapping = {
   }
 }
 
-export const coverGroupOptions:CoverGroupType = {
-  id: null,
-  name: "",
-  visible: true,
-  type: coverEnum.Marker,
-  options: cloneDeep(MarkerOptions) as any,
-  dataset: MarkerData as any,
-  request: cloneDeep(requestConfig),
-  events: {
-    configEvents: {
-      componentEvents: [],
-    },
-    codeEvents:{
-      baseEvent: {
-        click: "console.log(this);console.log(data);console.log(e);"
-      }
-    }
-  },
-  data:cloneDeep(MarkerData),
-  dataMapping:cloneDeep(MarkerDataMapping),
-  dataKeyList:null,
-  filterNode:'datas',
-  filter:""
-};
+
 
 export const coverOptions = [
   {
@@ -442,11 +421,13 @@ export const InfoWindowOptions = {
   id: null,
   name: "",
   visible: false,
+  width:320,
+  height:200,
   isCustom: false,
   autoMove: true,
   avoid: true,
   closeWhenClickMap: true,
-  offset:[0,0],
+  offset:[0,-50],
   anchor: 'bottom-center',
   // size:[300,170],
   position: null,
@@ -585,6 +566,40 @@ export const ControlGroupEvents:EventsType= {
     setVars:setVars
   },
 }
+
+export const coverGroupOptions:CoverGroupType = {
+  id: null,
+  name: "",
+  visible: true,
+  type: coverEnum.Marker,
+  options: cloneDeep(MarkerOptions) as any,
+  dataset: MarkerData as any,
+  request: cloneDeep(requestConfig),
+  events: {
+    configEvents: {
+      componentEvents: [],
+    },
+    codeEvents:{
+      baseEvent: {
+        click: "console.log(this);console.log(e);"
+      }
+    }
+  },
+  InfoWindow:{
+    eventType:"click",
+    enable: true,
+    options:cloneDeep(InfoWindowOptions)
+  },
+  data:cloneDeep(MarkerData),
+  dataMapping:cloneDeep(MarkerDataMapping),
+  dataKeyList:null,
+  filterNode:'datas',
+  filter:"",
+  dataBinding:{
+    codeMode:"",
+    configMode:[]
+  },
+};
 
 export default class Config
   extends PublicConfigClass

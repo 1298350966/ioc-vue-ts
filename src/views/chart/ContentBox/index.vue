@@ -88,7 +88,7 @@ $topOrBottomHeight: 40px;
     height: $topOrBottomHeight;
     padding: 0 10px;
     // border-top: 1px solid;
-    background-color:$--color-dark-bg-3;
+    background-color:var(--bg-color-3);
     .mt-1 {
       margin-top: 2px;
     }

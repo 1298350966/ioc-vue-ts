@@ -4,7 +4,7 @@ import { CreateComponentType, EventsType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
-export const includes = ['legend']
+export const includes = ["grid",'legend']
 
 // 排序枚举
 export const FunnelOrderEnumList = [

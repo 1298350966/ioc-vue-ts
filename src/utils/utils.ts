@@ -199,7 +199,9 @@ export const canvasCut = (html: HTMLElement | null, callback?: Function) => {
   html2canvas(html, {
     backgroundColor: null,
     allowTaint: true,
-    useCORS: true
+    useCORS: true,
+    scale:2,
+    logging: false,
   }).then((canvas: HTMLCanvasElement) => {
     window['$message'].success('导出成功！')
     downloadByA(canvas.toDataURL(), undefined, 'png')
@@ -215,7 +217,9 @@ export const getCanvasCutImg = async (html: HTMLElement | null) => {
   const _canvasImg: HTMLCanvasElement = await html2canvas(html, {
     backgroundColor: null,
     allowTaint: true,
-    useCORS: true
+    useCORS: true,
+    scale:2,
+    logging: false,
   })
   let img = _canvasImg.toDataURL()
   // downloadByA(img,undefined, 'png')
@@ -413,3 +417,12 @@ export function resizeListener(element: Element, callback: any, throttleTime = 3
   return observer
 }
 
+
+
+// //静态资源处理
+// export function getImageUrl(url:string){
+//   console.log( new URL(`../assets/images/${url}`, import.meta.url))
+//   return new URL(`../assets/images/${url}`, import.meta.url).href
+// }
+
+//字符串转js

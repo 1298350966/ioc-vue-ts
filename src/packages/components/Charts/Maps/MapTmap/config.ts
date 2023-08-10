@@ -227,47 +227,25 @@ export const PolylineDataMapping = {
   },  
 }
 
-export const coverGroupOptions:CoverGroupType = {
-  id: null,
-  name: "",
-  visible: true,
-  type: coverEnum.Marker,
-  options: cloneDeep(MarkerOptions) as any,
-  dataset: MarkerData as any,
-  request: cloneDeep(requestConfig),
-  events: {
-    configEvents: {
-      componentEvents: [],
-    },
-    codeEvents:{
-      baseEvent: {
-        click: "console.log(this);console.log(data);console.log(e);"
-      }
-    }
-  },
-  data:cloneDeep(MarkerData),
-  dataMapping:cloneDeep(MarkerDataMapping),
-  filterNode:'datas',
-  filter:""
-};
-
 export const InfoWindowOptions = {
   id: null,
   name: "",
   visible: false,
+  width:320,
+  height:200,
   minWidth: 50,
-  maxWidth: 300,
+  maxWidth: 500,
   maxHeight: null as number,
   autoPan: false,
   closeButton: true,
-  offset: [0, 7],
+  offset: [0, -50],
   autoPanPadding: [5, 5],
   closeOnClick: false,
   content: {
     type: "component",
+    attrs: {},
     component: {
       is: "",
-      attrs: {}
     },
     iframe: {
       src: ""
@@ -485,7 +463,38 @@ export const ControlGroupEvents:EventsType= {
     vars: [],
   },
 }
-
+export const coverGroupOptions:CoverGroupType = {
+  id: null,
+  name: "",
+  visible: true,
+  type: coverEnum.Marker,
+  options: cloneDeep(MarkerOptions) as any,
+  dataset: MarkerData as any,
+  request: cloneDeep(requestConfig),
+  events: {
+    configEvents: {
+      componentEvents: [],
+    },
+    codeEvents: {
+      baseEvent: {
+        click: "console.log(this);console.log(e);"
+      }
+    }
+  },
+  InfoWindow:{
+    eventType:"click",
+    enable: true,
+    options:cloneDeep(InfoWindowOptions)
+  },
+  data: cloneDeep(MarkerData),
+  dataMapping: cloneDeep(MarkerDataMapping),
+  filterNode: 'datas',
+  filter: "",
+  dataBinding: {
+    codeMode: '',
+    configMode: []
+  }
+};
 export default class Config extends PublicConfigClass implements CreateComponentType {
   public key = MapTmapConfig.key
   public attr = { ...chartInitConfig, w: 1000, h: 800, zIndex: -1 }

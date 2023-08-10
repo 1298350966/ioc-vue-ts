@@ -1,0 +1,40 @@
+@use "../../mixins/_var.scss" as *;
+@use "./variables.scss";
+
+$theme-bg-color:variables.$theme-bg-color;
+$font-color:variables.$font-color;
+html.dark {
+
+  @include set-root-css-var((
+    "bg-color": darken($theme-bg-color, 0%),
+    "bg-color-1": darken($theme-bg-color, 1%),
+    "bg-color-2": darken($theme-bg-color, 2%),
+    "bg-color-3": darken($theme-bg-color, 4%),
+    "bg-color-4": darken($theme-bg-color, 6%),
+    "bg-color-5": darken($theme-bg-color, 8%),
+    "font-color":$font-color,
+    "font-color-1":darken($font-color, 2%),
+    "font-color-2":darken($font-color, 4%),
+    "font-color-3":darken($font-color, 6%),
+    "font-color-4":darken($font-color, 8%),
+    // "dark-color":lighten($theme-bg-color, 0%),
+    // "dark-color-1a":lighten($theme-bg-color, 1%),
+    // "dark-color-1":lighten($theme-bg-color, 2%),
+    // "dark-color-2":lighten($theme-bg-color, 4%),
+    // "dark-color-3":lighten($theme-bg-color, 6%),
+    // "dark-color-4":lighten($theme-bg-color, 8%)
+  ));
+  body{
+    background:linear-gradient(to bottom,var(--bg-color-2),var(--bg-color),var(--bg-color-5)) ;
+    height: 100vh;
+    color:var(--font-color);
+  }
+}
+
+
+//   --dark-color-0: #000000;
+//   --dark-color-1a: #1a1a1a;
+//   --dark-color-1: #1e1e1e;
+//   --dark-color-2: #232324;
+//   --dark-color-3: #333333;
+//   --dark-color-4: #37373d;

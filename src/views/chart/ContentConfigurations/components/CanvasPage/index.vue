@@ -54,6 +54,14 @@
           :predefine="swatchesColors"
         />
       </el-form-item>
+      <el-form-item label="背景图url">
+        <el-input v-model="canvasConfig.backgroundImage">
+          <template #append>
+              <el-button @click="iconSelectShow = true" icon="Tools" />
+            </template>
+          </el-input>
+          <icon-select v-if="iconSelectShow" v-model:show="iconSelectShow" v-model="canvasConfig.backgroundImage"></icon-select>
+      </el-form-item>
       <el-form-item label="颜色应用">
         <el-switch v-model="canvasConfig.selectColor" />
       </el-form-item>
@@ -90,6 +98,7 @@ import { EditCanvasConfigEnum } from "@/store/modules/chartEditStore/chartEditSt
 import { fileToUrl, loadAsyncComponent } from "@/utils";
 import { PreviewScaleEnum } from "@/enums/styleEnum";
 import { icon } from "@/plugins";
+import { UploadRequestOptions } from "element-plus";
 const { ColorPaletteIcon } = icon.ionicons5;
 const { ScaleIcon, FitToScreenIcon, FitToHeightIcon, FitToWidthIcon } =
   icon.carbon;
@@ -100,6 +109,8 @@ const editCanvas = chartEditStore.getEditCanvas;
 
 const uploadFileListRef = ref();
 const switchSelectColorLoading = ref(false);
+//图片选择
+const iconSelectShow = ref(false)
 
 // const ChartThemeColor = loadAsyncComponent(() =>
 //   import('./components/ChartThemeColor/index.vue')
@@ -218,23 +229,23 @@ const switchSelectColorHandle = () => {
 };
 
 // 自定义上传操作
-const customRequest = (options: any) => {
+const customRequest = async (options:UploadRequestOptions) => {
   const { file } = options;
-  nextTick(() => {
-    if (file) {
-      const ImageUrl = fileToUrl(file);
-      chartEditStore.setEditCanvasConfig(
-        EditCanvasConfigEnum.BACKGROUND_IMAGE,
-        ImageUrl
-      );
-      chartEditStore.setEditCanvasConfig(
-        EditCanvasConfigEnum.SELECT_COLOR,
-        false
-      );
-    } else {
-      window["$message"].error("添加图片失败，请稍后重试！");
-    }
-  });
+
+  if (file) {
+    const ImageUrl = fileToUrl(file);
+    chartEditStore.setEditCanvasConfig(
+      EditCanvasConfigEnum.BACKGROUND_IMAGE,
+      ImageUrl
+    );
+    chartEditStore.setEditCanvasConfig(
+      EditCanvasConfigEnum.SELECT_COLOR,
+      false
+    );
+  } else {
+    window["$message"].error("添加图片失败，请稍后重试！");
+  }
+
 };
 
 // 选择预览方式

@@ -1,99 +1,103 @@
 <template>
   <div v-if="triggerConfig.updateValue">
-    <el-tabs v-model="activeName" class="demo-tabs">
+    <el-tabs v-model="activeName" class="demo-tabs" addable closable>
       <el-tab-pane label="请求参数" name="1">
-            <el-tabs v-model="requestActiveName" class="demo-tabs">
-              <el-tab-pane  :label="RequestParamsTypeEnum.PARAMS" :name="RequestParamsTypeEnum.PARAMS">
-                <el-table  :data="triggerConfig.updateValue['request.requestParams.Params']" class="w-100%" border>
+          <el-tabs v-model="requestActiveName" class="demo-tabs">
+            <el-tab-pane  :label="RequestParamsTypeEnum.PARAMS" :name="RequestParamsTypeEnum.PARAMS">
+              <el-table  :data="triggerConfig.updateValue['request.requestParams.Params']" class="w-100%" border>
+                <el-table-column prop="key" label="目标参数">
+                  <template #default="{ row }">
+                    <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Params')" clearable allow-create
+                      filterable></el-select-v2>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="value" label="映射字段">
+                  <template #default="{ row }">
+                    <el-select-v2 class="w-100%"  v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
+                      filterable></el-select-v2>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Params'])"> 添加参数设置</el-button>
+            </el-tab-pane>
+            <!-- <el-tab-pane :label="RequestParamsTypeEnum.HEADER">
+          <el-table :data="triggerConfig.updateValue['request.requestParams.Header']" class="w-100%" border>
+            <el-table-column prop="key" label="目标参数">
+            </el-table-column>
+            <el-table-column prop="value" label="映射字段">
+              <template #default="{ row }">
+                <el-select-v2 v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
+                  filterable></el-select-v2>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane> -->
+            <el-tab-pane v-if="targetConfig.request.requestHttpType != RequestHttpEnum.GET" :label="RequestParamsTypeEnum.BODY" :name="RequestParamsTypeEnum.BODY">
+              <el-radio-group v-model="requestParamsBodyType" name="radiogroup">
+                <el-radio v-for="bodyEnum in RequestBodyEnumList" :key="bodyEnum" :label="bodyEnum">
+                  {{ bodyEnum }}
+                </el-radio>
+              </el-radio-group>
+              <div v-if="requestParamsBodyType == 'form-data'">
+                <el-table :data="triggerConfig.updateValue['request.requestParams.Body.form-data']" class="w-100%"
+                  border>
                   <el-table-column prop="key" label="目标参数">
-                    <template #default="{ row }">
-                      <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Params')" clearable allow-create
-                        filterable></el-select-v2>
-                    </template>
+                                <template #default="{ row }">
+                          <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Body.form-data')" clearable allow-create
+                            filterable></el-select-v2>
+                        </template>
                   </el-table-column>
                   <el-table-column prop="value" label="映射字段">
                     <template #default="{ row }">
-                      <el-select-v2 class="w-100%"  v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
+                      <el-select-v2 v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
                         filterable></el-select-v2>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Params'])"> 添加参数设置</el-button>
-              </el-tab-pane>
-              <!-- <el-tab-pane :label="RequestParamsTypeEnum.HEADER">
-            <el-table :data="triggerConfig.updateValue['request.requestParams.Header']" class="w-100%" border>
-              <el-table-column prop="key" label="目标参数">
-              </el-table-column>
-              <el-table-column prop="value" label="映射字段">
-                <template #default="{ row }">
-                  <el-select-v2 v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
-                    filterable></el-select-v2>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane> -->
-              <el-tab-pane v-if="targetConfig.request.requestHttpType != RequestHttpEnum.GET" :label="RequestParamsTypeEnum.BODY" :name="RequestParamsTypeEnum.BODY">
-                <el-radio-group v-model="requestParamsBodyType" name="radiogroup">
-                  <el-radio v-for="bodyEnum in RequestBodyEnumList" :key="bodyEnum" :label="bodyEnum">
-                    {{ bodyEnum }}
-                  </el-radio>
-                </el-radio-group>
-                <div v-if="requestParamsBodyType == 'form-data'">
-                  <el-table :data="triggerConfig.updateValue['request.requestParams.Body.form-data']" class="w-100%"
-                    border>
-                    <el-table-column prop="key" label="目标参数">
-                                  <template #default="{ row }">
-                            <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Body.form-data')" clearable allow-create
-                              filterable></el-select-v2>
-                          </template>
-                    </el-table-column>
-                    <el-table-column prop="value" label="映射字段">
-                      <template #default="{ row }">
-                        <el-select-v2 v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
+                <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Body.form-data'])"> 添加参数设置</el-button>
+              </div>
+              <div v-else-if="requestParamsBodyType == 'json'">
+                <el-table :data="triggerConfig.updateValue['request.requestParams.Body.json']" class="w-100%"
+                  border>
+                  <el-table-column prop="key" label="目标参数">
+                    <template #default="{ row }">
+                        <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Body.json')" clearable allow-create
                           filterable></el-select-v2>
                       </template>
-                    </el-table-column>
-                  </el-table>
-                  <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Body.form-data'])"> 添加参数设置</el-button>
-                </div>
-                <div v-else-if="requestParamsBodyType == 'json'">
-                  <el-table :data="triggerConfig.updateValue['request.requestParams.Body.json']" class="w-100%"
-                    border>
-                    <el-table-column prop="key" label="目标参数">
-                      <template #default="{ row }">
-                          <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Body.json')" clearable allow-create
+                  </el-table-column>
+                  <el-table-column prop="value" label="映射字段">
+                    <template #default="{ row }">
+                      <el-select-v2 class="w-100%" v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
+                        filterable></el-select-v2>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Body.json'])"> 添加参数设置</el-button>
+              </div>
+              <div v-else-if="requestParamsBodyType == 'x-www-form-urlencoded'">
+                <el-table :data="triggerConfig.updateValue['request.requestParams.Body.x-www-form-urlencoded']"
+                  class="w-100%" border>
+                  <el-table-column prop="key" label="目标参数">
+                                <template #default="{ row }">
+                          <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Body.x-www-form-urlencoded')" clearable allow-create
                             filterable></el-select-v2>
                         </template>
-                    </el-table-column>
-                    <el-table-column prop="value" label="映射字段">
-                      <template #default="{ row }">
-                        <el-select-v2 class="w-100%" v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
-                          filterable></el-select-v2>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                  <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Body.json'])"> 添加参数设置</el-button>
-                </div>
-                <div v-else-if="requestParamsBodyType == 'x-www-form-urlencoded'">
-                  <el-table :data="triggerConfig.updateValue['request.requestParams.Body.x-www-form-urlencoded']"
-                    class="w-100%" border>
-                    <el-table-column prop="key" label="目标参数">
-                                  <template #default="{ row }">
-                            <el-select-v2 class="w-100%" v-model="row.key" :options="getOptions('Body.x-www-form-urlencoded')" clearable allow-create
-                              filterable></el-select-v2>
-                          </template>
-                    </el-table-column>
-                    <el-table-column prop="value" label="映射字段">
-                      <template #default="{ row }">
-                        <el-select-v2 class="w-100%" v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
-                          filterable></el-select-v2>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                  <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Body.x-www-form-urlencoded'])"> 添加参数设置</el-button>
-                </div>
-              </el-tab-pane>
-            </el-tabs>
+                  </el-table-column>
+                  <el-table-column prop="value" label="映射字段">
+                    <template #default="{ row }">
+                      <el-select-v2 class="w-100%" v-model="row.value" :options="(mappingFieldOptions as any[])" clearable allow-create
+                        filterable></el-select-v2>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <el-button class="w-100% mt-2" @click="addParams(triggerConfig.updateValue['request.requestParams.Body.x-www-form-urlencoded'])"> 添加参数设置</el-button>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+      </el-tab-pane>
+      <el-tab-pane label="动态数据" name="2">
+        <el-select-v2 class="w-100%" v-model="triggerConfig.updateValue.data" :options="(mappingFieldOptions as any[])" clearable allow-create
+                        filterable></el-select-v2>
       </el-tab-pane>
     </el-tabs>
 
@@ -201,7 +205,9 @@ function addParams(data) {
 }
 
 function requestParamsDataFilter(data) {
+   if(Array.isArray(data)){
     data = data.filter((e) => !!e.key)
+   }
 }
 function getOptions(key) {
   const requestParams = props.targetConfig.request.requestParams

@@ -37,7 +37,7 @@ export const option = {
   extAttrs:{
       isShowSelection:false,
       isShowIndex:false,
-      isPaging:true,
+      isPaging:false,
       pagingAttrs:{
         total: dataJson.totalCount ||  10,  //总数量
         pageSizes:[5,10,20,50],
@@ -49,6 +49,10 @@ export const option = {
         hideOnSinglePage:false, //只有一页隐藏分页
         disabled:false,
         small:true,  //使用小型分页
+        style:{
+          "--el-pagination-bg-color":"",
+          "--el-pagination-text-color":""
+        }
       }
   },
   style:{
@@ -58,6 +62,9 @@ export const option = {
     textColor:'',     // 表格内容文字颜色
     rowHoverBgColor:'',
     borderColor:'',   //边框颜色
+    trBgColor:'',
+    stripeTrBgColor:"",
+    expandedCellBgColor:"",
   },
   columns: ["date", "name", "address"].map((prop,index) => {
     let column = cloneDeep(columnItem)

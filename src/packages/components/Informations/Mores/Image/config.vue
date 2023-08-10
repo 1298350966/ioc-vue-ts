@@ -3,24 +3,20 @@
     <collapse-item name="属性" :expanded="true">
       <setting-item-box name="路径" :alone="true">
         <setting-item>
-          <el-input v-model="optionData.dataset" size="small"></el-input>
+          <el-input v-model="optionData.dataset" size="small">
+            <template #append>
+              <el-button @click="iconSelectShow = true" icon="Tools" />
+            </template>
+          </el-input>
+          <icon-select v-if="iconSelectShow" v-model:show="iconSelectShow" v-model="optionData.dataset"></icon-select>
         </setting-item>
       </setting-item-box>
       <setting-item-box name="样式">
         <setting-item name="类型">
-          <el-select-v2
-            v-model="optionData.fit"
-            size="small"
-            :options="fitList"
-          ></el-select-v2>
+          <el-select-v2 v-model="optionData.fit" size="small" :options="fitList"></el-select-v2>
         </setting-item>
         <setting-item name="圆角">
-          <el-input-number
-            v-model="optionData.borderRadius"
-            size="small"
-            :min="0"
-            placeholder="圆角"
-          ></el-input-number>
+          <el-input-number v-model="optionData.borderRadius" size="small" :min="0" placeholder="圆角"></el-input-number>
         </setting-item>
       </setting-item-box>
     </collapse-item>
@@ -66,4 +62,7 @@ const fitList = [
     label: 'none'
   },
 ]
+
+
+const iconSelectShow = ref(false)
 </script>

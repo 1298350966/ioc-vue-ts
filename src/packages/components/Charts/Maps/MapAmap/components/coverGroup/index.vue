@@ -1,5 +1,5 @@
 <template>
-  <div style="display: none">
+  <div style="display: none" :key="groupKey" >
     <template>
       <div v-for="(item, index) in configData"  :key="index">
         <component
@@ -8,7 +8,11 @@
           v-bind="item"
           v-on="getEvents"
           @init="init"
+          
         ></component>
+      </div>
+      <div v-if="config.InfoWindow.enable">
+        <InfoWindow v-if="config.InfoWindow.options.visible" :config="config.InfoWindow.options" :data="InfoWindowData"></InfoWindow>
       </div>
     </template>
     <div ref="content">
@@ -30,9 +34,10 @@ import { ControlGroupEvents, coverGroupOptions } from "../../config";
 import { useAddEvent, useAddMapEvent } from "@/packages/hooks/useAddEvent.kooks";
 import {CoverGroupType } from '@/packages/index.d'
 import { useChartDataFetch } from "@/hooks";
-import { useDataMappingHook } from "./useDataMappingHook";
+import { useDataMappingHook } from "../../hooks/useDataMappingHook";
 import { useAmapType } from "../../hooks/useAmapHooks";
 import { cloneDeep } from "lodash";
+import {InfoWindow} from "../index"
 defineOptions({
   name: "coverGroup",
   components: {
@@ -51,11 +56,11 @@ let props = defineProps({
     type: Object as PropType<CoverGroupType>,
   },
 });
+
 const {setDataMappingOptions} = useDataMappingHook(props.config)
 
 const CoverGroupRef = ref(null)
 
-const componentShow = ref(false);
 const componentIs = computed(() => {
   return props.config.type || null;
 });
@@ -97,22 +102,25 @@ const configData  = computed(()=>{
   return list
 })
 
+const InfoWindowData = ref(null)
 
-const { rootConfig, getEvents } = useAddMapEvent(props.config, ControlGroupEvents)
+const { rootConfig, getEvents,setEvents } = useAddMapEvent(props.config, ControlGroupEvents,(emitEvent)=>{
+  const {options,eventType} = props.config.InfoWindow
+  emitEvent.on(eventType,(e) =>{
+    console.log(e);
+    if(["Marker"].includes(props.config.type)){
+      const position = e.target.getPosition().toArray()
+      options.position = position
+    }else{
+      options.position =  e.lnglat.toArray()
+    }
+    if(e.target.getExtData){
+      InfoWindowData.value = e.target.getExtData()
+    }
+    options.visible = true
+  })
+})
 
-// function getEvent(data) {
-//   const baseEvent: { [key: string]: any } = {};
-//   for (const key in props.config.events.baseEvent) {
-//     baseEvent[key] = function (e) {
-//       new Function("e", "data", props.config.events.baseEvent[key]).call(
-//         this,
-//         e,
-//         data
-//       );
-//     };
-//   }
-//   return baseEvent;
-// }
 if(rootConfig){
   useChartDataFetch(props.config, rootConfig.requestGlobalConfig, (data) => {
     console.log(data);
@@ -122,40 +130,6 @@ if(rootConfig){
 watch(() =>props.config.data,()=>{
   // mapIns.setCoverGroupFitView(props.config.id)
 })
-function goCoverGroupCenter(){
-  nextTick(()=>{
-    if(configData.value){
-      if(["Marker","LabelMarker","ElasticMarker"].includes(props.config.type)){
-        let list = configData.value.map((data)=>{
-          return data.position
-        })
-        mapIns.setBounds(list)
-      }else if(["Polyline","Polygon"].includes(props.config.type)){
-        let list = []
-        configData.value.forEach((data)=>{
-          list.push(...data.path) 
-        })
-        console.log(`setBounds->`,list)
-        mapIns.setBounds(list)
-      }
-    }
-  })
-}
-
-
-
-
-function  collectCoverGroup(){
-  nextTick(()=>{
-    let coverGroupList = []
-    CoverGroupRef.value.forEach((coverRef) => {
-      let cover = coverRef.$$getInstance()
-      console.log(`output->`,cover)
-      coverGroupList.push(cover)
-    }) 
-   
-  })
-}
 
 function init(cover) {
   // coverGroupList.push(cover)
@@ -164,6 +138,13 @@ function init(cover) {
 onMounted(()=>{
   mapIns.addCoverGroup(props.config.id,CoverGroupRef)
 })
+
+const groupKey = ref(0)
+watch(()=>[props.config.InfoWindow.eventType],()=>{
+  setEvents()
+  groupKey.value++
+})
+
 </script>
 
 <style scoped></style>

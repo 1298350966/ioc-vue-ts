@@ -167,7 +167,7 @@ const editSaveHandle = (newData: RequestDataPondItemType) => {
         justify-content: space-between;
         align-items: center;
         padding: 5px;
-        background-color: var(--dark-color-2);
+        background-color: var(--bg-color-3);
         margin: 10px;
         border-radius: 5px;
         transition: all 0.5s linear;
@@ -188,7 +188,7 @@ const editSaveHandle = (newData: RequestDataPondItemType) => {
           cursor: pointer;
         }
         &:hover{
-          background-color: var(--dark-color-3);
+          background-color: var(--bg-color-3);
           .item-content-icon {
             opacity:1;
             

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <script>self["MonacoEnvironment"] = (function (paths) {
+          return {
+            globalAPI: false,
+            getWorkerUrl : function (moduleId, label) {
+              var result =  paths[label];
+              if (/^((http:)|(https:)|(file:)|(\/\/))/.test(result)) {
+                var currentUrl = String(window.location);
+                var currentOrigin = currentUrl.substr(0, currentUrl.length - window.location.hash.length - window.location.search.length - window.location.pathname.length);
+                if (result.substring(0, currentOrigin.length) !== currentOrigin) {
+                  var js = '/*' + label + '*/importScripts("' + result + '");';
+                  var blob = new Blob([js], { type: 'application/javascript' });
+                  return URL.createObjectURL(blob);
+                }
+              }
+              return result;
+            }
+          };
+        })({
+  "editorWorkerService": "/ioc/monacoeditorwork/editor.worker.bundle.js",
+  "typescript": "/ioc/monacoeditorwork/ts.worker.bundle.js",
+  "json": "/ioc/monacoeditorwork/json.worker.bundle.js",
+  "html": "/ioc/monacoeditorwork/html.worker.bundle.js",
+  "css": "/ioc/monacoeditorwork/css.worker.bundle.js",
+  "javascript": "/ioc/monacoeditorwork/ts.worker.bundle.js",
+  "less": "/ioc/monacoeditorwork/css.worker.bundle.js",
+  "scss": "/ioc/monacoeditorwork/css.worker.bundle.js",
+  "handlebars": "/ioc/monacoeditorwork/html.worker.bundle.js",
+  "razor": "/ioc/monacoeditorwork/html.worker.bundle.js"
+});</script>
+
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ioc</title>
+    
+    <script type="module" crossorigin src="/ioc/static/js/index-4e626338.js"></script>
+    <link rel="modulepreload" crossorigin href="/ioc/static/js/vue-65382a1b.js">
+    <link rel="modulepreload" crossorigin href="/ioc/static/js/vuema-115cb50e.js">
+    <link rel="modulepreload" crossorigin href="/ioc/static/js/lodash-f91682a1.js">
+    <link rel="modulepreload" crossorigin href="/ioc/static/js/elementPlus-07602b2b.js">
+    <link rel="modulepreload" crossorigin href="/ioc/static/js/xgplayerVue-c27b6911.js">
+    <link rel="modulepreload" crossorigin href="/ioc/static/js/vueRepl-a238c739.js">
+    <link rel="stylesheet" href="/ioc/static/css/index-bc362552.css">
+  </head>
+  <body>
+    <div id="appProvider" style="display: none;"></div>
+    <div id="app">
+      <div class="first-loading-wrp">
+        <div class="loading-wrp">
+          <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-terminal">
+      <p>请使用 Web 端进行查看</p>
+    </div>
+    
+  </body>
+</html>

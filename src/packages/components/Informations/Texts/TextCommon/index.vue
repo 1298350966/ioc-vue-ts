@@ -1,8 +1,8 @@
 <template>
   <div class="go-text-box">
     <div class="content">
-      <span style="cursor: pointer" v-if="link" @click="click">{{ option.dataset }}</span>
-      <span v-else>{{ option.dataset }}</span>
+      <span style="cursor: pointer" v-if="link" @click="click">{{ chartConfig.option.dataset }}</span>
+      <span v-else>{{ chartConfig.option.dataset }}</span>
     </div>
   </div>
 </template>
@@ -33,18 +33,17 @@ const {
   borderRadius,
   writingMode,
   backgroundColor,
-  fontWeight
+  fontWeight,
+  fontFamily,
+  fontStyle
 } = toRefs(props.chartConfig.option)
 
-const option = shallowReactive({
-  dataset: configOption.dataset
-})
 
 // 手动更新
 watch(
-  () => props.chartConfig.option.dataset,
+  () => props.chartConfig.data,
   (newData: any) => {
-    option.dataset = newData
+    newData && (props.chartConfig.option.dataset = newData)
   },
   {
     immediate: true,
@@ -56,7 +55,7 @@ const rootConfig: ChartEditStorageType = inject("rootConfig")
 
 // 预览更新
 useChartDataFetch(props.chartConfig, rootConfig.requestGlobalConfig, (newData: string) => {
-  option.dataset = newData
+  props.chartConfig.option.dataset = newData
 })
 
 //打开链接
@@ -82,8 +81,9 @@ const click = () => {
     border-width: v-bind('borderWidth + "px"');
     border-radius: v-bind('borderRadius + "px"');
     border-color: v-bind('borderColor');
-    
     background-color: v-bind('backgroundColor');
+    font-family:v-bind('fontFamily');
+    font-style:v-bind('fontStyle')
   }
 }
 </style>

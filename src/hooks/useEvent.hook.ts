@@ -1,4 +1,3 @@
-import { indexOf } from "lodash";
 
 export const useEvent = () => {
   let events = {}
@@ -32,4 +31,12 @@ export const useEvent = () => {
     off,
     emit
   }
+}
+
+
+export interface UseEventType {
+  all: {};
+  on: (evtName: any, callback: any) => void;
+  off: (evtName: any, callback: any) => void;
+  emit: (evtName: any, ...args: any[]) => void
 }

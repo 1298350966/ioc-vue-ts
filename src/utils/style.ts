@@ -32,6 +32,17 @@ export const getTransformStyle = (styles: StylesType) => {
   }
 }
 
+//公共基础样式
+export const getBasicStyle:any = (styles: StylesType) => {
+  if(!styles) return {}
+  const { backgroundColor,paddingX,paddingY } = styles
+  return {
+    background: backgroundColor,
+    padding:`${paddingY}px ${paddingX}px`,
+    boxSizing: "border-box"
+  }
+}
+
 /**
  * * hsla 转换 
  * @param color 颜色
@@ -88,4 +99,25 @@ export const setHtmlTheme = (themeName?: string) => {
   }
   const designStore = useDesignStore()
   e.setAttribute('data-theme', designStore.themeName)
+}
+
+/**
+ * * 获取css变量
+ * @param varName 变量名称
+ * @param dom dom节点
+ * @returns
+ */
+export const getCssVar = (varName: string,dom?:HTMLElement) => {
+  return getComputedStyle(dom || document.documentElement).getPropertyValue(varName)
+}
+
+
+/**
+ * * 设置css变量
+ * @param varName 变量名称
+ * @param value 变量值
+ * @returns
+ */
+export const setCssVar = (varName: string,value:string) => {
+  return document.documentElement.style.setProperty(varName, value);
 }

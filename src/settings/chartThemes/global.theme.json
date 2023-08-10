@@ -1,6 +1,10 @@
 {
   "title": {
     "show": true,
+    "x":"center",
+    "y":"top",
+    "text":"",
+    "subtext":"",
     "textStyle": {
       "color": "#BFBFBF",
       "fontSize": 18
@@ -9,6 +13,12 @@
       "color": "#A2A2A2",
       "fontSize": 14
     }
+  },
+  "grid":{
+    "x":80,  
+    "y":60,
+    "x2":80, 
+    "y2":60  
   },
   "xAxis": {
     "show": true,
@@ -85,8 +95,12 @@
   "legend": {
     "show": true,
     "top": "5%",
+    "x":"center",
+    "y":"top",
+    "itemGap":10,
     "textStyle": {
       "color": "#B9B8CE"
-    }
+    },
+    "orient":"horizontal"
   }
 }

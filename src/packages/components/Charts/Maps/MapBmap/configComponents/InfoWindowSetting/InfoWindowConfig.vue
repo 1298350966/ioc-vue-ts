@@ -40,7 +40,12 @@
     </SettingItem>
     <template v-if="config.content.type === 'component'">
       <SettingItem name="组件名称">
-        <el-input v-model="config.content.component.is"></el-input>
+        <el-input v-model="config.content.component.is">
+          <template #append>
+            <el-button icon="Tools" @click="componentSelectShow = true " />
+          </template>
+        </el-input>
+        <componentSelect v-model:show="componentSelectShow" @select="componentSelectFun"></componentSelect>
       </SettingItem>
     </template>
     <template v-else-if="config.content.type === 'iframe'">
@@ -78,19 +83,26 @@ let props = defineProps({
 
 const offsetX = computed({
   get() {
-    return props.config.offset['x'];
+    return props.config.offset.x;
   },
   set(val) {
-    props.config.offset['x'] = val;
+    props.config.offset = {
+      x:val,
+      y:props.config.offset.y
+    }  
   },
 });
 
 const offsetY = computed({
   get() {
-    return props.config.offset['y'];
+    return props.config.offset.y;
   },
   set(val) {
-    props.config.offset['y'] = val;
+    props.config.offset.y = val;
+    props.config.offset = {
+      x:props.config.offset.x,
+      y:val
+    } 
   },
 });
 
@@ -100,17 +112,27 @@ const bodyTypeOptions = [
 ];
 
 const componentAttrsStr = ref(
-  JSONStringify(props.config.content.component.attrs)
+  JSONStringify(props.config.content.attrs)
 );
 function setComponentAttrs() {
   try {
-    props.config.content.component.attrs = JSONParse(componentAttrsStr.value);
+    props.config.content.attrs = JSONParse(componentAttrsStr.value);
   } catch (error) {
     componentAttrsStr.value = JSON.stringify(
-      props.config.content.component.attrs
+      props.config.content.attrs
     );
   }
 }
+
+const componentSelectShow = ref(false)
+
+function componentSelectFun(data){
+  props.config.content.component.is = data.componentName
+  props.config.content.attrs = data.props
+  componentAttrsStr.value = JSONStringify(props.config.content.attrs)
+}
+
+
 </script>
 
 <style scoped></style>

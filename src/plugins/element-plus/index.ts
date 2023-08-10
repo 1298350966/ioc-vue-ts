@@ -8,7 +8,7 @@ import { useIcon } from "./icon"
 
 // import "@/style/element-plus/var.scss"
 import 'element-plus/dist/index.css'
-import 'element-plus/theme-chalk/dark/css-vars.css'
+// import 'element-plus/theme-chalk/dark/css-vars.css'
 import {
   ElTag,
   ElAffix,

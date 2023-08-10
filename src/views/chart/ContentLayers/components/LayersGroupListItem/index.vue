@@ -26,7 +26,7 @@
     </div>
     <el-collapse-transition >
       <div v-show="expend" >
-        <draggable group="groupLAYER" item-key="id" v-model="groupList" ghostClass="ghost" >
+        <draggable @change="draggableChange" group="LAYER" :animation="150" fallbackOnBody :swapThreshold="0.65" item-key="id" v-model="componentGroupData.groupList" ghostClass="ghost" >
           <template #item="{ element }">
             <div>
               <LayersListItem
@@ -87,15 +87,15 @@ const { handleContextMenu, onClickOutSide } = useContextMenu()
 
 const expend = ref(false)
 
-const groupList = computed({
-  get(){
-    return props.componentGroupData.groupList.reverse();
-  },
-  set(val){
-    props.componentGroupData.groupList = val
-     console.log(`output->`, props.componentGroupData.groupList)
-  }
-})
+// const groupList = computed({
+//   get(){
+//     return props.componentGroupData.groupList.reverse();
+//   },
+//   set(val){
+//     props.componentGroupData.groupList = val
+//      console.log(`output->`, props.componentGroupData.groupList)
+//   }
+// })
 
 
 
@@ -209,7 +209,23 @@ const mouseleaveHandle = (componentInstance: CreateComponentType | CreateCompone
   chartEditStore.setTargetHoverChart(undefined)
 }
 
+function draggableChange(e){
+  let {added,removed} =  e
+  console.log(`output->`,e)
+  if(added){
+    const {element} = added
+    chartEditStore.addGroup(props.componentGroupData,element.id)
+  }
+  if(removed){
+    const {element} = removed
+    chartEditStore.removeGroup(props.componentGroupData,element.id)
+  }
+}
 
+
+// draggableFilter(){
+
+// }
 </script>
 
 <style lang="scss" scoped>

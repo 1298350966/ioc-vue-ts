@@ -6,6 +6,12 @@
     <SettingItem name="是否显示">
       <el-switch v-model="config.visible"></el-switch>
     </SettingItem>
+    <SettingItem name="宽度">
+      <el-input-number v-model="config.width"></el-input-number>
+    </SettingItem>
+    <SettingItem name="高度">
+      <el-input-number v-model="config.height"></el-input-number>
+    </SettingItem>
     <SettingItem name="最小宽度">
       <el-input-number v-model="config.minWidth"></el-input-number>
     </SettingItem>
@@ -50,7 +56,12 @@
     </SettingItem>
     <template v-if="config.content.type === 'component'">
       <SettingItem name="组件名称">
-        <el-input v-model="config.content.component.is"></el-input>
+        <el-input v-model="config.content.component.is">
+          <template #append>
+            <el-button icon="Tools" @click="componentSelectShow = true " />
+          </template>
+        </el-input>
+        <componentSelect v-model:show="componentSelectShow" @select="componentSelectFun"></componentSelect>
       </SettingItem>
     </template>
     <template v-else-if="config.content.type === 'iframe'">
@@ -130,14 +141,14 @@ const anchorOptions = [
   },
 ];
 const componentAttrsStr = ref(
-  JSONStringify(props.config.content.component.attrs)
+  JSONStringify(props.config.content.attrs)
 );
 function setComponentAttrs() {
   try {
-    props.config.content.component.attrs = JSONParse(componentAttrsStr.value);
+    props.config.content.attrs = JSONParse(componentAttrsStr.value);
   } catch (error) {
     componentAttrsStr.value = JSON.stringify(
-      props.config.content.component.attrs
+      props.config.content.attrs
     );
   }
 }
@@ -175,6 +186,20 @@ const autoPanPaddingY = computed({
   set(val) {
     props.config.autoPanPadding[1] = val;
   },
+});
+
+const componentSelectShow = ref(false)
+
+function componentSelectFun(data){
+  props.config.content.component.is = data.componentName
+  props.config.content.attrs = data.props
+  componentAttrsStr.value = JSONStringify(props.config.content.attrs)
+}
+onMounted(()=>{
+  props.config.visible = true  
+})
+onUnmounted(() => {
+  props.config.visible = false
 });
 </script>
 

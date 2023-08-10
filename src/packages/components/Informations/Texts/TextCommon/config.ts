@@ -27,12 +27,14 @@ export const option = {
   link: '',
   linkHead: 'http://',
   dataset: '我是文本',
+  fontFamily:"",
   fontSize: 20,
   fontColor: '#ffffff',
   paddingX: 10,
   paddingY: 10,
   textAlign: 'center', // 水平对齐方式
   fontWeight: 'normal',
+  fontStyle:"normal",
 
   // 边框
   borderWidth: 0,

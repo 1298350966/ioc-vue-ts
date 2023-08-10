@@ -1,5 +1,5 @@
 import test from './test.mock'
-import { MockMethod } from 'vite-plugin-mock'
+// import { MockMethod } from 'vite-plugin-mock'
 import { RequestHttpEnum } from '@/enums/httpEnum'
 
 // 单个X数据
@@ -20,7 +20,7 @@ export const wordCloudUrl = '/mock/wordCloud'
 export const treemapUrl = '/mock/treemap'
 export const threeEarth01Url = '/mock/threeEarth01Data'
 
-const mockObject: MockMethod[] = [
+const mockObject = [
   {
     // 正则
     // url: /\/mock\/mockData(|\?\S*)$/,

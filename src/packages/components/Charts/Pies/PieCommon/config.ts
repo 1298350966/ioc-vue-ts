@@ -4,7 +4,7 @@ import { CreateComponentType, EventsType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
-export const includes = ['legend']
+export const includes = ['title', 'legend']
 
 export enum PieTypeEnum {
   NORMAL = '常规图',
@@ -20,19 +20,20 @@ export const PieTypeObject = {
 
 export const seriesItem = {
   type: 'pie',
-  radius: ['40%', '65%'],
+  radius: ['40%', '65%'], 
   center: ['50%', '60%'],
   roseType: false,
   avoidLabelOverlap: false,
   itemStyle: {
     show: true,
-    borderRadius: 10,
+    borderRadius: 0,
     borderColor: '#fff',
     borderWidth: 2
   },
   label: {
     show: false,
-    position: 'center'
+    position: 'center',
+    formatter: "",
   },
   emphasis: {
     label: {
@@ -46,8 +47,13 @@ export const seriesItem = {
   }
 }
 
-const option = {
-  type: 'ring',
+export const option = {
+  title: {
+    x: "center",
+    y: "50%",
+    padding: [24, 0],
+  },
+  type: 'nomal',
   tooltip: {
     show: true,
     trigger: 'item',

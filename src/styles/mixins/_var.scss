@@ -1,0 +1,23 @@
+@function joinVarName($list) {
+  $name: '--' ;
+  @each $item in $list {
+    @if $item != '' {
+      $name: $name + $item;
+    }
+  }
+  @return $name;
+}
+
+@function getCssVarName($args) {
+  @return joinVarName($args);
+}
+
+@mixin set-root-css-var($variables) {
+  @each $attribute, $value in $variables {
+    #{getCssVarName($attribute)}: #{$value};
+  }
+}
+
+@function getCssVar($args...) {
+  @return var(#{joinVarName($args)});
+}

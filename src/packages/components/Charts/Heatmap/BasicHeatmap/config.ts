@@ -4,18 +4,47 @@ import { CreateComponentType, EventsType } from '@/packages/index.d'
 import { cloneDeep } from 'lodash'
 import dataJson from './data.json'
 
-export const includes = ['xAxis', 'yAxis']
+export const includes = ["grid",'xAxis', 'yAxis']
 
 export const option = {
-  dataset: { ...dataJson },
   tooltip: {
     position: 'top'
   },
   xAxis: {
-    data: dataJson.xAxis
+    data: ["12a",
+    "1a",
+    "2a",
+    "3a",
+    "4a",
+    "5a",
+    "6a",
+    "7a",
+    "8a",
+    "9a",
+    "10a",
+    "11a",
+    "12p",
+    "1p",
+    "2p",
+    "3p",
+    "4p",
+    "5p",
+    "6p",
+    "7p",
+    "8p",
+    "9p",
+    "10p",
+    "11p"]
   },
   yAxis: {
-    data: dataJson.yAxis
+    data: [
+    "Saturday",
+    "Friday",
+    "Thursday",
+    "Wednesday",
+    "Tuesday",
+    "Monday",
+    "Sunday",]
   },
   visualMap: {
     show: true,
@@ -34,7 +63,7 @@ export const option = {
     {
       name: '',
       type: 'heatmap',
-      data: dataJson.seriesData,
+      data: [],
       label: {
         show: true
       },
@@ -99,6 +128,9 @@ export const Events: EventsType = {
   },
 }
 
+
+
+
 export default class Config extends PublicConfigClass implements CreateComponentType {
   public key: string = HeatmapConfig.key
   public chartConfig = cloneDeep(HeatmapConfig)
@@ -118,6 +150,23 @@ export default class Config extends PublicConfigClass implements CreateComponent
     {
       label: "值",
       value: '${e.value}',
+    }
+  ]
+  public dataMapping = [
+    {
+      key:"x",
+      name:"x轴维度", 
+      column:"x"
+    },
+    {
+      key:"y",
+      name:"y轴维度",
+      column:"y"
+    },
+    {
+      key:"data",
+      name:"值维度",
+      column:"data"
     }
   ]
 }

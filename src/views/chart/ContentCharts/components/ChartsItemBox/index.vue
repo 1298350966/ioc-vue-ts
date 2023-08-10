@@ -73,7 +73,6 @@ const dragendHandle = () => {
 // 双击添加
 const dblclickHandle = async (item: ConfigType) => {
   try {
-    debugger
     loadingStart();
     // 动态注册图表组件
     componentInstall(item.chartKey, fetchChartComponent(item));
@@ -107,7 +106,7 @@ $centerHeight: 80px;
     border-radius: 6px;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0);
-    background: $--color-dark-bg-2;
+    background: var(--bg-color-3);
     &:hover {
       // @include hover-border-color('background-color4');
       .list-img {

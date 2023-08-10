@@ -47,7 +47,12 @@ const center = computed(() => {
 
 function initMap({ map, BmapGL, instance}){
   mapIns.setMap(map)
+  props.config.position = center.value
+  setTimeout(() => {
+    props.config.visible = true  
+  }, 500);
 }
+
 </script>
 
 <style scoped></style>

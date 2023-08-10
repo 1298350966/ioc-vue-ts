@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <span>
+      iframe传值:
+      <span id="message">无数据</span>
+    </span>
+  </div>
+  <div>
+    <button id="closeDialogButton"> 打开弹窗 </button>
+  </div>
+  <script>
+    const message = document.getElementById("message")
+    const closeDialogButton = document.getElementById("closeDialogButton")
+    closeDialogButton.onclick = ()=>{
+      let params = {
+        eventName:"打开弹窗",
+        data:{
+          title:"打开弹窗"
+        }
+      }
+      top.postMessage(JSON.stringify(params), "*");
+    }
+    window.addEventListener("message", (event) => {
+      message.innerHTML = event.data
+      console.log(`message->`, event)
+      var obj = event.data //这里的obj 等于发送消息传过来的params
+    })
+  </script>
+</body>
+
+</html>

@@ -95,7 +95,7 @@ function openDialog() {
 <style scoped>
 .noDate {
   border-radius: var(--el-border-radius-base);
-  background-color: var(--dark-color-1);
+  background-color: var(--bg-color-2);
   color: rgb(124 124 124);
   text-align: center;
   padding: 10px 5px;

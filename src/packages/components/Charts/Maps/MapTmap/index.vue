@@ -41,7 +41,8 @@
 <script setup lang="ts">
 import { ref, PropType, toRefs, watch } from "vue";
 import { CreateComponentType } from "@/packages/index.d";
-import { TdtMap, TdtTilelayer, TdtPolygon } from "vue-tianditu/packages/index";
+// @ts-ignore
+import  { TdtMap, TdtTilelayer, TdtPolygon } from "vue-tianditu";
 import maskPolygon from "./components/maskPolygon.vue";
 import { coverGroup, InfoWindow } from "./components/index";
 import { mapTypeSelectOptions } from "./config";

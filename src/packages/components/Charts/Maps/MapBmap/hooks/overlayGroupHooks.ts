@@ -1,5 +1,6 @@
+import { coverEnum } from "../type"
 import { createCircleMarker, createMarker, createOverlayGroup, createPolygon, createPolyline } from "../utils"
-import { coverEnum, coverGroupOptions } from "../config";
+// import { coverEnum, coverGroupOptions } from "../config";
 export const useMarkerGroup = (config: any, map) => {
   const overlayGroup = createOverlayGroup(map)
   const { dataset, options } = config
@@ -132,7 +133,7 @@ export const useGroup = (config: any) => {
     if (config.type == coverEnum.Marker) {
       const { overlayGroup, createMarkerGroup } = useMarkerGroup(config, map)
       createMarkerGroup()
-    } else if (config.type == coverEnum.CircleMarker) {
+    } else if (config.type == coverEnum.Circle) {
       const { overlayGroup, createCircleMarkerGroup } = useCircleMarkerGroup(config, map)
       createCircleMarkerGroup()
     } else if (config.type == coverEnum.Polygon) {

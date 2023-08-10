@@ -28,7 +28,6 @@ export const useFile = () => {
       if (file) {
 
         readFile(file).then((fileData: any) => {
-          debugger
           goDialog({
             message: '请选择导入方式:',
             positiveText: '新增（可撤回）',

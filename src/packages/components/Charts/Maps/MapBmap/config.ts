@@ -274,28 +274,6 @@ export const PolylineDataMapping = {
     typeOptions:pathTypeOptions
   },
 }
-export const coverGroupOptions:CoverGroupType = {
-  id: null,
-  name: "",
-  visible: true,
-  type: coverEnum.Marker,
-  options: cloneDeep(MarkerOptions) as any,
-  request: cloneDeep(requestConfig),
-  events: {
-    configEvents: {
-      componentEvents: [],
-    },
-    codeEvents:{
-      baseEvent: {
-        click: "console.log(this);console.log(data);console.log(e);"
-      }
-    }
-  },
-  data:cloneDeep(MarkerData),
-  dataMapping:cloneDeep(MarkerDataMapping),
-  filterNode:'datas',
-  filter:""
-};
 
 export const coverOptions = [
   {
@@ -319,14 +297,14 @@ export const coverOptions = [
 export const InfoWindowOptions = {
   id: null,
   name: "",
-  position: { lng: 116.404, lat: 39.925 },
+  position: null,
   visible: true,
   title:"自定义标题",
-  width:0,  //取值范围：0, 220 - 730
-  height:0,  //取值范围：0, 60 - 650
+  width:320,  //取值范围：0, 220 - 730
+  height:200,  //取值范围：0, 60 - 650
   offset:{
     x:0,
-    y:0
+    y:-50
   }, 
   enableAutoPan:true, 
   enableCloseOnClick:false,  
@@ -334,8 +312,8 @@ export const InfoWindowOptions = {
     type: "component",
     component: {
       is: "",
-      attrs: {}
     },
+    attrs: {},
     iframe: {
       src: ""
     }
@@ -480,6 +458,38 @@ export const ControlGroupEvents:EventsType= {
     vars: [],
   },
 }
+
+export const coverGroupOptions:CoverGroupType = {
+  id: null,
+  name: "",
+  visible: true,
+  type: coverEnum.Marker,
+  options: cloneDeep(MarkerOptions) as any,
+  request: cloneDeep(requestConfig),
+  events: {
+    configEvents: {
+      componentEvents: [],
+    },
+    codeEvents: {
+      baseEvent: {
+        click: "console.log(this);console.log(e);"
+      }
+    }
+  },
+  InfoWindow:{
+    eventType:"click",
+    enable: true,
+    options:cloneDeep(InfoWindowOptions)
+  },
+  data: cloneDeep(MarkerData),
+  dataMapping: cloneDeep(MarkerDataMapping),
+  filterNode: 'datas',
+  filter: "",
+  dataBinding: {
+    codeMode: "",
+    configMode: []
+  }
+};
 
 export default class Config
   extends PublicConfigClass

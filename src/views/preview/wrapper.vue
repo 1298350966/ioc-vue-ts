@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+// import {previewVue as Preview} from "../../../lib/static/js"
 import { getSessionStorageInfo } from './utils'
 import type { ChartEditStorageType } from './index.d'
 import { SavePageEnum } from '@/enums/editPageEnum'

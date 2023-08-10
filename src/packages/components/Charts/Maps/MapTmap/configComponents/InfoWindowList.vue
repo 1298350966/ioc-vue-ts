@@ -96,7 +96,7 @@ function removeInfoWindow(index) {
   margin-bottom: 10px;
   border-radius: 5px;
   transition: all 0.5s linear;
-  background-color: var(--dark-color-3);
+  background-color: var(--bg-color-3);
   .item-content-icon {
     position: absolute;
     right: 5px;

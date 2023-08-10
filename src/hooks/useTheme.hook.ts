@@ -1,53 +1,62 @@
-import { computed, toRefs } from 'vue'
-// import { darkTheme, GlobalThemeOverrides } from 'naive-ui'
-// import { useDesignStore } from '@/store/modules/designStore/designStore'
-import { borderRadius } from '@/settings/designSetting'
-import { alpha, lighten } from '@/utils'
-
-/**
- * * 设置全局主题
- */
-export const useThemeOverridesHook = () => {
-  const designStore ={
-    getAppTheme:null,
-    getDarkTheme:null
-  }
-  const { getAppTheme } = toRefs(designStore)
-  const darkTheme = computed(
-    () => {
-      // 通用
-      const commonObj = {
-        common: {
-          primaryColor: getAppTheme.value,
-          // primaryColorHover: lighten(alpha(getAppTheme.value), 0.1),
-          // primaryColorPressed: lighten(alpha(getAppTheme.value), 0.1),
-          primaryColorSuppl: getAppTheme.value,
-          borderRadius
-        }
-      }
-      // 亮色主题
-      const lightObject = {
-        common: {
-          ...commonObj.common
-        }
-      }
-      // 暗色主题
-      const dartObject = {
-        common: {
-          ...commonObj.common
-        },
-        LoadingBar: {
-          colorLoading: getAppTheme.value
-        }
-      }
-      return designStore?.getDarkTheme ? dartObject : lightObject
-    }
-  )
-  return darkTheme
+import { ref, watchEffect } from "vue"
+export const getActiveThemeName = () => {
+  return localStorage.getItem("ThemeName") as ThemeName | null
+}
+export const setActiveThemeName = (themeName: ThemeName) => {
+  localStorage.setItem("ThemeName", themeName)
 }
 
-// 返回暗黑主题
-export const useDarkThemeHook = () => {
-  // const designStore = useDesignStore()
-  // return computed(() => (designStore.getDarkTheme ? darkTheme : undefined))
+const DEFAULT_THEME_NAME = "normal"
+type DefaultThemeName = typeof DEFAULT_THEME_NAME
+
+/** 注册的主题名称, 其中 DefaultThemeName 是必填的 */
+export type ThemeName = DefaultThemeName | "dark" | "dark-blue"
+
+interface ThemeList {
+  title: string
+  name: ThemeName
+}
+
+/** 主题列表 */
+const themeList: ThemeList[] = [
+  {
+    title: "默认",
+    name: DEFAULT_THEME_NAME
+  },
+  {
+    title: "黑暗",
+    name: "dark"
+  },
+  {
+    title: "深蓝",
+    name: "dark-blue"
+  }
+]
+
+/** 正在应用的主题名称 */
+const activeThemeName = ref<ThemeName>(getActiveThemeName() || DEFAULT_THEME_NAME)
+
+/** 设置主题 */
+const setTheme = (value: ThemeName) => {
+  activeThemeName.value = value
+}
+
+/** 在 html 根元素上挂载 class */
+const setHtmlRootClassName = (value: ThemeName) => {
+  document.documentElement.className = value
+}
+
+/** 初始化 */
+const initTheme = () => {
+  // watchEffect 来收集副作用
+  watchEffect(() => {
+    const value = activeThemeName.value
+    setHtmlRootClassName(value)
+    setActiveThemeName(value)
+  })
+}
+
+/** 主题 hook */
+export function useTheme() {
+  return { themeList, activeThemeName, initTheme, setTheme }
 }

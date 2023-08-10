@@ -15,7 +15,7 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 .content {
   width: 100%;
   height: 100%;

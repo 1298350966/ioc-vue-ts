@@ -8,6 +8,9 @@ import { RequestDataTypeEnum } from '@/enums/httpEnum'
 import { isPreview, newFunctionHandle, intervalUnitHandle, JSONParse, getArrayData } from '@/utils'
 import { setOption } from '@/packages/public/chart'
 import { RequestGlobalConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { ChartEditStorageType } from '@/views/preview'
+import { PreviewChartEdit } from '@/views/preview/utils/PreviewChartEdit'
+import { get } from 'lodash'
 
 // 获取类型
 type ChartEditStoreType = typeof useChartEditStore
@@ -24,6 +27,7 @@ export const useChartDataFetch = (
   updateCallback?: (...args: any) => any
 ) => {
   const vChartRef = ref<typeof VChart | null>(null)
+  const rootConfig:PreviewChartEdit = inject("rootConfig")
   let fetchInterval: any = 0
 
   // 数据池
@@ -107,12 +111,11 @@ export const useChartDataFetch = (
             }
           }
         }
-        console.log(`request->`, targetComponent.request)
+
         // 普通初始化与组件交互处理监听
         watch(
           () => targetComponent.request,
           (nweVL) => {
-            console.log(`output->`, nweVL)
             fetchFn()
           },
           {
@@ -134,6 +137,59 @@ export const useChartDataFetch = (
     }
   }
 
+
+  watch(
+    () => targetComponent.data,
+    (nweVL) => {
+      setDataBinding(nweVL)
+    },
+    {
+      immediate: true,
+      deep: true
+    }
+  )
+  function setDataBinding(data:any){
+    if(!targetComponent.dataBinding) return
+    const {codeMode,configMode} =  targetComponent.dataBinding
+    //代码处理
+    codeMode && new Function("data", "rootConfig", codeMode).call(this,data,rootConfig)
+    //配置处理
+    configMode.forEach((e)=>{
+      let component = rootConfig.getComponent(e.targetId)
+      debugger
+      try {
+        component.data = getValue(e.value, {data})
+      } catch (error) {
+        console.log(error)
+      }
+    })
+  }
+
+  function getValue(value, data) {
+    if (typeof value === "object") {
+     
+      for (const key in value) {
+        const e = value[key];
+        value[key] = getValue(e, data)
+      }
+      return value
+    } else if (typeof value === "string") {
+      if(/\$\{([^\}]+)\}/g.test(value)){
+      value.replace(/\$\{([^\}]+)\}/g, (_, key) => {
+        if(/\(\)/.test(key)){
+          value = eval("data." + key)
+        }else{
+          value = get(data, key)
+        }
+        return _
+      });
+      }
+      return value
+    } else {
+      return value
+    }
+  }
+  
   if (isPreview()) {
     // 判断是否是数据池类型
     // targetComponent.request.requestDataType === RequestDataTypeEnum.Pond

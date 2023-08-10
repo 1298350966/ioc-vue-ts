@@ -111,14 +111,14 @@ $menuWidth: 65px;
     flex: 1;
     padding-top: 10px;
     box-sizing: border-box;
-    background-color: var(--dark-color-1a);
+    background-color: var(--bg-color-1);
   }
 }
 .charts-menu-2{
     width:65px;
     height:100%;
     margin-top:1px;
-    background: #1e1e1f;
+    background:var(--bg-color-2);
     box-sizing: border-box;
    }
 </style>

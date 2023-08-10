@@ -88,7 +88,7 @@ const props = defineProps({
   }
 })
 
-const config = computed(() => {
+const config = computed<GlobalThemeJsonType>(() => {
   return props.optionData
 })
 </script>

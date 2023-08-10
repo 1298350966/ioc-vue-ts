@@ -7,7 +7,7 @@
     @back="backHandle">
     <el-empty class="empty-box" v-if="reverseList.length === 0" :image-size="100" description="暂无图层" />
 
-    <draggable group="LAYER" item-key="id" v-model="layerList" ghostClass="ghost" @change="onMoveCallback">
+    <draggable group="LAYER" :animation="150" fallbackOnBody :swapThreshold="0.65" item-key="id" v-model="chartEditStore.componentList" ghostClass="ghost">
         <template #item="{ element }">
           <div class="kh-content-layer-box">
             <!-- 组合 -->
@@ -58,12 +58,15 @@ const layerMode = ref<LayerModeEnum>(chartLayoutStore.getLayerType)
 // 逆序展示
 const reverseList = computed(() => {
   const list: Array<CreateComponentType | CreateComponentGroupType> = cloneDeep(chartEditStore.getComponentList)
-  return list.reverse()
+  return list
 })
 watch(
   () => reverseList.value,
   newValue => {
     layerList.value = newValue
+  },
+  {
+    immediate:true
   }
 )
 
@@ -99,7 +102,7 @@ const backHandle = () => {
 // 移动结束处理
 const onMoveCallback = (val: any) => {
   const { oldIndex, newIndex } = val.moved
-  if (newIndex - oldIndex > 0) {
+  if (newIndex - oldIndex < 0) {
     // 从上往下
     const moveTarget = chartEditStore.getComponentList.splice(-(oldIndex + 1), 1)[0]
     chartEditStore.getComponentList.splice(-newIndex, 0, moveTarget)
@@ -161,7 +164,7 @@ const changeLayerType = (value: LayerModeEnum) => {
   // width: 220px;
   flex-shrink: 0;
   overflow: hidden;
-  background: $--color-dark-bg-2;
+  background: var(--bg-color-3);
   margin:1px;
   @extend .kh-transition;
   &.scoped {

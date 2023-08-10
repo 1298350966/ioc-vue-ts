@@ -190,19 +190,19 @@ import {
 } from "@/components/Pages/ChartItemSetting";
 import { cloneDeep } from "lodash";
 const coverGroupDialog = defineAsyncComponent(
-  () => import("./components/coverGroupDialog.vue")
+  () => import("./configComponents/coverGroupDialog.vue")
 );
 const coverGroupList = defineAsyncComponent(
-  () => import("./components/coverGroupList.vue")
+  () => import("./configComponents/coverGroupList.vue")
 );
 const controlGroupDialog = defineAsyncComponent(
-  () => import("./components/controlGroupDialog.vue")
+  () => import("./configComponents/controlGroupDialog.vue")
 );
 const controlGroupList = defineAsyncComponent(
-  () => import("./components/controlGroupList.vue")
+  () => import("./configComponents/controlGroupList.vue")
 );
 const PolygonConfig = defineAsyncComponent(
-  () => import("./components/coverGroupDialog/coverConfig/PolygonConfig.vue")
+  () => import("./configComponents/coverGroupDialog/coverConfig/PolygonConfig.vue")
 );
 
 const InfoWindowSetting = defineAsyncComponent(
@@ -211,7 +211,7 @@ const InfoWindowSetting = defineAsyncComponent(
 const InfoWindowList = defineAsyncComponent(
   () => import("./configComponents/InfoWindowList.vue")
 );
-import editPolygon from "./components/editPolygon.vue";
+import editPolygon from "./configComponents/editPolygon.vue";
 
 import { getUUID } from "@/utils";
 import { MapTypeEnum } from "./type";

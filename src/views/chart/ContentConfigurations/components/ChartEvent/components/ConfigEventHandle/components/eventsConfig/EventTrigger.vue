@@ -83,7 +83,7 @@ function targetIdChange() {
 const targetComponent = computed(() => {
   if (props.triggerConfig.type == "componentList") {
     if(['MapAmap'].includes(targetConfig.value.key)){
-      return defineAsyncComponent(() => import("@/packages/components/Charts/Maps/MapAmap/components/coverGroupDialog/coverEvent/components/ConfigEventHandle/components/MapComponentList/index.vue"))
+      return defineAsyncComponent(() => import("@/packages/components/Charts/Maps/MapAmap/configComponents/coverGroupDialog/coverEvent/components/ConfigEventHandle/components/MapComponentList/index.vue"))
     }else{
       return defineAsyncComponent(() => import("../componentList/index.vue"))
     }

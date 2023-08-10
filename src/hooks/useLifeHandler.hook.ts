@@ -27,7 +27,7 @@ export const useLifeHandler = (chartConfig: CreateComponentType | CreateComponen
     configEvent.trigger.forEach(t => {
       if (t.type == "componentList") {
         let component = rootConfig[t.type].find((c) => {
-          return c.id = t.targetId
+          return c.id === t.targetId
         })
 
         if (component) {
@@ -52,7 +52,7 @@ export const useLifeHandler = (chartConfig: CreateComponentType | CreateComponen
 
       } else if (t.type == "globalDialog") {
         let component = rootConfig[t.type].find((c) => {
-          return c.id = t.targetId
+          return c.id === t.targetId
         })
         if (component) {
           const _fun = (_e) => {
@@ -233,7 +233,7 @@ function setEChartsEvents(eChartsEvents, rootConfig, baseEventList) {
 
 
 
-function setComponentValue(event, component, params) {
+export function setComponentValue(event, component, params) {
   console.log(event, component, params);
   Object.keys(event.updateValue).map((key) => {
     let keyStr = `${key}`
@@ -280,7 +280,7 @@ export function setConfigEvents(componentEvents, emit, Events: EventsType, extAr
   componentEvents.forEach((configEvent) => {
     configEvent.trigger.forEach(t => {
       let component = rootConfig[t.type].find((c) => {
-        return c.id = t.targetId
+        return c.id === t.targetId
       })
       if (component) {
         const _fun = (...args) => {
@@ -318,8 +318,8 @@ export function setCodeEvents(componentEvents, emit, Events: EventsType, extArgs
       }) 
       try {
         new Function(...argsName, componentEvents[key]).call(_this, ..._args)
-      } catch (error) {
-        new Error(error)
+      } catch (error:any) {
+        console.error(error)
       }
     })
   })

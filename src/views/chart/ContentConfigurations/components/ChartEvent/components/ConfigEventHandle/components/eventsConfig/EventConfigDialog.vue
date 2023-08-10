@@ -150,20 +150,20 @@ const mappingFieldOptions = computed(() => {
 
 <style scoped lang="scss">
 .el-header {
-  border-bottom: 1px solid var(--dark-color-2);
+  border-bottom: 1px solid var(--bg-color-3);
 }
 
 .el-aside {
-  border-right: 1px solid var(--dark-color-2);
+  border-right: 1px solid var(--bg-color-3);
 
   .aside-title {
-    background: var(--dark-color-1a);
+    background: var(--bg-color-1);
     padding: 10px;
   }
 }
 
 .aside {
-  background-color: var(--dark-color-1a);
+  background-color: var(--bg-color-1);
 }
 
 .item-box {
@@ -172,7 +172,7 @@ const mappingFieldOptions = computed(() => {
   border-radius: 6px;
   cursor: pointer;
   // border: 1px solid rgba(0, 0, 0, 0);
-  // background: var(--dark-color-2);
+  // background: var(--bg-color-3);
   padding: 10px;
 
   &:first-child {
@@ -215,7 +215,7 @@ const mappingFieldOptions = computed(() => {
 }
 
 .eventBox {
-  background-color: var(--dark-color-3);
+  background-color: var(--bg-color-3);
   padding: 0 10px;
   height: 40px;
   border-radius: 5px;

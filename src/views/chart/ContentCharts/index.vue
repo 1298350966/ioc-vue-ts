@@ -60,7 +60,7 @@ $topHeight: 40px;
   }
    .charts-menu-1{
     width:$widthScoped;
-    background: $--color-dark-bg-2;
+    background: var(--bg-color-3);
     margin-top:1px;
     box-sizing: border-box;
     // overflow: hidden;

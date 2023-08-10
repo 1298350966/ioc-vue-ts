@@ -18,7 +18,6 @@ export const dragHandle = async (e: DragEvent) => {
 
   try {
     loadingStart()
-    debugger
     // 获取拖拽数据
     const drayDataString = e!.dataTransfer!.getData(DragKeyEnum.DRAG_KEY)
     if (!drayDataString) {
@@ -235,7 +234,7 @@ export const useMouseHandle = () => {
     })
 
     // 记录初始位置
-    chartEditStore.setMousePosition(undefined, undefined, startX, startY)
+    chartEditStore.setMousePosition(undefined, undefined, e.offsetX, e.offsetY)
 
     // 移动-计算偏移量
     const mousemove = throttle((moveEvent: MouseEvent) => {

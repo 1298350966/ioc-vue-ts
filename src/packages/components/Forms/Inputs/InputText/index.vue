@@ -9,7 +9,7 @@
 
 
 <script setup lang="ts">
-import { ref, nextTick, computed, watch, PropType,defineEmits,getCurrentInstance } from 'vue'
+import { computed, PropType } from 'vue'
 import { CreateComponentType } from '@/packages/index.d'
 // import { generateComponentFunc } from '@/hooks'
 import { option as configOption,EventNameList, EventParamsName, Events, EventTypeName } from './config'

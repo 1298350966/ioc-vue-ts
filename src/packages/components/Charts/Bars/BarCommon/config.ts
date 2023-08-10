@@ -4,7 +4,8 @@ import { CreateComponentType, EventsType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
-export const includes = ['legend', 'xAxis', 'yAxis']
+
+export const includes = ['title', "grid", 'legend', 'xAxis', 'yAxis']
 
 export const seriesItem: {
   type: string;

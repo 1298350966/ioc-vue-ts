@@ -19,9 +19,12 @@ $min-width: 400px;
   grid-template-columns: repeat(3, 33.33%);
   height: 60px;
   padding: 0 60px;
-  background: var(--dark-color-3);
-  border-bottom: 1px solid var(--el-border-color-light);
+  background: var(--bg-color-3);
+  border-bottom: 1px solid var(--el-border-color);
   color:#fff;
+  background-image: radial-gradient(transparent 1px,var(--el-bg-color) 1px);
+  background-size: 4px 4px;
+  backdrop-filter: saturate(50%) blur(4px);
   .header-item {
     display: flex;
     align-items: center;

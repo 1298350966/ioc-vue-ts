@@ -14,11 +14,13 @@ export const useStoreInfo = () => {
     const res = await findOneViewsHttp(id as string)
     if(!res.data) return
     if(!res.data.config) return
-    const { editCanvasConfig, requestGlobalConfig, componentList,globalDialog,globalFunction } = JSONParse(res.data.config)
+    const { editCanvasConfig, requestGlobalConfig, componentList,globalDialog,globalFunction,globalProps,globalIframeEvent } = JSONParse(res.data.config)
     chartEditStore.editCanvasConfig = editCanvasConfig
     chartEditStore.requestGlobalConfig = requestGlobalConfig
     chartEditStore.componentList = componentList
     chartEditStore.globalDialog = globalDialog
+    chartEditStore.globalProps = globalProps || []
+    chartEditStore.globalIframeEvent = globalIframeEvent || []
   }
   return  {
     setStoreInfo

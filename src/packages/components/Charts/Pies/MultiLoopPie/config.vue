@@ -1,0 +1,110 @@
+<template>
+  <el-collapse>
+  <!-- Echarts 全局设置 -->
+    <global-setting :optionData="optionData"></global-setting>
+    <CollapseItem name="饼图配置(series)" :expanded="true">
+      <SettingItemBox name="圆心坐标">
+          <el-input-number v-model="centerX" size="small"></el-input-number>
+          <el-input-number v-model="centerY" size="small"></el-input-number>
+     </SettingItemBox>
+     <SettingItemBox name="半径">
+          <el-input-number v-model="radiusX" size="small"></el-input-number>
+          <el-input-number v-model="radiusY" size="small"></el-input-number>
+     </SettingItemBox>
+     <SettingItemBox name="间距">
+        <el-input-number v-model="optionData.extSeries.pieGap" size="small"></el-input-number>
+     </SettingItemBox>
+     <SettingItemBox name="背景色">
+      <el-color-picker size="small" show-alpha v-model="optionData.extSeries.bgColor"></el-color-picker>
+     </SettingItemBox>
+     <seriesConfig :series="series"></seriesConfig>
+    </CollapseItem>
+  </el-collapse>
+</template>
+
+<script setup lang="ts">
+import { PropType, watch } from 'vue'
+
+import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
+import { PieTypeObject, PieTypeEnum,option } from './config'
+import seriesConfig from "../common/seriesConfig.vue"
+
+
+
+
+const props = defineProps({
+  optionData: {
+    type: Object as PropType<typeof option>,
+    required: true
+  }
+})
+const fontWeightOptions = [
+  {
+    label: PieTypeEnum.NORMAL,
+    value: PieTypeObject[PieTypeEnum.NORMAL]
+  },
+  {
+    label: PieTypeEnum.RING,
+    value: PieTypeObject[PieTypeEnum.RING]
+  },
+  {
+    label: PieTypeEnum.ROSE,
+    value: PieTypeObject[PieTypeEnum.ROSE]
+  }
+]
+const series = computed(()=>{
+  return props.optionData.series
+})
+
+const centerX = computed({
+  get(){
+    return getNumber(series.value.center[0])
+  },
+  set(val){
+    series.value.center[0] = val + "%"
+  }
+})
+const centerY = computed({
+  get(){
+    return getNumber(series.value.center[1] || "")
+  },
+  set(val){
+    series.value.center[1] = val + "%"
+  }
+})
+
+function getNumber(str:string){
+  return str.replace(/[^0-9]/ig,"")
+}
+
+const radiusX = computed({
+  get(){
+    return getNumber(series.value.radius[0] || "")
+  },
+  set(val){
+    series.value.radius[0] = val + "%"
+  }
+})
+
+const radiusY = computed({
+  get(){
+    return getNumber(series.value.radius[1] || "")
+  },
+  set(val){
+    series.value.radius[1] = val + "%"
+  }
+})
+
+const radius= computed({
+  get(){
+    if(!Array.isArray(series.value.radius)){
+      return  getNumber(series.value.radius as unknown as string || "")
+    }
+    return 0
+  },
+  set(val){
+    (series.value.radius as unknown as string) = val + "%"
+  }
+})
+
+</script>

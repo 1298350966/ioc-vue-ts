@@ -108,7 +108,9 @@ export enum EditCanvasTypeEnum {
   START_X = 'startX',
   START_Y = 'startY',
   X = 'x',
-  Y = 'y'
+  Y = 'y',
+  CONTENT_X = "contentX",
+  CONTENT_Y = "contentY"
 }
 
 // 鼠标位置
@@ -121,6 +123,11 @@ export type MousePositionType = {
   [EditCanvasTypeEnum.X]: number
   // y
   [EditCanvasTypeEnum.Y]: number
+  // 拖拽区域x
+  [EditCanvasTypeEnum.CONTENT_X]: number
+  // 拖拽区域y
+  [EditCanvasTypeEnum.CONTENT_Y]: number
+
 }
 
 // 操作目标
@@ -150,8 +157,9 @@ export enum ChartEditStoreEnum {
   GLOBAL_VAR = 'globalVar',
   GLOBAL_REQUEST = "globalRequest",
   GLOBAL_Dialog = "globalDialog",
-  GLOBAL_FUNCTION = "globalFunction"
-
+  GLOBAL_FUNCTION = "globalFunction",
+  GLOBAL_PROPS = "globalProps",
+  GLOBAL_IFRAME_EVENT = "globalIframeEvent" 
 }
 
 // 请求公共类型
@@ -215,6 +223,10 @@ export interface ChartEditStoreType {
   [ChartEditStoreEnum.GLOBAL_REQUEST]: any[]
   [ChartEditStoreEnum.GLOBAL_Dialog]: any[]
   [ChartEditStoreEnum.GLOBAL_FUNCTION]: GlobalFunctionType[]
+  [ChartEditStoreEnum.GLOBAL_PROPS]:GlobalPropsTyPe[]
+  [ChartEditStoreEnum.GLOBAL_IFRAME_EVENT]:GlobalIframeEventType[]
+
+  
 }
 
 
@@ -227,6 +239,8 @@ export interface ChartEditStorage {
   [ChartEditStoreEnum.GLOBAL_REQUEST]: any[]
   [ChartEditStoreEnum.GLOBAL_Dialog]: any[]
   [ChartEditStoreEnum.GLOBAL_FUNCTION]: GlobalFunctionType[]
+  [ChartEditStoreEnum.GLOBAL_PROPS]:GlobalPropsType[]
+  [ChartEditStoreEnum.GLOBAL_IFRAME_EVENT]:GlobalIframeEventType[]
 }
 
 
@@ -238,4 +252,22 @@ export interface GlobalFunctionType {
 }
 
 
+export interface GlobalPropsType{
+  field:string,
+  type:string,
+  default:any,
+  fun:string,
+  configFun:EventConfigType
+}
 
+
+export interface GlobalIframeEventType{
+  eventName:string,
+  eventArgs:{
+    field:string,
+    type:string,
+    default:any,
+  }[],
+  fun:string,
+  configFun:EventConfigType
+}

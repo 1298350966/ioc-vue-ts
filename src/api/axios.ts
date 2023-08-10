@@ -31,9 +31,7 @@ axiosInstance.interceptors.response.use(
       if (errorcode === "no login") {
         location.href = redirect;
       }
-      return Promise.resolve(res.data)
-
-
+      return res.data
     }
   },
   (err: AxiosError) => {
@@ -43,7 +41,7 @@ axiosInstance.interceptors.response.use(
         location.href = data.redirect;
       }
     }
-    Promise.reject(err)
+    return  Promise.reject(err)
   }
 )
 
@@ -53,15 +51,15 @@ export enum ContentType {
   URL = 'application/x-www-form-urlencoded'
 }
 
-export async function Get<T>(url, param = ""): Promise<T> {
+export async function Get<T>(url: string, param = ""): Promise<T> {
   return await axiosInstance.get(url, { params: param })
 }
 
-export async function Post<T>(url, param: any = undefined): Promise<T> {
+export async function Post<T>(url: string, param: any = undefined): Promise<T> {
   return await axiosInstance.post(url, param)
 }
 
-export async function PostFormData<T>(url, param: any = undefined): Promise<T> {
+export async function PostFormData<T>(url: string, param: any = undefined): Promise<T> {
   return await axiosInstance.post(url, param, {
     headers: {
       'Content-Type': ContentType.FORM_DATA
@@ -69,7 +67,7 @@ export async function PostFormData<T>(url, param: any = undefined): Promise<T> {
   })
 }
 
-export async function PostJson<T>(url, param: any = undefined): Promise<T> {
+export async function PostJson<T>(url: string, param: any = undefined): Promise<T> {
   return await axiosInstance.post(url, param, {
     headers: {
       'Content-Type': ContentType.FORM_DATA
@@ -77,10 +75,10 @@ export async function PostJson<T>(url, param: any = undefined): Promise<T> {
   })
 }
 
-export async function Delete<T>(url, param: any = undefined): Promise<T> {
+export async function Delete<T>(url: string, param: any = undefined): Promise<T> {
   return await axiosInstance.delete(url,param)
 }
-export async function Patch <T>(url, param: any = undefined): Promise<T> {
+export async function Patch <T>(url: string, param: any = undefined): Promise<T> {
   return await axiosInstance.patch(url,param)
 }
 

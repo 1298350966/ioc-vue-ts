@@ -2,36 +2,36 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "Node",
-    "strict": false,
+    "moduleResolution": "node",
+    "strict": true,
     "jsx": "preserve",
-    "importHelpers": true,
-    "experimentalDecorators": true,
-    "strictFunctionTypes": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "allowJs": false,
+    "sourceMap": true,
     "resolveJsonModule": true,
-    "lib": ["es2020", "dom", "esnext", "es6", "dom.iterable"],
-    "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["es6", "ESNext", "dom"],
+    "types": ["vite/client"],
+    "typeRoots": ["node_modules/@types", "./types", "./src/router/types.ts"],
     "paths": {
       "@/*": ["src/*"],
       "/@/*": ["src/*"],
       "@build/*": ["build/*"],
-      "@static/*": ["public/static/*"], 
+      "@static/*": ["public/static/*"],
       "/#/*": ["types/*"]
     },
-    "typeRoots": ["node_modules/@types", "./types", "./src/router/types.ts"]
+    "noImplicitAny": false, //不允许使用any
+    "strictNullChecks": false, //不允许使用null
+    "noImplicitThis": false, //不允许往this上面挂属性
+    "allowJs": true,
+    "checkJs": true
   },
   "include": [
-    "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*",
-    "build/**/*.ts",
-    "build/**/*.d.ts",
-    "vite.config.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*"
   ],
-  "exclude": ["node_modules", "dist", "**/*.js"]
+  "exclude": ["node_modules/**","node_modules/vue-tianditu/packages/mousetool/use/init.ts", "dist", "**/*.js"],
 }

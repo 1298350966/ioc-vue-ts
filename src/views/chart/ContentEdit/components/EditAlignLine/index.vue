@@ -78,7 +78,7 @@ const selectId = computed(() => chartEditStore.getTargetChart.selectId)
 
 // const selectTarget = computed(() => chartEditStore.getComponentList[chartEditStore.fetchTargetIndex()])
 const selectTarget = computed(() => get(chartEditStore.getComponentList, chartEditStore.fetchTargetIndex()))
-const selectAttr = computed(() => selectTarget.value?.attr || {})
+const selectAttr = computed(() => selectTarget.value?.attr)
 
 // * 画布坐标
 const canvasPositionList = computed(() => {

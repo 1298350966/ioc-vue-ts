@@ -2,24 +2,24 @@
   <el-timeline style="padding-left: 10px">
     <el-timeline-item color="#2a2a2b" size="large" :hollow="true" type="info" :timestamp="TimelineTitleEnum.MAPPING"
       placement="top">
-      <component :is="dataMappingComponentIs" :targetData="targetData"
+      <component v-if="dataMappingComponentIs" :is="dataMappingComponentIs" :targetData="targetData"
         :dataMapping="targetData.dataMapping || []">
       </component>
       <!-- <echartDAtaMapping v-if="targetData.dataMapping" :dataMapping="targetData.dataMapping"></echartDAtaMapping> -->
-      <!-- <el-table v-else border striped :data="dimensionsAndSource">
-        <el-table-column prop="field" label="字段" />
-        <el-table-column prop="mapping" label="映射">
-          <template #default="{ $index }">
-            <el-input v-model="dimensions[$index]"></el-input>
+      <el-table v-else border striped :data="dimensionsAndSource"  row-key="key" size="small" default-expand-all>
+        <el-table-column prop="name" label="字段" />
+        <el-table-column prop="column" label="映射">
+          <template #default="{row, $index }">
+            <el-input v-model="row.column" size="small"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="result" label="状态">
+        <!-- <el-table-column prop="result" label="状态">
           <template #default="scope">
             <span v-if="scope.row.result === 0"> 无 </span>
             <span v-else>匹配{{ scope.row.result === 1 ? "成功" : "失败" }}</span>
           </template>
-        </el-table-column>
-      </el-table> -->
+        </el-table-column> -->
+      </el-table>
     </el-timeline-item>
     <el-timeline-item v-show="filterShow" type="warning" color="#2a2a2b" size="large" :hollow="true"
       :timestamp="TimelineTitleEnum.FILTER" placement="top">
@@ -30,6 +30,9 @@
         <p>过滤器默认处理接口返回值的「data」字段</p>
         <chart-data-monaco-editor></chart-data-monaco-editor>
       </el-space>
+    </el-timeline-item>
+    <el-timeline-item type="warning" color="#2a2a2b" size="large" :hollow="true" :timestamp="TimelineTitleEnum.BINDING" placement="top">
+      <ChartDataBinding :dataBinding="targetData.dataBinding"></ChartDataBinding>
     </el-timeline-item>
     <el-timeline-item type="success" color="#2a2a2b" size="large" :hollow="true" :timestamp="TimelineTitleEnum.CONTENT"
       placement="top">
@@ -112,7 +115,7 @@ import { toString, isArray } from "@/utils";
 import echartDAtaMapping from "./echartDAtaMapping.vue"
 import { ChatCategoryEnum } from "@/packages/components/Charts/index.d";
 import { FormComponentsCategoryEnum } from "@/packages/components/Forms/index.d";
-import { Json } from "@vicons/carbon";
+import ChartDataBinding from "../ChartDataBinding/index.vue"
 
 const BarsAndLines = defineAsyncComponent(
   () => import("./dataMapping/BarsAndLines.vue")
@@ -154,10 +157,33 @@ function setSourceStr(){
 function sourceStrSave(){
   targetData.value.data = JSON.parse(sourceStr.value)
   sourceEdit.value = false
-
 }
 // const dimensions = ref();
-const dimensionsAndSource = ref();
+const dimensionsAndSource = computed(()=>{
+  let {dataMapping} = targetData.value
+  if(dataMapping){
+    // let list = []
+    // Object.keys(dataMapping).forEach((key) => {
+    //   list.push() 
+    // })
+    return dataMapping
+  }else{
+    return []
+  } 
+});
+function dataMappingtoArray(dataMapping){
+  let list = []
+  Object.keys(dataMapping).forEach((key) => {
+    const mapping = dataMapping[key]
+    if(mapping.children){
+      dataMappingtoArray(mapping.children)
+    }
+    list.push(mapping) 
+  })
+
+  return list
+}
+
 const noData = ref(false);
 
 const { uploadFileListRef, customRequest, beforeUpload, download } =
@@ -185,31 +211,6 @@ const matchingHandle = (mapping: string) => {
     }
   }
   return DataResultEnum.SUCCESS;
-};
-
-// 处理映射列表
-const dimensionsAndSourceHandle = () => {
-  try {
-    // 去除首项数据轴标识
-    return dimensions.value.map((dimensionsItem: string, index: number) => {
-      return index === 0
-        ? {
-          // 字段
-          field: "通用标识",
-          // 映射
-          mapping: dimensionsItem,
-          // 结果
-          result: DataResultEnum.NULL,
-        }
-        : {
-          field: `数据项-${index}`,
-          mapping: dimensionsItem,
-          result: matchingHandle(dimensionsItem),
-        };
-    });
-  } catch (error) {
-    return [];
-  }
 };
 
 
@@ -244,42 +245,37 @@ const dataMappingComponentIs = computed(() => {
       return null;
   }
 });
-watch(
-  () => targetData.value?.data,
-  (
-    newData
-  ) => {
-    if (
-      newData &&
-      targetData?.value?.chartConfig?.chartFrame === ChartFrameEnum.ECHARTS
-    ) {
-      // 只有 DataSet 数据才有对应的格式
-      // source.value = newData;
-    } else if (newData !== undefined && newData !== null) {
-      dimensionsAndSource.value = null;
-      // source.value = newData;
-    } else {
-      noData.value = true;
-      // if (targetData.value?.option.dataset) {
-      //   source.value = targetData.value?.option.dataset
-      // } else {
-      //   source.value = "此组件无数据源";
-      // }
-    }
-    if (isArray(newData)) {
-      dimensionsAndSource.value = null;
-    }
-  },
-  {
-    immediate: true,
-  }
-);
+// watch(
+//   () => targetData.value?.data,
+//   (
+//     newData
+//   ) => {
+//     if (
+//       newData &&
+//       targetData?.value?.chartConfig?.chartFrame === ChartFrameEnum.ECHARTS
+//     ) {
+//       // 只有 DataSet 数据才有对应的格式
+//       // source.value = newData;
+//     } else if (newData !== undefined && newData !== null) {
+//       dimensionsAndSource.value = null;
+//       // source.value = newData;
+//     } else {
+//       noData.value = true;
+//       // if (targetData.value?.option.dataset) {
+//       //   source.value = targetData.value?.option.dataset
+//       // } else {
+//       //   source.value = "此组件无数据源";
+//       // }
+//     }
+//     if (isArray(newData)) {
+//       dimensionsAndSource.value = null;
+//     }
+//   },
+//   {
+//     immediate: true,
+//   }
+// );
 
-watch(dimensions, () => {
-  if (isCharts.value) {
-    dimensionsAndSource.value = dimensionsAndSourceHandle()
-  }
-},)
 </script>
 
 <style lang="scss" scoped>

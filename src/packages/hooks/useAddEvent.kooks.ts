@@ -1,4 +1,4 @@
-import { setCodeEvents, setConfigEvents, useEvent } from "@/hooks";
+import { UseEventType, setCodeEvents, setConfigEvents, useEvent } from "@/hooks";
 import { ChartEditStorageType } from "@/views/preview";
 import { EventsType } from "../index.d";
 
@@ -26,9 +26,15 @@ export function useAddEvent(chartConfig, Events: EventsType) {
   return { rootConfig, getEvents }
 }
 //添加地圖事件
-export function useAddMapEvent(config, Events: EventsType) {
+export function useAddMapEvent(config, Events: EventsType, cb:(emitEvent: UseEventType) => void = undefined )   {
   const rootConfig:ChartEditStorageType = inject("rootConfig")
-  const getEvents = computed(() => {
+  const mapEvents = ref<{
+    [T:string]:Function
+  }>({});
+  const getEvents = computed(()=>{
+    return mapEvents.value
+  })
+  function setEvents(){
     let events = {};
     const emitEvent = useEvent()
     const _this = getCurrentInstance()
@@ -42,14 +48,21 @@ export function useAddMapEvent(config, Events: EventsType) {
         setConfigEvents(config.events.configEvents.componentEvents, emitEvent, Events, [config, rootConfig],_this)
       }
     }
+    cb && cb(emitEvent)
     Object.keys(emitEvent.all).forEach((key) => {
       events[key] = (...args) => {
         emitEvent.emit(key, ...args)
       }
     })
-    return events;
+    mapEvents.value = events;
+  }
+  watch(()=>[config.events.codeEvents,config.events.configEvents.componentEvents],()=>{
+    setEvents()
+  },{
+    deep:true,
+    immediate:true
   })
-  return { rootConfig, getEvents }
+  return { rootConfig, getEvents,setEvents }
 }
 
 

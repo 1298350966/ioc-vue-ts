@@ -12,7 +12,7 @@
           <span> 组件 id：{{ targetData.id }} </span>
         </div>
         <el-collapse>
-          <component :is="componentIs" :optionData="targetData.option"></component>
+          <component :is="componentIs" :optionData="targetData.option" :componentEvents="targetData.events.componentEvents"></component>
           <!-- 基础事件配置 -->
           <chart-event-base-handle></chart-event-base-handle>
           <!-- 高级事件配置 -->

@@ -1,14 +1,20 @@
 <template>
+  <div :key="groupKey">
     <template v-for="(item, index) in configData" :key="index">
       <component
         :is="componentIs"
         v-bind="item"
         v-on="getEvents"
+        @[config.InfoWindow.eventType]="InfoWindowEvent($event, item.extData)"
       ></component>
     </template>
+    <div v-if="config.InfoWindow.enable">
+      <InfoWindow v-if="config.InfoWindow.options.visible" :config="config.InfoWindow.options" :data="InfoWindowData"></InfoWindow>
+    </div>
     <div ref="content">
       <slot />
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +38,7 @@ import { useAmapType } from '../../hooks/useBmapHooks';
 import { useAddMapEvent } from '@/packages/hooks/useAddEvent.kooks';
 import { useDataMappingHook } from './useDataMappingHook';
 import { coverEnum } from '../../type';
+import {InfoWindow} from "../index"
 defineOptions({
   name: "coverGroup",
   components: {
@@ -60,8 +67,41 @@ const mapIns:useAmapType = inject("mapIns")
 const componentIs = computed(() => {
   return props.config.type || null;
 });
+
+const InfoWindowData = ref(null)
+
 //事件
-const { rootConfig, getEvents } = useAddMapEvent(props.config, ControlGroupEvents)
+const { rootConfig, getEvents, setEvents } = useAddMapEvent(props.config, ControlGroupEvents, (emitEvent)=>{
+  const {options,eventType} = props.config.InfoWindow
+  console.log(eventType);
+  // emitEvent.on(eventType,(e,data) =>{
+  //   console.log(e,data);
+  //   if(["Marker"].includes(props.config.type)){
+  //     options.position = e.target.getPosition()
+  //   }else{
+  //     options.position = e.latLng
+  //   }
+  //   if(data){
+  //     InfoWindowData.value = data
+  //   }
+  //   options.visible = true
+  // })
+})
+
+const InfoWindowEvent = (e,data) =>{
+    const {options,eventType} = props.config.InfoWindow
+    console.log(e,data);
+    if(["BMarker"].includes(props.config.type)){
+      options.position = e.target.getPosition()
+    }else{
+      options.position = e.latLng
+    }
+    if(data){
+      InfoWindowData.value = data
+    }
+    options.visible = true
+}
+
 //字段映射方法
 const {setDataMappingOptions} = useDataMappingHook(props.config)
 //数据配置
@@ -122,6 +162,15 @@ watch(configData,(newVal)=>{
   })
 })
 
+const groupKey = ref(0)
+watch(()=>[props.config.InfoWindow.eventType],()=>{
+  setEvents()
+  groupKey.value++
+})
+
+// function mouseover(e){
+//   console.log(e);
+// }
 </script>
 
 <style scoped></style>

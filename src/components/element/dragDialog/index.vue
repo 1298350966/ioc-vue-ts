@@ -20,8 +20,10 @@ export default {
 
 <style lang="scss">
 .dragDialog {
+  border-radius: 10px;
+  overflow: hidden;
   .el-dialog__header {
-    background-color: var(--dark-color-2);
+    background-color: var(--bg-color-3);
     padding: 10px 15px;
     margin-right: 0;
 
@@ -35,7 +37,7 @@ export default {
   }
 
   .el-dialog__footer {
-    background-color: var(--dark-color-2);
+    background-color: var(--bg-color-3);
     padding: 10px 15px;
   }
 }

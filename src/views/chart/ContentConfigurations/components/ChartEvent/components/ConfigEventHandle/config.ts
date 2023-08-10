@@ -72,8 +72,11 @@ export const componentListUpdate = {
   "request.requestParams.Params": [],
   "request.requestParams.Body.form-data": [],
   "request.requestParams.Body.json": [],
-  "request.requestParams.Body.x-www-form-urlencoded": []
+  "request.requestParams.Body.x-www-form-urlencoded": [],
+  "data":""
 }
+
+
 
 export const globalDialogUpdate = {
   'body.attrs': [],

@@ -11,7 +11,8 @@
         ...useComponentStyle(groupData.attr, groupIndex),
         ...useSizeStyle(groupData.attr),
         ...getFilterStyle(groupData.styles),
-        ...getTransformStyle(groupData.styles)
+        ...getTransformStyle(groupData.styles),
+        ...getBasicStyle(groupData.styles)
       }"
       @click="mouseClickHandle($event, groupData)"
       @mousedown="mousedownHandle($event, groupData)"
@@ -42,7 +43,8 @@
             :style="{
               ...useSizeStyle(item.attr),
               ...getFilterStyle(item.styles),
-              ...getTransformStyle(item.styles)
+              ...getTransformStyle(item.styles),
+              ...getBasicStyle(item.styles)
             }"
           ></component>
         </edit-shape-box>
@@ -58,12 +60,14 @@ import { MenuEnum } from '@/enums/editPageEnum'
 import { chartColors } from '@/settings/chartThemes/index'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
 import { MenuOptionsItemType } from '@/views/chart/hooks/useContextMenu.hook.d'
-import { animationsClass, getFilterStyle, getTransformStyle } from '@/utils'
+import { animationsClass, getFilterStyle, getTransformStyle, getBasicStyle } from '@/utils'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useContextMenu, divider } from '@/views/chart/hooks/useContextMenu.hook'
 import { useMouseHandle } from '../../hooks/useDrag.hook'
 import { useComponentStyle, useSizeStyle } from '../../hooks/useStyle.hook'
 import { EditShapeBox } from '../../components/EditShapeBox'
+import { useChartDataFetch } from '@/hooks'
+import { PreviewChartEdit } from '@/views/preview/utils/PreviewChartEdit'
 
 const props = defineProps({
   groupData: {
@@ -121,5 +125,12 @@ const themeColor = computed(() => {
 const themeSetting = computed(() => {
   const chartThemeSetting = chartEditStore.getEditCanvasConfig.chartThemeSetting
   return chartThemeSetting
+})
+
+
+const rootConfig:PreviewChartEdit = inject("rootConfig")
+
+useChartDataFetch(props.groupData, rootConfig.requestGlobalConfig, (data) => {
+  console.log(data);
 })
 </script>

@@ -1,0 +1,1 @@
+import{u as o}from"./chartEditStore-8641b951.js";import{l as s}from"./lodash-f91682a1.js";import{g as n,i as c}from"./vue-65382a1b.js";const p=()=>{const t=o();return{targetData:n(()=>{const e=t.getComponentList,r=t.fetchTargetIndex(),a=c("targetData");return a?a.value:s.get(e,r)}),chartEditStore:t}};export{p as u};

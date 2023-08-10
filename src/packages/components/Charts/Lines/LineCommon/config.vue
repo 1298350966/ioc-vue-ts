@@ -16,6 +16,9 @@
           </div>
         </div>
       </template>
+      <SettingItemBox name="类型">
+        <el-select-v2 v-model="item.type" :options="seriesTypeOptions"></el-select-v2>
+      </SettingItemBox>
       <SettingItemBox name="线条">
         <SettingItem name="宽度">
           <el-input-number v-model="item.lineStyle.width" :min="1" :max="100" size="small"
@@ -42,6 +45,7 @@ import {
 } from '@/components/Pages/ChartItemSetting'
 import { cloneDeep } from 'lodash'
 import { seriesItem } from './config'
+import { seriesTypeOptions } from '../config'
 
 const collapseActiveList = ref([])
 

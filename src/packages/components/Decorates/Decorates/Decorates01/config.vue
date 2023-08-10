@@ -9,7 +9,7 @@
       <SettingItem name="颜色">
         <el-color-picker
           size="small"
-          v-mode="optionData.colors[index]"
+          v-model="optionData.colors[index]"
           show-alpha
         ></el-color-picker>
       </SettingItem>
@@ -26,14 +26,17 @@
       <SettingItem name="线条高度">
         <el-input-number
           size="small"
-          v-mode="optionData.lineHeight"
+          v-model="optionData.lineHeight"
         ></el-input-number>
       </SettingItem>
       <SettingItem name="末端长度">
         <el-input-number
           size="small"
-          v-mode="optionData.endWidth"
+          v-model="optionData.endWidth"
         ></el-input-number>
+      </SettingItem>
+      <SettingItem name="反转">
+         <el-switch v-model="optionData.reverse"></el-switch>
       </SettingItem>
     </SettingItemBox>
   </CollapseItem>
@@ -42,7 +45,7 @@
     <SettingItemBox name="速度(s)">
       <SettingItem>
         <el-input-number
-          v-mode="optionData.dur"
+          v-model="optionData.dur"
           size="small"
           :step="0.5"
           :min="0.5"

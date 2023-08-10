@@ -10,12 +10,12 @@ const server: ServerOptions = {
     // 本地跨域代理
     proxy: {
         "/api/": {
-            target: 'http://10.10.10.83:3000/api/',
+            target: 'http://10.10.10.83:5000/api/',
             changeOrigin: false,
             rewrite: path => path.replace(/^\/api/, '')
         },
         "/apc": {
-            target: 'http://10.10.10.83:3000/apc/',
+            target: 'http://10.10.10.83:5000/apc/',
             changeOrigin: false,
             rewrite: path => path.replace(/^\/apc/, '')
         },

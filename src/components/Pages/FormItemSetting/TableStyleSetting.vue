@@ -48,6 +48,30 @@
                 show-alpha
             ></el-color-picker>
         </setting-item>
+        <setting-item name="列颜色">
+            <el-color-picker
+                size="small"
+                :modes="['hex']"
+                v-model="styleOptions.trBgColor"
+                show-alpha
+            ></el-color-picker>
+        </setting-item>
+        <setting-item name="斑马纹列颜色">
+            <el-color-picker
+                size="small"
+                :modes="['hex']"
+                v-model="styleOptions.stripeTrBgColor"
+                show-alpha
+            ></el-color-picker>
+        </setting-item>
+        <setting-item name="边框颜色">
+            <el-color-picker
+                size="small"
+                :modes="['hex']"
+                v-model="styleOptions.expandedCellBgColor"
+                show-alpha
+            ></el-color-picker>
+        </setting-item>
     </setting-item-box>
 </template>
 <script setup lang="ts">

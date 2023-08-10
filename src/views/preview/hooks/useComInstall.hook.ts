@@ -19,7 +19,7 @@ export const useComInstall = (localStorageInfo: ChartEditStorageType) => {
 
       localStorageInfo.componentList.forEach(async (e: CreateComponentType | CreateComponentGroupType) => {
         if (e.isGroup) {
-          (e as CreateComponentGroupType).groupList.forEach(groupItem => {
+          e.groupList.forEach(groupItem => {
             intComponent(groupItem)
           })
         } else {

@@ -19,7 +19,9 @@
               ...getFilterStyle(chartEditStore.getEditCanvasConfig),
               ...rangeStyle,
             }"
-          >
+          > 
+             <!-- 鼠标位置 -->
+            <div class="contextmenu" @contextmenu="handleMousePosition"></div>
             <!-- 图表 -->
             <div
               v-for="(item, index) in chartEditStore.getComponentList"
@@ -58,6 +60,7 @@
                     ...useSizeStyle(item.attr),
                     ...getFilterStyle(item.styles),
                     ...getTransformStyle(item.styles),
+                    ...getBasicStyle(item.styles)
                   }"
                   :id="item.id"
                 ></component>
@@ -104,21 +107,25 @@ import {
   CreateComponentType,
   CreateComponentGroupType,
 } from "@/packages/index.d";
-import { animationsClass, getFilterStyle, getTransformStyle } from "@/utils";
+import { animationsClass, getFilterStyle, getTransformStyle, getBasicStyle } from "@/utils";
 import { useContextMenu } from "@/views/chart/hooks/useContextMenu.hook";
 import { MenuOptionsItemType } from "@/views/chart/hooks/useContextMenu.hook.d";
 import { useChartEditStore } from "@/store/modules/chartEditStore/chartEditStore";
 import { ContentDropdown } from "../ContentDropdown/index";
 import { EditTools } from "./components/EditTools";
+import { PreviewChartEdit } from "@/views/preview/utils/PreviewChartEdit";
+
 defineOptions({
   name: "ContentEdit",
 });
 
 const chartEditStore = useChartEditStore();
 
-provide("rootConfig", chartEditStore.getStorageInfo);
+const rootConfig = new PreviewChartEdit(chartEditStore.getStorageInfo)
+console.log(`output->`,rootConfig)
+provide("rootConfig", rootConfig);
 
-const { handleContextMenu } = useContextMenu();
+const { handleContextMenu,handleMousePosition } = useContextMenu();
 // 布局处理
 useLayout();
 
@@ -200,6 +207,8 @@ const rangeStyle = computed(() => {
 onMounted(() => {
   useAddKeyboard();
 });
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -208,7 +217,7 @@ onMounted(() => {
   height: 100%;
   // background: #33333333;
   position: relative;
-  background-color: $--color-dark-bg-1;
+  // background-color: var(--dark-color);
 
   #chart-edit-content {
     position: absolute;
@@ -219,5 +228,14 @@ onMounted(() => {
 
 .none {
   display: none;
+}
+.contextmenu{
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
 }
 </style>

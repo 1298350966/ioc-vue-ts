@@ -1,0 +1,13 @@
+.infowindow-none{
+  .tdt-infowindow-content-wrapper{
+    background-color: transparent;
+    box-shadow:none;
+
+    .tdt-infowindow-content{
+      margin:0;
+    }
+  }
+  .tdt-infowindow-tip-container{
+    display: none;
+  }
+}

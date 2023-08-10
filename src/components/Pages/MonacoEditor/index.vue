@@ -1,12 +1,13 @@
 <template>
   <div ref="el" class="go-editor-area" :style="{ width, height }"></div>
-  <EditorWorker></EditorWorker>
+  <!-- <EditorWorker></EditorWorker> -->
 </template>
 
 <script lang="ts" setup>
 import { onMounted, watch, PropType } from 'vue'
 import { useMonacoEditor } from './index.hook'
-import { EditorWorker } from './index'
+import "./worker"
+// import { EditorWorker } from './index'
 
 const props = defineProps({
   width: {

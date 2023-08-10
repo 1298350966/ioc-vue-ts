@@ -59,7 +59,6 @@
 </template>
 
 <script lang="ts" setup>
-import { config } from "process";
 import { GlobalDialogType } from "../type";
 import { Json } from "@vicons/carbon";
 import { JSONParse, JSONStringify } from "@/utils";

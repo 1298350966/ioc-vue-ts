@@ -29,15 +29,15 @@
 
 <script lang="ts" setup>
 import { loadAsyncComponent } from "@/utils";
-// import ContentConfigurations from "./ContentConfigurations/index.vue"
-// import {ContentLayers} from "./ContentLayers/index"
-// import {ContentCharts} from "./ContentCharts/index"
 import { useContextMenu } from "./hooks/useContextMenu.hook";
 import { useStoreInfo } from "./hooks/useStorageInfo.hook";
 import { useChartEditStore } from "@/store/modules/chartEditStore/chartEditStore";
+import ContentConfigurations from "./ContentConfigurations/index.vue"
+// import {ContentLayers} from "./ContentLayers/index"
+// import {ContentCharts} from "./ContentCharts/index"
 import LeftSideBar from "./LeftSideBar/index.vue";
 // import chartHeader from "./chartHeader/index.vue"
-// import headerLeftBtn from "./chartHeader/headerLeftBtn.vue"
+import headerLeftBtn from "./chartHeader/headerLeftBtn.vue"
 // import headerTitle from "./chartHeader/headerTitle.vue"
 // import headerRightBtn from "./chartHeader/headerRightBtn.vue"
 // import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -48,9 +48,9 @@ import "./style/vars.scss";
 useStoreInfo()  
 
 const chartHeader = loadAsyncComponent(() => import("./chartHeader/index.vue"));
-const headerLeftBtn = loadAsyncComponent(
-  () => import("./chartHeader/headerLeftBtn.vue")
-);
+// const headerLeftBtn = loadAsyncComponent(
+//   () => import("./chartHeader/headerLeftBtn.vue")
+// );
 const headerTitle = loadAsyncComponent(
   () => import("./chartHeader/headerTitle.vue")
 );
@@ -61,9 +61,11 @@ const headerRightBtn = loadAsyncComponent(
 const ContentCharts = loadAsyncComponent(
   () => import("./ContentCharts/index.vue")
 );
-const ContentConfigurations = loadAsyncComponent(
-  () => import("./ContentConfigurations/index.vue")
-);
+// const ContentConfigurations = loadAsyncComponent(
+//   () => import("./ContentConfigurations/index.vue")
+// );
+// const LeftSideBar = loadAsyncComponent(() => import("./LeftSideBar/index.vue"))
+
 const chartEditStore = useChartEditStore();
 
 // 右键
@@ -78,7 +80,7 @@ const { menuOptions, onClickOutSide, mousePosition, handleMenuSelect } =
 .kh-chart {
   --kh-color: #18181c;
   color: $--color-light-bg-5;
-  background: var(--bg);
+  background: var(--bg-color);
   height: 100vh;
   width: 100vw;
   overflow: hidden;

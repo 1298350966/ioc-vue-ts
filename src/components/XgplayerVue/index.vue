@@ -41,9 +41,12 @@ function init() {
         lang: 'zh',
         height: height,
         width: width,
-        plugins
+        crossOrigin:"anonymous",
+        plugins,
+
       },props.config));
-      emit('player', player)
+      player.crossOrigin = "anonymous"
+      emit('player', player.crossOrigin)
     }
   })
 }

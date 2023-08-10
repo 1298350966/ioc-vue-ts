@@ -73,7 +73,7 @@ const asideTabs = reactive({
 .container {
   height: 700px;
   .aside {
-    background: var(--dark-color-1a);
+    background: var(--bg-color-1);
     padding: 5px 10px;
   }
 }

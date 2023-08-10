@@ -38,9 +38,9 @@
         <div class="conditions-box">
           <div class="condition" v-for="(item, index) in condition.conditions">
             <div class="line"></div>
-            <el-select-v2 v-model.trim="item.key" :options="mappingFieldOptions" allow-create filterable clearable></el-select-v2>
-            <el-select-v2 v-model="item.condition" :options="getConditionOptions(item)" allow-create filterable clearable></el-select-v2>
-            <el-select-v2 v-model.trim="item.value" :options="[]" allow-create filterable clearable></el-select-v2>
+            <el-select-v2 style="width: 100%;" v-model.trim="item.key" :options="mappingFieldOptions" allow-create filterable clearable></el-select-v2>
+            <el-select-v2 style="width: 100%;" v-model="item.condition" :options="getConditionOptions(item)" allow-create filterable clearable></el-select-v2>
+            <el-select-v2 style="width: 100%;" v-model.trim="item.value" :options="[]" allow-create filterable clearable></el-select-v2>
             <!-- <el-input v-model="item.key"></el-input>
             <el-input v-model="item.condition"></el-input>
             <el-input v-model="item.value"></el-input> -->
@@ -196,7 +196,10 @@ function deleteCondition(condition, index) {
     }
 
     .condition {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 20px;
+      justify-self: center;
+      justify-items: center;
       align-items: center;
       gap: var(--line-height);
       padding: 10px 10px;

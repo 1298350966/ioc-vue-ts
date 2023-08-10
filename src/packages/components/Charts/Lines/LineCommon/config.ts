@@ -5,7 +5,7 @@ import { defaultTheme, chartColorsSearch } from '@/settings/chartThemes/index'
 import dataJson from './data.json'
 import { cloneDeep } from 'lodash'
 
-export const includes = ['legend', 'xAxis', 'yAxis']
+export const includes = ["grid", 'legend', 'xAxis', 'yAxis']
 
 export const seriesItem = {
   type: 'line',

@@ -2,6 +2,7 @@ import { echartOptionProfixHandle, PublicConfigClass } from '@/packages/public'
 import { CoverControlConfig } from './index'
 import { CreateComponentType, EventsType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
+import { BaseEvent, EventLife } from '@/enums/eventEnum'
 
 export const seriesItem = {
   icon:"",

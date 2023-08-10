@@ -8,7 +8,8 @@
     :style="{
       ...getComponentAttrStyle(item.attr, index),
       ...getFilterStyle(item.styles),
-      ...getTransformStyle(item.styles)
+      ...getTransformStyle(item.styles),
+      ...getBasicStyle(item.styles)
     }"
   >
     <!-- 分组 -->
@@ -18,6 +19,7 @@
       :groupIndex="index"
       :themeSetting="themeSetting"
       :themeColor="themeColor"
+      v-on="useLifeHandler(item, this)"
     ></preview-render-group>
 
     <!-- 单组件 -->
@@ -40,7 +42,7 @@ import { ChartEditStorageType } from '../../index.d'
 import { PreviewRenderGroup } from '../PreviewRenderGroup/index'
 import { CreateComponentGroupType } from '@/packages/index.d'
 import { chartColors } from '@/settings/chartThemes/index'
-import { animationsClass, getFilterStyle, getTransformStyle } from '@/utils'
+import { animationsClass, getFilterStyle, getTransformStyle, getBasicStyle } from '@/utils'
 import { getSizeStyle, getComponentAttrStyle} from '../../utils'
 import { useLifeHandler } from '@/hooks'
 

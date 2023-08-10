@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ioc</title>
     <link rel="stylesheet" href="./index.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="appProvider" style="display: none;"></div>
@@ -19,6 +26,6 @@
     <div class="mobile-terminal">
       <p>请使用 Web 端进行查看</p>
     </div>
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/main.ts" ></script>
   </body>
 </html>

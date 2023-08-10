@@ -113,28 +113,40 @@ export interface PublicConfigType {
     [FilterEnum.SKEW_X]: number
     [FilterEnum.SKEW_Y]: number
     [FilterEnum.BLEND_MODE]: string
+
     // 动画
     animations: string[]
+    backgroundColor:string
+    paddingX:number
+    paddingY:number
   }
   filter?: string
   filterNode?: string
+  dataBinding:{
+    codeMode:string
+    configMode:{
+      targetId:string
+      value:string
+    }[] 
+  }
   status: StatusType
   events: {
     configEvents: ConfigEventsType
-
     baseEvent: {
-      [K in BaseEvent]?: string
+      [K:string]: string
     },
     advancedEvents: {
-      [K in EventLife]?: string
+      [K:string]: string
     },
-
+    componentEvents:{
+      [K:string]: string
+    },
   }
 }
 export interface ConfigEventsType {
-  baseEvent: EventConfigType[]
-  eChartsEvents: EventConfigType[],
-  componentEvents: EventConfigType[],
+  baseEvent?: EventConfigType[]
+  eChartsEvents?: EventConfigType[],
+  componentEvents?: EventConfigType[],
   [T: string]: EventConfigType[],
 }
 export interface CreateComponentType extends PublicConfigType, requestConfig {
@@ -142,7 +154,7 @@ export interface CreateComponentType extends PublicConfigType, requestConfig {
   chartConfig: ConfigType
   option: GlobalThemeJsonType,
   data?: any
-  dataMapping?: DataMappingType,
+  dataMapping?: DataMappingType | any,
   eChartsEventVars?: {
     label: string,
     value: string
@@ -174,7 +186,7 @@ export interface GlobalVarType {
 
 // 组件成组实例类
 export interface CreateComponentGroupType extends CreateComponentType {
-  groupList?: Array<CreateComponentType>
+  groupList: CreateComponentType[]
 }
 
 // 获取组件实例类中某个key对应value类型的方法
@@ -304,8 +316,13 @@ export interface CoverGroupType{
         }
       };
   };
+  InfoWindow?:{
+    eventType:string,
+    enable: boolean,
+    options:any
+  }
   data: any[];
-  dataKeyList:any[],
+  dataKeyList?:any[],
   dataMapping?:{
     [T:string]:{
       key:string,
@@ -313,5 +330,12 @@ export interface CoverGroupType{
     }
   },
   filterNode?:string
-  filter?: string
+  filter?: string,
+  dataBinding:{
+    codeMode:string
+    configMode:{
+      targetId:string
+      value:string
+    }[] 
+  }
 }

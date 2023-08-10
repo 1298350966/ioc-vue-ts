@@ -16,6 +16,9 @@
           </div>
         </div>
       </template>
+      <SettingItemBox name="类型">
+        <el-select-v2 v-model="item.type" :options="seriesTypeOptions"></el-select-v2>
+      </SettingItemBox>
       <SettingItemBox name="线条">
         <SettingItem name="宽度">
           <el-input-number v-model="item.lineStyle.width" :min="1" :max="100" size="small"
@@ -42,7 +45,7 @@ import {
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { cloneDeep } from 'lodash'
 import { seriesItem } from './config'
-
+import { seriesTypeOptions } from '../config'
 
 const props = defineProps<{
   optionData: GlobalThemeJsonType
@@ -71,3 +74,15 @@ function handleDelete(item, index) {
   props.optionData.dataset.dimensions = [props.optionData.dataset.dimensions[0], ...list]
 }
 </script>
+<style scoped lang="scss">
+.title-container{
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+  padding-right: 15px;
+
+  :deep(.el-icon){
+    margin-left: 10px;
+  }
+}
+</style>

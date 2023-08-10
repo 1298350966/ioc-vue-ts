@@ -65,16 +65,18 @@ const  sendDialogShow = ref(false)
 // 发布
 const sendHandle =async () => {
   const { id } = routerParamsInfo.params
-  const { type } = routerParamsInfo.query
+  const { type,viewsType } = routerParamsInfo.query
   const range = document.querySelector('.go-edit-range') as HTMLElement
   const config = JSON.stringify(chartEditStore.getStorageInfo)
+  console.log(`config`,config)
   const img = await getCanvasCutImg(range)
   let res = await uploadHttp(base64ToFile(img))
   let imgSrc =  res.data && res.data.path
   let params = {
     name:chartEditStore.getEditCanvasConfig.projectName,
     imgSrc:imgSrc,
-    config:config
+    config:config,
+    type:viewsType
   }
   type == "update" ?  await updateViewsHttp(id as string, params)  : await addViewsHttp(params)
   // updateViewsHttp()

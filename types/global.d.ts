@@ -19,6 +19,9 @@ interface Window {
   AMapIns: any
   // 百度地图
   BMapGL: any 
+  //编辑器
+  MonacoEnvironment?: Environment | undefined;
+  HTMLCanvasElement: HTMLCanvasElement;
 }
 
 declare type Recordable<T = any> = Record<string, T>

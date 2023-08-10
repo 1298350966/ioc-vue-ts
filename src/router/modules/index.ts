@@ -8,5 +8,4 @@ export default {
   chartRoutes,
   previewRoutes,
   editRoutes,
-  
 }

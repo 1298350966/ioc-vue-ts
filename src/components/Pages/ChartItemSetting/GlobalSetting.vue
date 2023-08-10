@@ -7,23 +7,50 @@
       </el-space>
     </template>
     <setting-item-box name="标题">
+      <setting-item name="主标题文本">
+        <el-input v-model="title.text" size="small"></el-input>
+      </setting-item>
+      <setting-item name="水平位置(x)">
+        <el-select-v2 v-model="title.x" :options="xConfig" allow-create filterable></el-select-v2>
+      </setting-item>
+      <setting-item name="垂直位置(y)">
+        <el-select-v2 v-model="title.y" :options="yConfig" allow-create filterable></el-select-v2>
+      </setting-item>
       <setting-item name="颜色">
-        <n-color-picker v-model="title.textStyle.color" size="small"></n-color-picker>
+        <el-color-picker v-model="title.textStyle.color" size="small" show-alpha></el-color-picker>
       </setting-item>
       <setting-item name="大小">
-        <n-input-number v-model="title.textStyle.fontSize" :min="1" size="small"></n-input-number>
+        <el-input-number v-model="title.textStyle.fontSize" :min="1" size="small"></el-input-number>
       </setting-item>
     </setting-item-box>
     <setting-item-box name="副标题">
       <setting-item name="颜色">
-        <n-color-picker size="small" v-model="title.subtextStyle.color"></n-color-picker>
+        <el-color-picker size="small" show-alpha v-model="title.subtextStyle.color"></el-color-picker>
       </setting-item>
       <setting-item name="大小">
-        <n-input-number v-model="title.subtextStyle.fontSize" :min="1" size="small"></n-input-number>
+        <el-input-number v-model="title.subtextStyle.fontSize" :min="1" size="small"></el-input-number>
       </setting-item>
     </setting-item-box>
   </el-collapse-item>
+  <el-collapse-item v-if="grid" title="网格" name="网格">
+    <setting-item-box name="坐标">
+      <setting-item name="x">
+        <el-input-number v-model="grid.x" :min="0" size="small"></el-input-number>
+      </setting-item>
+      <setting-item name="y">
+        <el-input-number v-model="grid.y" :min="0" size="small"></el-input-number>
+      </setting-item>
+  
+      <setting-item name="x2">
+        <el-input-number v-model="grid.x2" :min="0" size="small"></el-input-number>
+      </setting-item>
+      <setting-item name="y2">
+        <el-input-number v-model="grid.y2" :min="0" size="small"></el-input-number>
+      </setting-item>
+    </setting-item-box>
 
+  </el-collapse-item>
+ 
   <el-collapse-item v-if="xAxis" title="X轴" name="X轴">
     <template #title>
       <el-space class="kh-flex-between flex-1">
@@ -215,10 +242,24 @@
         <el-switch @click.stop v-model="legend.show" size="small"></el-switch>
       </el-space>
     </template>
+    <setting-item-box name="位置">
+      <setting-item name="布局方式">
+        <el-select-v2 v-model="legend.orient" size="small" :options="orientConfig"></el-select-v2>
+      </setting-item>
+      <setting-item name="水平位置(x)">
+        <el-select-v2 v-model="legend.x" :options="xConfig" allow-create filterable></el-select-v2>
+      </setting-item>
+      <setting-item name="垂直位置(y)">
+        <el-select-v2 v-model="legend.top" :options="yConfig" allow-create filterable></el-select-v2>
+      </setting-item>
+    </setting-item-box>
     <setting-item-box name="图例文字">
       <setting-item>
         <el-color-picker size="small" v-model="legend.textStyle.color" show-alpha></el-color-picker>
       </setting-item>
+    </setting-item-box>
+    <setting-item-box name="图例间隔">
+      <el-input-number v-model="legend.itemGap" :min="0" size="small"></el-input-number>
     </setting-item-box>
   </el-collapse-item>
 
@@ -232,38 +273,38 @@
 
     <setting-item-box name="范围">
       <setting-item name="最小值">
-        <n-input-number v-model="visualMap.min" size="small"></n-input-number>
+        <el-input-number v-model="visualMap.min" size="small"></el-input-number>
       </setting-item>
       <setting-item name="最大值">
-        <n-input-number v-model="visualMap.max" size="small"></n-input-number>
+        <el-input-number v-model="visualMap.max" size="small"></el-input-number>
       </setting-item>
     </setting-item-box>
 
     <setting-item-box name="颜色">
       <setting-item :name="`层级-${index + 1}`" v-for="(item, index) in visualMap.inRange.color" :key="index">
-        <n-color-picker v-model="visualMap.inRange.color[index]" size="small"></n-color-picker>
+        <el-color-picker v-model="visualMap.inRange.color[index]" size="small" show-alpha ></el-color-picker>
       </setting-item>
     </setting-item-box>
 
     <setting-item-box name="控制块">
       <setting-item name="放置方向">
-        <n-select v-model="visualMap.orient" size="small" :options="axisConfig.visualMap.orient"></n-select>
+        <el-select-v2 v-model="visualMap.orient" size="small" :options="axisConfig.visualMap.orient"></el-select-v2>
       </setting-item>
       <setting-item name="宽度">
-        <n-input-number v-model="visualMap.itemWidth" :min="5" size="small"></n-input-number>
+        <el-input-number v-model="visualMap.itemWidth" :min="5" size="small"></el-input-number>
       </setting-item>
       <setting-item name="高度">
-        <n-input-number v-model="visualMap.itemHeight" :min="5" size="small"></n-input-number>
+        <el-input-number v-model="visualMap.itemHeight" :min="5" size="small"></el-input-number>
       </setting-item>
       <setting-item name="反转">
-        <n-space>
-          <n-switch v-model="visualMap.inverse" size="small"></n-switch>
-        </n-space>
+        <el-space>
+          <el-switch v-model="visualMap.inverse" size="small"></el-switch>
+        </el-space>
       </setting-item>
       <setting-item name="拖拽组件实时更新">
-        <n-space>
-          <n-switch v-model="visualMap.realtime" size="small"></n-switch>
-        </n-space>
+        <el-space>
+          <el-switch v-model="visualMap.realtime" size="small"></el-switch>
+        </el-space>
       </setting-item>
     </setting-item-box>
     <global-setting-position :targetData="visualMap"></global-setting-position>
@@ -273,7 +314,7 @@
 <script setup lang="ts" name="GlobalSetting">
 import { PropType, computed } from 'vue'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
-import { axisConfig } from '@/packages/chartConfiguration/echarts/index'
+import { axisConfig, xConfig, yConfig, orientConfig } from '@/packages/chartConfiguration/echarts/index'
 import { CollapseItem, SettingItemBox, SettingItem, GlobalSettingPosition } from '@/components/Pages/ChartItemSetting'
 
 const props = withDefaults(
@@ -304,4 +345,9 @@ const legend = computed(() => {
 const visualMap = computed(() => {
   return props.optionData.visualMap
 })
+
+const grid = computed(() => {
+  return props.optionData.grid
+})
+
 </script>

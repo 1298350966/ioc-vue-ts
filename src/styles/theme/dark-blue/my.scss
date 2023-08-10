@@ -1,0 +1,34 @@
+@use "../../mixins/_var.scss" as *;
+@use "./variables.scss";
+
+$theme-bg-color:variables.$theme-bg-color;
+$font-color:variables.$font-color;
+html.dark-blue {
+  @include set-root-css-var((
+    "bg-color": $theme-bg-color,
+    "bg-color-1": darken($theme-bg-color, 1%),
+    "bg-color-2": darken($theme-bg-color, 2%),
+    "bg-color-3": darken($theme-bg-color, 4%),
+    "bg-color-4": darken($theme-bg-color, 6%),
+    "bg-color-5": darken($theme-bg-color, 8%),
+    "bg-color-6": darken($theme-bg-color, 10%),
+    "font-color":$font-color,
+    "font-color-1":darken($font-color, 2%),
+    "font-color-2":darken($font-color, 4%),
+    "font-color-3":darken($font-color, 6%),
+    "font-color-4":darken($font-color, 8%),
+    "dark-color":lighten($theme-bg-color, 0%),
+    "dark-color-1a":lighten($theme-bg-color, 1%),
+    "dark-color-1":lighten($theme-bg-color, 2%),
+    "dark-color-2":lighten($theme-bg-color, 4%),
+    "dark-color-3":lighten($theme-bg-color, 6%),
+    "dark-color-4":lighten($theme-bg-color, 8%)
+  ));
+
+  body{
+    background:var(--bg-color);
+    color:var(--font-color);
+  }
+}
+
+

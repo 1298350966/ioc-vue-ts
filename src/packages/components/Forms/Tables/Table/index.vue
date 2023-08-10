@@ -58,7 +58,6 @@ const EventsClass = computed(()=>{
   } = {}
   let EventComponentType = getEventComponentType()
   Object.keys(EventComponentType).forEach((key)=>{
-    debugger
     EventClass[key] = {}
     EventComponentType[key].forEach((eventName) => {
       if(getEvents.value[eventName]){
@@ -78,6 +77,9 @@ const getStyle = computed(() => {
     textColor,
     rowHoverBgColor,
     borderColor,
+    trBgColor,
+    stripeTrBgColor,
+    expandedCellBgColor
   } = props.chartConfig.option.style;
   return {
     "--el-table-bg-color": bgColor,
@@ -86,6 +88,9 @@ const getStyle = computed(() => {
     "--el-table-text-color": textColor,
     "--el-table-row-hover-bg-color": rowHoverBgColor,
     "--el-table-border-color": borderColor,
+    "--el-table-tr-bg-color":trBgColor,
+    "--el-table-expanded-cell-bg-color":expandedCellBgColor,
+    "--el-fill-color-lighter":stripeTrBgColor
   };
 });
 const getColumnStyle = (styleOptions) => {

@@ -13,7 +13,10 @@ import SizeSetting from './SizeSetting.vue'
 import StylesSetting from './StylesSetting.vue'
 //组列表
 import GroupList from './GroupList.vue'
-
+//背景设置
+import backgroundSetting from './backgroundSetting.vue'
+//内边距
+import paddingSetting from './paddingSetting.vue'
 export{
   CollapseItem,
   SettingItem,
@@ -24,5 +27,8 @@ export{
   PositionSetting,
   SizeSetting,
   StylesSetting,
-  GroupList
+  GroupList,
+  backgroundSetting,
+  paddingSetting,
+  
 }

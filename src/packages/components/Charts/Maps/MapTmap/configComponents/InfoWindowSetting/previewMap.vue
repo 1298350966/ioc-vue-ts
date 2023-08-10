@@ -12,7 +12,8 @@
 
 <script setup lang="ts">
 import { option, InfoWindowOptions } from "../../config";
-import { TdtMap } from "vue-tianditu/packages/index";
+// @ts-ignore
+import { TdtMap } from "vue-tianditu";
 import { InfoWindow } from "../../components";
 import { useTmap } from "../../hooks/useTmapHooks";
 let props = defineProps({
@@ -42,7 +43,7 @@ const loadScript = computed(() => {
 
 function initMap(e) {
   mapIns.setMap(e)
-  props.config.position = center;
+  props.config.position = center.value;
   props.config.visible = true;
 }
 </script>

@@ -6,6 +6,12 @@
         <el-input v-model="optionData.src" size="small"></el-input>
       </setting-item>
       </setting-item-box>
+      <!-- <setting-item-box name="通讯数据"  :alone="true">
+        <setting-item>
+          <el-input v-model="optionData.dataset" size="small"></el-input>
+        </setting-item>
+      </setting-item-box> -->
+
       </collapse-item>
   </el-collapse>
 </template>

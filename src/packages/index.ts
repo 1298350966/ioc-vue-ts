@@ -13,8 +13,8 @@ import {
 } from '@/packages/index.d'
 
 
-const configModules: any = import.meta.glob("./components/**/config.vue", { eager: true })
-const indexModules: any = import.meta.glob("./components/**/index.vue", { eager: true })
+const configModules: any = import.meta.glob("./components/**/config.vue")
+const indexModules: any = import.meta.glob("./components/**/index.vue")
 const eventsModules: any = import.meta.glob('./components/**/events.vue')
 const imagesModules: any = import.meta.glob('../assets/images/chart/**', { eager: true })
 
@@ -57,7 +57,7 @@ const fetchComponent = (chartName: string, flag: FetchComFlagType) => {
   for (const key in module) {
     const urlSplit = key.split('/')
     if (urlSplit[urlSplit.length - 2] === chartName) {
-      return module[key]
+      return defineAsyncComponent(module[key])
     }
   }
 }
@@ -68,7 +68,7 @@ const fetchComponent = (chartName: string, flag: FetchComFlagType) => {
  */
 export const fetchChartComponent = (dropData: ConfigType) => {
   const { key } = dropData
-  return fetchComponent(key, FetchComFlagType.VIEW)?.default
+  return fetchComponent(key, FetchComFlagType.VIEW)
 }
 
 /**
@@ -77,7 +77,7 @@ export const fetchChartComponent = (dropData: ConfigType) => {
  */
 export const fetchConfigComponent = (dropData: ConfigType) => {
   const { key } = dropData
-  return fetchComponent(key, FetchComFlagType.CONFIG)?.default
+  return fetchComponent(key, FetchComFlagType.CONFIG)
 }
 
 /**

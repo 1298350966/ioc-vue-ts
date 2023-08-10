@@ -133,10 +133,10 @@ const lockHandle = () => {
 const sliderValue = ref(100);
 
 // 拖动格式化
-const sliderFormatTooltip = (v: string) => `${v}%`;
+const sliderFormatTooltip = (v: number | string) => `${v}%`;
 
 // 拖动处理
-const sliderHandle = (v: number) => {
+function sliderHandle(v:any){
   chartEditStore.setScale(v / 100);
 };
 

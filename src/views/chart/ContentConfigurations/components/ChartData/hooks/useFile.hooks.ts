@@ -1,7 +1,7 @@
 import { ref, toRef, nextTick } from 'vue'
-import { UploadCustomRequestOptions } from 'naive-ui'
 import { FileTypeEnum } from '@/enums/fileTypeEnum'
 import { readFile, downloadTextFile, JSONStringify, JSONParse } from '@/utils'
+import { UploadRequestOptions } from 'element-plus'
 
 export const useFile = (targetData: any) => {
   const uploadFileListRef = ref()
@@ -18,7 +18,7 @@ export const useFile = (targetData: any) => {
   }
 
   // 自定义上传操作
-  const customRequest = (options: UploadCustomRequestOptions) => {
+  const customRequest = (options: UploadRequestOptions) => {
     const { file } = options
     nextTick(() => {
 

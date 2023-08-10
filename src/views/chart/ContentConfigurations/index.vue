@@ -55,6 +55,9 @@ const ChartEvent = loadAsyncComponent(
 const ChartData = loadAsyncComponent(
   () => import("./components/ChartData/index.vue")
 );
+const ChartStyle = loadAsyncComponent(
+  () => import("./components/ChartStyle/index.vue")
+);
 const { getRightSidebar } = toRefs(useChartLayoutStore());
 const { setItem } = useChartLayoutStore();
 
@@ -112,6 +115,11 @@ const chartsDefaultTabList = [
     title: "定制",
     render: ChartSetting,
   },
+  // {
+  //   key: TabsEnum.CHART_STYLE,
+  //   title: "样式",
+  //   render: ChartStyle,
+  // },
   {
     key: TabsEnum.CHART_ANIMATION,
     title: "动画",
@@ -156,9 +164,8 @@ const chartsTabList = [
   .layout-aside {
     width: 350px;
     height: 100%;
-    background: $--color-dark-bg-2;
-
-    border-left: 1px solid var(--el-border-color-light);
+    background: var(--bg-color-3);
+    border-left: 1px solid var(--el-border-color);
     transition: all 0.3s ease-in-out;
     overflow: hidden;
 

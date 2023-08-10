@@ -27,7 +27,9 @@ import {
   RecordChartType,
   RequestGlobalConfigType,
   EditCanvasConfigType,
-  GlobalFunctionType
+  GlobalFunctionType,
+  GlobalPropsType,
+  GlobalIframeEventType
 } from './chartEditStore.d'
 import { fetchChartComponent, fetchConfigComponent } from '@/packages'
 import { get, set } from 'lodash'
@@ -67,7 +69,9 @@ export const useChartEditStore = defineStore({
       startX: 0,
       startY: 0,
       x: 0,
-      y: 0
+      y: 0,
+      contentX:0,
+      contentY:0,
     },
     // 目标图表
     targetChart: {
@@ -144,7 +148,10 @@ export const useChartEditStore = defineStore({
     globalFunction: [],
     // 弹窗
     globalDialog: [],
-    //
+    //组件传参
+    globalProps:[],
+    //Iframe通讯触发事件
+    globalIframeEvent:[]
   }),
   getters: {
     getMousePosition(): MousePositionType {
@@ -194,8 +201,14 @@ export const useChartEditStore = defineStore({
     getGlobalDialog() {
       return this.globalDialog
     },
-    getGlobalFunction(): GlobalFunctionType {
+    getGlobalFunction(): GlobalFunctionType[] {
       return this.globalFunction
+    },
+    getGlobalProps(): GlobalPropsType[] {
+      return this.globalProps
+    },
+    getGlobalIframeEvent(): GlobalIframeEventType[] {
+      return this.globalIframeEvent
     },
     // 获取需要存储的数据项
     getStorageInfo(): ChartEditStorage {
@@ -204,9 +217,11 @@ export const useChartEditStore = defineStore({
         [ChartEditStoreEnum.COMPONENT_LIST]: this.getComponentList,
         [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: this.getRequestGlobalConfig,
         [ChartEditStoreEnum.GLOBAL_VAR]: this.getGlobalVar,
-        [ChartEditStoreEnum.GLOBAL_REQUEST]: this.globalRequest,
-        [ChartEditStoreEnum.GLOBAL_Dialog]: this.globalDialog,
-        [ChartEditStoreEnum.GLOBAL_FUNCTION]: this.globalFunction,
+        [ChartEditStoreEnum.GLOBAL_REQUEST]: this.getGlobalRequest,
+        [ChartEditStoreEnum.GLOBAL_Dialog]: this.getGlobalDialog,
+        [ChartEditStoreEnum.GLOBAL_FUNCTION]: this.getGlobalFunction,
+        [ChartEditStoreEnum.GLOBAL_PROPS]:this.getGlobalProps,
+        [ChartEditStoreEnum.GLOBAL_IFRAME_EVENT]:this.getGlobalIframeEvent
       }
     },
   },
@@ -268,10 +283,21 @@ export const useChartEditStore = defineStore({
     },
     // * 设置鼠标位置
     setMousePosition(x?: number, y?: number, startX?: number, startY?: number): void {
-      if (x) this.mousePosition.x = x
-      if (y) this.mousePosition.y = y
+      
+      const content = document.querySelector("#chart-edit-content ").getBoundingClientRect()
+    
+
+      if (x) {
+        this.mousePosition.x = x 
+        this.mousePosition.contentX = Math.round((x - content.x) / this.getEditCanvas.scale)
+      }
+      if (y) {
+        this.mousePosition.y = y
+        this.mousePosition.contentY = Math.round((y - content.y) / this.getEditCanvas.scale)
+      }
       if (startX) this.mousePosition.startX = startX
       if (startY) this.mousePosition.startY = startY
+
     },
     // * 找到目标 id 数据的下标位置，id可为父级或子集数组（无则返回-1）
     fetchTargetIndex(id?: string): any {
@@ -388,7 +414,6 @@ export const useChartEditStore = defineStore({
     },
     // * 更新组件列表某一项的值
     updateComponentList(index: number | any[], newData: CreateComponentType | CreateComponentGroupType) {
-      debugger
       if (Array.isArray(index)) {
         if (index[index.length - 1] < 1 && index[index.length - 1] > get(this.getComponentList, index.slice(0, -1)).length) return
       } else {
@@ -472,7 +497,7 @@ export const useChartEditStore = defineStore({
         }
 
         const index = this.fetchTargetIndex()
-        debugger
+
         if (index !== -1) {
           // 下移排除最底层, 上移排除最顶层
           if ((isDown && index === 0) || (!isDown && index === length - 1)) {
@@ -548,7 +573,6 @@ export const useChartEditStore = defineStore({
     },
     // * 粘贴
     setParse() {
-      debugger
       try {
         loadingStart()
         const recordCharts = this.getRecordChart
@@ -558,8 +582,8 @@ export const useChartEditStore = defineStore({
         }
         const parseHandle = (e: CreateComponentType | CreateComponentGroupType) => {
           e = cloneDeep(e)
-          e.attr.x = this.getMousePosition.startX 
-          e.attr.y = this.getMousePosition.startY
+          e.attr.x = this.getMousePosition.contentX 
+          e.attr.y = this.getMousePosition.contentY
           // 外层生成新 id
           e.id = getUUID()
           // 分组列表生成新 id
@@ -775,7 +799,7 @@ export const useChartEditStore = defineStore({
       try {
         const selectIds = this.idPreFormat(id) || this.getTargetChart.selectId
         if (selectIds.length < 2) return
-
+        debugger
         loadingStart()
         const groupClass = new PublicGroupConfigClass()
         // 记录整体坐标
@@ -792,6 +816,7 @@ export const useChartEditStore = defineStore({
         const newSelectIds: string[] = []
         selectIds.forEach((id: string) => {
           const targetIndex = this.fetchTargetIndex(id)
+        
           if (targetIndex !== -1 && this.getComponentList[targetIndex].isGroup) {
             this.setUnGroup(
               [id],
@@ -851,6 +876,7 @@ export const useChartEditStore = defineStore({
         loadingFinish()
       }
     },
+    
     // * 解除分组
     setUnGroup(ids?: string[], callBack?: (e: CreateComponentType[]) => void, isHistory = true) {
       try {
@@ -895,6 +921,133 @@ export const useChartEditStore = defineStore({
         window['$message'].error('解除分组失败，请联系管理员！')
         loadingFinish()
       }
+    },
+    //分组添加组件
+    addGroup(groupClass:CreateComponentGroupType, id?: string | string[], isHistory = true) {
+      try {
+        const selectIds = this.idPreFormat(id) 
+        loadingStart()
+        let selectList = []
+        selectIds.forEach((id: string) => {
+          let targetIndex =  this.fetchTargetIndex(id) 
+          const item = get(this.getComponentList, targetIndex)
+          if(item.isGroup){
+          }else{
+            selectList.push(item)
+          }
+        })
+        // 记录整体坐标
+        const groupAttr = {
+          l: groupClass.attr.x,
+          t: groupClass.attr.y,
+          r: groupClass.attr.x + groupClass.attr.w,
+          b: groupClass.attr.y + groupClass.attr.h
+        }
+        const targetList: CreateComponentType[] = []
+        const historyList: CreateComponentType[] = []
+
+        selectList.forEach((item) => {
+          const { x, y, w, h } = item.attr
+          const { l, t, r, b } = groupAttr
+          // 左
+          groupAttr.l = l > x ? x : l
+          // 上
+          groupAttr.t = t > y ? y : t
+          // 宽
+          groupAttr.r = r < x + w ? x + w : r
+          // 高
+          groupAttr.b = b < y + h ? y + h : b
+
+          targetList.push(item)
+          historyList.push(toRaw(item))
+        })
+
+        // 修改原数据之前，先记录
+        if (isHistory) chartHistoryStore.createGroupHistory(historyList)
+
+        // 设置子组件的位置
+        targetList.forEach((item: CreateComponentType) => {
+          item.attr.x = item.attr.x - groupAttr.l
+          item.attr.y = item.attr.y - groupAttr.t
+        })
+        groupClass.groupList.forEach((item) => {
+          if(targetList.includes(item)) return
+          item.attr.x = item.attr.x + groupClass.attr.x - groupAttr.l 
+          item.attr.y = item.attr.y + groupClass.attr.y - groupAttr.t
+        })
+
+        // 设置 group 属性
+        groupClass.attr.x = groupAttr.l
+        groupClass.attr.y = groupAttr.t
+        groupClass.attr.w = groupAttr.r - groupAttr.l
+        groupClass.attr.h = groupAttr.b - groupAttr.t
+
+        loadingFinish()
+      } catch (error) {
+        console.log(error)
+        window['$message'].error('添加分组失败，请联系管理员！')
+        loadingFinish()
+      }
+    },
+    //分组移除组件
+    removeGroup(targetGroup: CreateComponentGroupType,id?: string | string[]){ 
+      const selectIds = this.idPreFormat(id) 
+      const groupAttr = {
+        l: 0,
+        t: 0,
+        r: 0,
+        b: 0
+      }
+      const groupList = []
+      targetGroup.groupList.forEach(item => {
+        groupList.push({
+          attr:{
+            x: item.attr.x + targetGroup.attr.x,
+            y:item.attr.y + targetGroup.attr.y,
+            w:item.attr.w,
+            h:item.attr.h
+          }
+        })
+      })
+ 
+      groupList.forEach((item) => {
+        const { x, y, w, h } = item.attr
+        const { l, t, r, b } = groupAttr
+        // 左
+        if(l === 0){
+          groupAttr.l = x
+        } else{
+          groupAttr.l = l > x ? x : l
+        }
+        // 上
+        if(t === 0){
+          groupAttr.t = y 
+        } else{
+          groupAttr.t = t > y ? y : t
+        }
+        // 宽
+        groupAttr.r = r < x + w ? x + w : r
+        // 高
+        groupAttr.b = b < y + h ? y + h : b
+      })
+      //设置移除组件属性
+      selectIds.forEach((id: string) => {
+        let targetIndex =  this.fetchTargetIndex(id) 
+        const item = get(this.getComponentList, targetIndex)
+        item.attr.x = item.attr.x + targetGroup.attr.x
+        item.attr.y = item.attr.y + targetGroup.attr.y
+      })
+      //设置组件属性
+      targetGroup.groupList.forEach((item) => {
+        item.attr.x = item.attr.x - (groupAttr.l - targetGroup.attr.x)
+        item.attr.y = item.attr.y - (groupAttr.t - targetGroup.attr.y)
+      })
+      // 设置 group 属性
+      targetGroup.attr.x = groupAttr.l
+      targetGroup.attr.y = groupAttr.t
+      targetGroup.attr.w = groupAttr.r - groupAttr.l
+      targetGroup.attr.h = groupAttr.b - groupAttr.t
+     
     },
     // * 锁定
     setLock(status: boolean = true, isHistory: boolean = true) {
@@ -1129,18 +1282,68 @@ export const useChartEditStore = defineStore({
           componentInstall(e.chartConfig.conKey, fetchConfigComponent(e.chartConfig));
         }
       })
-    }
+    },
+    saveGlobalProps(data: GlobalFunctionType) {
+      if (!data) return
+      let index = this.globalProps.findIndex((f) => f.field == data.field)
+      if (index == -1){
+        this.globalProps.push(data)
+      }else{
+        this.globalProps[index] = data
+      }
+    },
+    removeGlobalProps(field?: string): void {
+      try {
+        loadingStart()
+        let index = this.globalProps.findIndex(e => e.field === field)
+        if (index !== -1) {
+          this.globalProps.splice(index, 1)
+        }
+        loadingFinish()
+        return
+      } catch (value) {
+        loadingError()
+      }
+    },
+    clearGlobalProps() {
+      this.globalProps.length = 0
+    },
+    saveGlobalIframeEvent(data: GlobalIframeEventType) {
+      if (!data) return
+      let index = this.globalIframeEvent.findIndex((f) => f.eventName == data.eventName)
+      if (index == -1){
+        this.globalIframeEvent.push(data)
+      }else{
+        this.globalIframeEvent[index] = data
+      }
+    },
+    removeGlobalIframeEvent(eventName?: string): void {
+      try {
+        loadingStart()
+        let index = this.globalIframeEvent.findIndex(e => e.eventName === eventName)
+        if (index !== -1) {
+          this.globalIframeEvent.splice(index, 1)
+        }
+        loadingFinish()
+        return
+      } catch (value) {
+        loadingError()
+      }
+    },
+    clearGlobalIframeEvent() {
+      this.globalIframeEvent.length = 0
+    },
   },
-  // persist: {
-  //   enabled: true,
-  //   strategies: [
-  //     {
-  //       key: "useChartEditStore",
-  //       storage: sessionStorage,
-  //       paths: ["editCanvasConfig", "requestGlobalConfig", "globalDialog", "globalVar", "globalFunction", 'componentList'],//指定要长久化的字段
-  //     }
-  //   ]
-  // }
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: "useChartEditStore",
+        storage: sessionStorage,
+        paths: ["editCanvasConfig", "requestGlobalConfig", "globalDialog", "globalVar", "globalFunction", 'componentList'],//指定要长久化的字段
+      }
+    ]
+  }
 })
 
 // 'componentList'

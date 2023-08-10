@@ -107,7 +107,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .aside {
-  background-color: var(--dark-color-1a);
+  background-color: var(--bg-color-1);
 }
 .g-c-2{
   display: grid;
@@ -120,7 +120,7 @@ defineExpose({
   border-radius: 6px;
   cursor: pointer;
   // border: 1px solid rgba(0, 0, 0, 0);
-  // background: var(--dark-color-2);
+  // background: var(--bg-color-3);
   padding: 10px;
   &:first-child {
     margin-top: 0;

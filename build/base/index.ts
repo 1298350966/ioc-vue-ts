@@ -1,5 +1,5 @@
 import { defineConfig, optimizeDeps } from 'vite'
-import { resolve } from 'path';
+import path, { resolve } from 'path';
 import plugins from "./plugins"
 import server from "./server"
 
@@ -10,7 +10,7 @@ function pathResolve(dir: string) {
 // monaco-editor 路径
 export const prefix = `monaco-editor/esm/vs`
 
-const baseConfig = ({ mode }) => defineConfig({
+const baseConfig = ({mode}: { mode: string; }) => defineConfig({
   plugins: plugins(mode),
   base: '/ioc',
   resolve: {
@@ -39,22 +39,38 @@ const baseConfig = ({ mode }) => defineConfig({
   },
   // 打包配置
   build: {
-    minify: "terser",
+    // minify: "terser",
     target: 'es2015',
-    sourcemap: false,
+    // sourcemap: false,
     outDir: 'ioc', // 指定输出路径，要和库的包区分开
-    assetsDir: 'static', // 指定生成静态资源的存放路径
+    // assetsDir: 'static', // 指定生成静态资源的存放路径
     rollupOptions: {
       output: {
         chunkFileNames: 'static/js/[name]-[hash].js',
         entryFileNames: 'static/js/[name]-[hash].js',
         assetFileNames: (chunkInfo) => {
-          if (['.png', '.jpg', '.jpeg'].includes(path.extname(chunkInfo.name))) {
+          if (['.png', '.jpg', '.jpeg'].includes(path.extname(chunkInfo.name as string))) {
             return `static/[ext]/[name].[ext]`
           }
           return `static/[ext]/[name]-[hash].[ext]`
         },
         manualChunks: {
+          vue: ['vue', 'vue-router'],
+          echarts: ['echarts'],
+          lodash: ['lodash'],
+          vueRepl:["@vue/repl"],
+          vuema:["@vuemap/vue-amap"],
+          axios:["axios"],
+          elementPlus:["element-plus"],
+          highlight:["highlight.js"],
+          xgplayer:["xgplayer"],
+          xgplayerFlv:["xgplayer-flv"],
+          xgplayerHls:["xgplayer-hls"],
+          xgplayerMp4:["xgplayer-mp4"],
+          xgplayerVue:["xgplayer-vue"],
+          vuedraggable:["vuedraggable"],
+          vue3BaiduMapGl:["vue3-baidu-map-gl"],
+          vueTianditu:["vue-tianditu"],
           jsonWorker: [`${prefix}/language/json/json.worker`],
           cssWorker: [`${prefix}/language/css/css.worker`],
           htmlWorker: [`${prefix}/language/html/html.worker`],
@@ -63,14 +79,14 @@ const baseConfig = ({ mode }) => defineConfig({
         }
       }
     },
-    chunkSizeWarningLimit: 2000,
-    terserOptions: {
-      compress: {
-        keep_infinity: true,
-        drop_console: true,
-        drop_debugger: true
-      }
-    }
+    chunkSizeWarningLimit: 1000,
+    // terserOptions: {
+    //   compress: {
+    //     keep_infinity: true,
+    //     drop_console: true,
+    //     drop_debugger: true
+    //   }
+    // }
   },
   optimizeDeps: {
     include: [
@@ -108,6 +124,12 @@ const baseConfig = ({ mode }) => defineConfig({
       'element-plus/es/components/sub-menu/style/index',
       'element-plus/es/components/menu-item/style/index',
       'element-plus/es/components/option/style/index',
+      `monaco-editor/esm/vs/language/json/json.worker`,
+      `monaco-editor/esm/vs/language/css/css.worker`,
+      `monaco-editor/esm/vs/language/html/html.worker`,
+      `monaco-editor/esm/vs/language/typescript/ts.worker`,
+      `monaco-editor/esm/vs/editor/editor.worker`,
+      '/src/packages/components/**/*.vue'
     ]
   }
 })

@@ -19,7 +19,7 @@ defineOptions({
 })
 const props = defineProps({
   option: {
-    type: Object,
+    type: Object ,
     default: () => {
 
     }

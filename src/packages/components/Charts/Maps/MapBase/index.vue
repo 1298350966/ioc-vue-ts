@@ -79,18 +79,40 @@ const vEchartsSetOption = () => {
 
 // 更新数据处理
 const dataSetHandle = async (dataset: any) => {
+  const { dataMapping } = props.chartConfig
+  const point = dataMapping.find(e => e.key == "point")
+  const map = dataMapping.find(e => e.key == "map")
   props.chartConfig.option.series.forEach((item: any) => {
-    if (item.type === 'effectScatter' && dataset.point) item.data = dataset.point
-    else if (item.type === 'map' && dataset.map) item.data = dataset.map
+    let pointData = dataset[point.column] || []
+    const pointName = point.children.find(e => e.key == "name")
+    const pointLng = point.children.find(e => e.key == "lng")
+    const pointLat = point.children.find(e => e.key == "lat")
+    const pointValue = point.children.find(e => e.key == "value")
+    let _pointData = pointData.map((d)=>{
+      return {
+        name:d[pointName.column],
+        value:[d[pointLng.column],d[pointLat.column],d[pointValue.column]]
+      }
+    })
+    let mapData = dataset[map.column] || []
+    const mapName = map.children.find(e => e.key == "name")
+    const mapValue = map.children.find(e => e.key == "value")
+    let _mapData = mapData.map((d)=>{
+      return {
+        name:d[mapName.column],
+        value:d[mapValue.column]
+      }
+    })
+    console.log(`output->`,_pointData,_mapData)
+    if (item.type === 'effectScatter' && dataset.point) item.data = _pointData
+    else if (item.type === 'map' && dataset.map) item.data = _mapData
   })
-  if (dataset.pieces) props.chartConfig.option.visualMap.pieces = dataset.pieces
-
-  isPreview() && vEchartsSetOption()
+  // isPreview() && vEchartsSetOption()
 }
 
 //监听 dataset 数据发生变化
 watch(
-  () => props.chartConfig.option.dataset,
+  () => props.chartConfig.data,
   newData => {
     dataSetHandle(newData)
   },

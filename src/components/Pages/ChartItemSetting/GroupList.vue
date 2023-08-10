@@ -40,7 +40,7 @@ const collapseName = ref("组件列表")
 
 <style lang="scss" scoped>
 .item-content {
-  background: var(--dark-color-3);
+  background: var(--bg-color-4);
   border-radius: 5px;
   margin-bottom: 5px;
   padding: 5px;
@@ -49,7 +49,7 @@ const collapseName = ref("组件列表")
   .list-img {
     width: 50px;
     height: 50px;
-    background: var(--dark-color-2);
+    background: var(--bg-color-3);
     border-radius: 5px;
     margin-right: 5px;
   }

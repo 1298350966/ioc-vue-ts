@@ -1,9 +1,11 @@
 <template>
-  <el-dialog v-model="config.show" custom-class="dragDialogClass" v-bind="config.attrs" :append-to-body="false">
-    <div :style="{ height: config.body.height }">
-      <component-iframe :type="config.body.type" :attrs="config.body.attrs" :component="config.body.component" :iframe="config.body.iframe" @message="ComponentIframeMessage"></component-iframe>
-    </div>
-  </el-dialog>
+  <div>
+    <el-dialog v-model="config.show" custom-class="dragDialogClass" v-bind="config.attrs" :append-to-body="false">
+      <div :style="{ height: config.body.height }">
+        <component-iframe :type="config.body.type" :attrs="config.body.attrs" :component="config.body.component" :iframe="config.body.iframe" @message="ComponentIframeMessage"></component-iframe>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -27,19 +29,19 @@ function ComponentIframeMessage(data){
 }
 </script>
 
-<style lang="scss" >
-.content {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
+<style lang="scss" scoped>
 
-.dragDialogClass {
+
+:deep(.dragDialogClass) {
   background: #0e3f5fe7;
 
   .el-dialog__body {
     padding: 10px;
   }
-
+  .content {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 }
 </style>

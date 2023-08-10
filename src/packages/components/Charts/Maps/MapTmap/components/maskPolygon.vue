@@ -7,7 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { TdtPolygon } from "vue-tianditu/packages/index";
+// @ts-ignore
+import { TdtPolygon } from "vue-tianditu";
 const props = defineProps<{
   maskConfig: any;
 }>();

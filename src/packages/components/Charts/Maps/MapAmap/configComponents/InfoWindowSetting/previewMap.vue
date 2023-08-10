@@ -63,7 +63,6 @@ initAMapApiLoader({
 
 function initMap(e) {
   map.setMap(e)
-  console.log(e, new Map());
   props.config.position = center;
   props.config.visible = true;
 }

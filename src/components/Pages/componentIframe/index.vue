@@ -1,22 +1,28 @@
 <template>
   <template v-if="type === 'component'">
-    <component :is="componentIs" v-bind="attrs" @message="componentMessage" style="width: 100%;height: 100%;"></component>
+    <component :is="componentIs" v-bind="attrs" @message="componentMessage" :style="isInherit ? {width: '100%',height: '100%'} : {}"></component>
   </template>
   <template v-else-if="type === 'iframe'">
-    <iframe ref="IframeRefs" class="content" v-bind="iframe" @load="IframeLoad"></iframe>
+    <iframe ref="IframeRefs" :allowtransparency="true" frameborder="0" style="color-scheme: normal;" class="content" v-bind="iframe" @load="IframeLoad"></iframe>
   </template>
 </template>
 
 <script setup lang="ts">
 import { getAsyncCustomComponents } from '@/customComponents';
 import { componentList } from './config';
+import { UseEventType } from '@/hooks';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   type:string,
   attrs:any,
   component?:any,
   iframe?:any
-}>()
+  isInherit:boolean,
+}>(),{
+  isInherit:true
+})
+
+const rootIframeEmit:UseEventType = inject("rootIframeEmit")
 
 const emit = defineEmits(["message"])
 
@@ -39,17 +45,22 @@ function IframeLoad(){
 }
 
 function IframeMessage(event) {
-  console.log(`window接受消息`, event)
-  emit("message",event.data)
+  if(!IframeRefs.value) return
+  if(IframeRefs.value.contentWindow == event.source){ 
+    let iframeData  = JSON.parse(event.data)
+    console.log(`window接受消息`, iframeData)
+    if(iframeData.eventName){
+      rootIframeEmit && rootIframeEmit.emit(iframeData.eventName,iframeData.data)
+    }
+  }
 }
+
 onMounted(()=>{
   window.addEventListener("message",IframeMessage , false);
 })
 onBeforeUnmount(() => {
   window.removeEventListener('message', IframeMessage, false)
 })
-
-
 </script>
 
 <style scoped>

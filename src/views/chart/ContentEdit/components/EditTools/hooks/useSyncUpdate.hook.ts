@@ -6,7 +6,7 @@ import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStor
 import { useSync } from '@/views/chart/hooks/useSync.hook'
 import { ChartEnum } from '@/enums/pageEnum'
 import { SavePageEnum } from '@/enums/editPageEnum'
-import { editToJsonInterval } from '@/settings/designSetting'
+// import { editToJsonInterval } from '@/settings/designSetting'
 import { goDialog } from '@/utils'
 
 const { updateComponent } = useSync()

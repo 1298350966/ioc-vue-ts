@@ -20,6 +20,9 @@
         <chart-data-monaco-editor></chart-data-monaco-editor>
       </el-space>
     </el-timeline-item>
+    <el-timeline-item type="warning" color="#2a2a2b" size="large" :hollow="true" :timestamp="TimelineTitleEnum.BINDING">
+    
+    </el-timeline-item>
     <el-timeline-item type="success" color="#2a2a2b" size="large" :hollow="true" :timestamp="TimelineTitleEnum.CONTENT"
       placement="top">
       <el-space direction="horizontal" :fill-ratio="100" fill style="width: 100%">

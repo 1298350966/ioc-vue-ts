@@ -3,7 +3,7 @@ import App from './App.vue'
 import ElementPlus from 'element-plus'
 // import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // import 'element-plus/dist/index.css'
-// import 'element-plus/theme-chalk/dark/css-vars.css'
+
 import { useElementPlusGlobal, useElementPlus } from "./plugins/element-plus/index";
 
 import i18n from '@/i18n/index'
@@ -11,10 +11,12 @@ import { useRouter } from './router'
 // 导入Unocss
 import 'uno.css'
 // 引入全局样式
-import '@/styles/pages/index.scss'
+// import '@/styles/pages/index.scss'
+
 // 引入动画
 import 'animate.css/animate.min.css'
-import '@/styles/element/index.scss'
+import "imagehover.css/css/imagehover.min.css"
+// import '@/styles/element/index.scss'
 
 import { setupStore } from '@/store'
 import { setupDirectives, setupLoading } from '@/plugins'
@@ -22,6 +24,8 @@ import { useDirective } from '@/directive/customDirective'
 
 import "@/plugins/feedback"
 
+
+import '@/styles/theme/register.scss'
 
 const app = createApp(App)
 
@@ -58,5 +62,20 @@ app.mount('#app')
 // 挂载到 window
 window['$vue'] = app
 
+// import {getImageUrl} from "@/utils/utils"
+
+// console.log(getImageUrl("canvas/noData.png"))
 
 
+const scriptEl = document.createElement('script')
+scriptEl.setAttribute('type', 'module')
+// send ok in the module script to ensure sequential evaluation
+// of multiple proxy.eval() calls
+scriptEl.innerHTML = `
+  import { createApp } from 'vue'
+  console.log(createApp);
+`
+document.head.appendChild(scriptEl)
+scriptEl.onerror = (err) => {
+  console.log(err);
+}

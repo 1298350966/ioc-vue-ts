@@ -57,7 +57,7 @@ const rangeModelStyle = computed(() => {
   transform-origin: left top;
   background-size: cover;
   @include fetch-border-color('hover-border-color');
-  background-color: $--color-dark-bg-2;
+  background-color: var(--bg-color-3);
   @include go(edit-range-model) {
     z-index: -1;
     position: absolute;
